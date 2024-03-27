@@ -20,6 +20,6 @@
 
 ## API 명세서
 #### [유저API](users%2FUSERS.md) - 김민상
-.
+#### [셀러API](sellers%2FSELLER.md) - 남지훈
 .
 .

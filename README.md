@@ -21,5 +21,5 @@
 ## API 명세서
 #### [유저API](docs%2Fusers%2FUSERS.md) - 김민상
 #### [셀러API](docs%2Fsellers%2FSELLER.md) - 남지훈
-.
+#### [관리자API](docs%2Fadmins%2FADMINS.md) - 남지훈
 .

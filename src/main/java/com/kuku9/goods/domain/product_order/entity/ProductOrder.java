@@ -1,4 +1,4 @@
-package com.kuku9.goods.domain.order.entity;
+package com.kuku9.goods.domain.product_order.entity;
 
 import com.kuku9.goods.domain.cart.entity.Cart;
 import jakarta.persistence.Column;
@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +18,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+@Builder
+public class ProductOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

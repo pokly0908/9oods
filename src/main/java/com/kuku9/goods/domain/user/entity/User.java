@@ -4,6 +4,8 @@ import com.kuku9.goods.global.common.entity.BaseEntity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 
@@ -40,5 +42,13 @@ public class User extends BaseEntity {
     @Comment("유저 권한")
     private UserRoleEnum role = UserRoleEnum.USER;
 
+    public User(String username, String name, String email, String password, String adminCode, UserRoleEnum role) {
+        this.username = username;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.adminCode = adminCode;
+        this.role = role;
+    }
 
 }

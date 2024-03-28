@@ -1,6 +1,6 @@
 package com.kuku9.goods.domain.user.entity;
 
-import com.kuku9.goods.common.entity.BaseEntity;
+import com.kuku9.goods.global.common.entity.BaseEntity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

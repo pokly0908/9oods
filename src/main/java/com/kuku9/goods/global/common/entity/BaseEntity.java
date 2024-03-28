@@ -1,4 +1,4 @@
-package com.kuku9.goods.common.entity;
+package com.kuku9.goods.global.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

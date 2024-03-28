@@ -1,6 +1,6 @@
 package com.kuku9.goods.event;
 
-import com.kuku9.goods.domain.event.service.EventService;
+import com.kuku9.goods.domain.event.service.EventServiceImpl;
 import com.kuku9.goods.domain.file.entity.File;
 import com.kuku9.goods.domain.file.repository.FileRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +17,7 @@ public class EventTest {
 	FileRepository fileRepository;
 
 	@Autowired
-	EventService eventService;
+	EventServiceImpl eventServiceImpl;
 
 	@DisplayName("file 테스트")
 	@Test

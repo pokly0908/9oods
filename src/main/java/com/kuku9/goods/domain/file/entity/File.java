@@ -1,5 +1,6 @@
 package com.kuku9.goods.domain.file.entity;
 
+import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,13 +10,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class File {
+@SQLDelete(sql = "UPDATE file SET deleted_at=CURRENT_TIMESTAMP where file_id=?")
+@SQLRestriction("deleted_at IS NULL")
+public class File extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

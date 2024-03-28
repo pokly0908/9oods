@@ -4,6 +4,7 @@ import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventTitleResponse;
 import com.kuku9.goods.domain.event.service.EventService;
+import com.kuku9.goods.domain.event.service.EventServiceImpl;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;

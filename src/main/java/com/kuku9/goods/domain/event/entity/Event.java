@@ -28,8 +28,13 @@ public class Event {
 	@Column
 	private String content;
 
-	@OneToOne
-	@JoinColumn(name = "file_id")
-	private File file;
+	@Column(name = " file_id")
+	private Long fileId;
+
+	public Event(String title, String content, Long fileId) {
+		this.title = title;
+		this.content = content;
+		this.fileId = fileId;
+	}
 
 }

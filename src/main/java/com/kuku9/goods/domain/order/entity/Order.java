@@ -1,12 +1,11 @@
-package com.kuku9.goods.order.entity;
+package com.kuku9.goods.domain.order.entity;
 
-import com.kuku9.goods.cart.entity.Cart;
+import com.kuku9.goods.domain.cart.entity.Cart;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;

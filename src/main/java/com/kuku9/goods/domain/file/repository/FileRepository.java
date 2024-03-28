@@ -6,4 +6,6 @@ public interface FileRepository {
 
 	File findById(Long fileId);
 
+	void save(File file);
+
 }

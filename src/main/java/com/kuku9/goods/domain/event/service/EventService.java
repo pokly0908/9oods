@@ -1,5 +1,6 @@
 package com.kuku9.goods.domain.event.service;
 
+import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.entity.Event;
 import com.kuku9.goods.domain.event.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +24,9 @@ public class EventService {
 		Event event = eventRepository.findById(eventId);
 		event.update(title, content, fileId);
 		return eventId;
+	}
+
+	public EventResponse getEvent(Long eventId) {
+		return eventRepository.getEvent(eventId);
 	}
 }

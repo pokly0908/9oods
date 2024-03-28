@@ -14,4 +14,8 @@ public class FileRepositoryImpl implements FileRepository {
 		return fileJpaRepository.findById(fileId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 이미지는 존재하지 않습니다."));
 	}
+
+	public void save(File file) {
+		fileJpaRepository.save(file);
+	}
 }

@@ -1,12 +1,13 @@
 package com.kuku9.goods.domain.event.controller;
 
 import com.kuku9.goods.domain.event.dto.EventRequest;
+import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.service.EventService;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,7 +28,7 @@ public class EventController {
 		Long eventId = eventService.createEvent(request.getTitle(), request.getContent(),
 			request.getFileId());
 
-		return ResponseEntity.created(URI.create("/api/v1/events" + eventId)).build();
+		return ResponseEntity.created(URI.create("/api/v1/events/" + eventId)).build();
 	}
 
 	@PutMapping("/{eventId}")
@@ -38,6 +39,14 @@ public class EventController {
 			request.getContent(),
 			request.getFileId());
 
-		return ResponseEntity.created(URI.create("/api/v1/events" + updatedEventId)).build();
+		return ResponseEntity.created(URI.create("/api/v1/events/" + updatedEventId)).build();
+	}
+
+	@GetMapping("/{eventId}")
+	public ResponseEntity<EventResponse> getEvent(@PathVariable Long eventId) {
+
+		EventResponse eventResponse = eventService.getEvent(eventId);
+
+		return ResponseEntity.ok().body(eventResponse);
 	}
 }

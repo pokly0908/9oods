@@ -1,4 +1,4 @@
-package com.kuku9.goods.file.entity;
+package com.kuku9.goods.domain.file.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

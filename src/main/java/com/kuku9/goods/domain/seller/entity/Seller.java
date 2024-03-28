@@ -33,4 +33,6 @@ public class Seller {
   @Column
   private String phone_number;
 
+  @Column
+  private String status;
 }

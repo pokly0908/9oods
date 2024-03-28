@@ -1,4 +1,4 @@
-package com.kuku9.goods.user.entity;
+package com.kuku9.goods.domain.user.entity;
 
 public enum UserRoleEnum {
     USER(Authority.USER),

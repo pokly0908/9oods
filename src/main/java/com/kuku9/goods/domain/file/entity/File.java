@@ -18,7 +18,7 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE file SET deleted_at=CURRENT_TIMESTAMP where file_id=?")
+@SQLDelete(sql = "UPDATE file SET deleted_at=CURRENT_TIMESTAMP where id=?")
 @SQLRestriction("deleted_at IS NULL")
 public class File extends BaseEntity {
 

@@ -18,4 +18,8 @@ public class FileRepositoryImpl implements FileRepository {
 	public void save(File file) {
 		fileJpaRepository.save(file);
 	}
+
+	public void delete(File file) {
+		fileJpaRepository.delete(file);
+	}
 }

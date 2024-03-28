@@ -8,4 +8,6 @@ public interface FileRepository {
 
 	void save(File file);
 
+	void delete(File file);
+
 }

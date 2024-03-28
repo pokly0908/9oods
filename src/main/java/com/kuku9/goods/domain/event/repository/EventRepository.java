@@ -14,4 +14,6 @@ public interface EventRepository {
 	EventResponse getEvent(Long eventId);
 
 	List<EventTitleResponse> getEventTitles();
+
+	void delete(Event event);
 }

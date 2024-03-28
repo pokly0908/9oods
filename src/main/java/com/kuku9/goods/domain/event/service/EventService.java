@@ -14,4 +14,5 @@ public interface EventService {
 
 	List<EventTitleResponse> getEventTitles();
 
+	void deleteEvent(Long eventId);
 }

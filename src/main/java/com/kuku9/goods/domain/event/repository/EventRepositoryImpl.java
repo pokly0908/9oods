@@ -24,6 +24,10 @@ public class EventRepositoryImpl implements EventRepository {
 		return eventJpaRepository.save(event);
 	}
 
+	public void delete(Event event) {
+		eventJpaRepository.delete(event);
+	}
+
 	public Event findById(Long eventId) {
 		return eventJpaRepository.findById(eventId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 이벤트는 존재하지 않습니다."));

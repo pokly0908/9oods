@@ -20,7 +20,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE event SET deleted_at=CURRENT_TIMESTAMP where event_id=?")
+@SQLDelete(sql = "UPDATE event SET deleted_at=CURRENT_TIMESTAMP where id=?")
 @SQLRestriction("deleted_at IS NULL")
 public class Event extends BaseEntity {
 

@@ -37,4 +37,10 @@ public class Event {
 		this.fileId = fileId;
 	}
 
+	public void update(String title, String content, Long fileId) {
+		this.title = title;
+		this.content = content;
+		this.fileId = fileId;
+	}
+
 }

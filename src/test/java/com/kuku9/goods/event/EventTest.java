@@ -22,7 +22,7 @@ public class EventTest {
 	@DisplayName("file 테스트")
 	@Test
 	void filesave() {
-		File file = File.builder().url("http:/").build();
+		File file = File.builder().url("http://").build();
 		fileRepository.save(file);
 	}
 }

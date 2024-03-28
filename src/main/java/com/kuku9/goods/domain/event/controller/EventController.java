@@ -2,9 +2,11 @@ package com.kuku9.goods.domain.event.controller;
 
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
+import com.kuku9.goods.domain.event.dto.EventTitleResponse;
 import com.kuku9.goods.domain.event.service.EventService;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,5 +50,13 @@ public class EventController {
 		EventResponse eventResponse = eventService.getEvent(eventId);
 
 		return ResponseEntity.ok().body(eventResponse);
+	}
+
+	@GetMapping
+	public ResponseEntity<List<EventTitleResponse>> getEventTitles() {
+
+		List<EventTitleResponse> eventResponses = eventService.getEventTitles();
+
+		return ResponseEntity.ok().body(eventResponses);
 	}
 }

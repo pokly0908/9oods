@@ -1,14 +1,18 @@
 package com.kuku9.goods.domain.user.entity;
 
+import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
 import com.kuku9.goods.global.common.entity.BaseEntity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 
 @Entity
 @Getter
+@Table(name = "user")
+@NoArgsConstructor
 public class User extends BaseEntity {
 
     @Id
@@ -16,7 +20,7 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @Comment("사용자가 로그인할때 쓸 id")
+    @Comment("사용자가 로그인할때 쓸 id명")
     private String username;
 
     @Column(nullable = false)
@@ -38,7 +42,31 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     @Comment("유저 권한")
-    private UserRoleEnum role = UserRoleEnum.USER;
+    private UserRoleEnum role;
 
+
+    public User(
+            UserSignupRequest request,
+            String encodedPassword,
+            UserRoleEnum role,
+            String adminCodeValue
+    ){
+        this.username = request.getUsername();
+        this.name = request.getName();
+        this.email = request.getEmail();
+        this.password = encodedPassword;
+        this.role = role;
+        this.adminCode = adminCodeValue;
+
+    }
+
+    public static User from(
+            UserSignupRequest request,
+            String encodedPassword,
+            UserRoleEnum role,
+            String adminCodeValue
+    ){
+      return new User(request, encodedPassword, role, adminCodeValue);
+    }
 
 }

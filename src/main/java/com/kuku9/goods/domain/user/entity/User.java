@@ -1,4 +1,4 @@
-package com.kuku9.goods.user.entity;
+package com.kuku9.goods.domain.user.entity;
 
 import com.kuku9.goods.common.entity.BaseEntity;
 

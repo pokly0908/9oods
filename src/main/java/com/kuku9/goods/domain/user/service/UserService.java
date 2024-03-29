@@ -1,7 +1,9 @@
 package com.kuku9.goods.domain.user.service;
 
 
+import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
+import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
 import com.kuku9.goods.domain.user.dto.response.UserResponse;
 import com.kuku9.goods.domain.user.entity.User;
@@ -37,4 +39,6 @@ public interface UserService {
 
 
     UserResponse getUserInfo(Long userId, User user) throws AccessDeniedException;
+
+    Seller registerSeller(RegisterSellerRequest request, User user);
 }

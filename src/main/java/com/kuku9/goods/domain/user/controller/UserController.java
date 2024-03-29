@@ -1,6 +1,8 @@
 package com.kuku9.goods.domain.user.controller;
 
+import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
+import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
 import com.kuku9.goods.domain.user.dto.response.UserResponse;
 import com.kuku9.goods.domain.user.service.UserService;
@@ -60,6 +62,18 @@ public class UserController {
         userService.modifyPassword(request, userDetails.getUser());
 
         return ResponseEntity.created(URI.create("/api/v1/auth/login")).build();
+    }
+
+
+    @PostMapping("/seller-applications")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<Void> registerSeller(
+            @RequestBody RegisterSellerRequest request,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ){
+        Seller seller =userService.registerSeller(request, userDetails.getUser());
+
+        return ResponseEntity.created(URI.create("/api/v1/sellers/" + seller.getDomainName())).build();
     }
 
 

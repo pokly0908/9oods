@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class ProductRepositoryImpl implements ProductRepository {
 
-  private final ProductJpaRepository productJpaRepository;
+    private final ProductJpaRepository productJpaRepository;
 
-  @Override
-  public void save(Product product) {
-    productJpaRepository.save(product);
-  }
+    @Override
+    public void save(Product product) {
+        productJpaRepository.save(product);
+    }
 }

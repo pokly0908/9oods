@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EventTitleResponse {
 
-  private String title;
+    private String title;
 
 }

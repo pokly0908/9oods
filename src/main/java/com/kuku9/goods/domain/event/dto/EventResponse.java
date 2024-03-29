@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EventResponse {
 
-  private Long id;
-  private String title;
-  private String content;
-  private String url;
+    private Long id;
+    private String title;
+    private String content;
+    private String url;
 
 }

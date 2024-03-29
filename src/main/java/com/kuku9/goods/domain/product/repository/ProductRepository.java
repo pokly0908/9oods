@@ -4,6 +4,6 @@ import com.kuku9.goods.domain.product.entity.Product;
 
 public interface ProductRepository {
 
-  void save(Product product);
+    void save(Product product);
 
 }

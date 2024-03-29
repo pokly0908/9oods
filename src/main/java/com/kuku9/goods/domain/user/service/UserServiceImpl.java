@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public void signup(UserSignupRequest request){
         checkIfUsernameAlreadyExists(request.getUsername());
-        checkIfEmailAlreadyExists(request.getEmail());
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         UserRoleEnum roleEnum = UserRoleEnum.USER;
         String adminCodeValue = null;
@@ -54,12 +53,6 @@ public class UserServiceImpl implements UserService{
     private void checkIfAdminCodeEqual(String requestAdminCode) throws InvalidAdimCodeException {
         if(!requestAdminCode.equals(adminCode)){
             throw new InvalidAdimCodeException(INVALID_ADMIN_CODE);
-        }
-    }
-
-    private void checkIfEmailAlreadyExists(String email) {
-        if(userRepository.existsByEmail(email)){
-            throw new DuplicatedException(DUPLICATED_EMAIL);
         }
     }
 

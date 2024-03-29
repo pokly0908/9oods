@@ -3,6 +3,7 @@ package com.kuku9.goods.domain.user.service;
 
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
 import com.kuku9.goods.domain.user.entity.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +16,7 @@ public interface UserService {
 
     /**
      * 유저이름에 해당하는 유저 가져오기
-     * @param username 유저 이름
+     * @param username 유저아이디, 유저이메일
      * @return User 유저
      */
     User findByUsername(String username);

@@ -1,9 +1,11 @@
 package com.kuku9.goods.domain.user.entity;
 
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
-import com.kuku9.goods.global.common.entity.BaseEntity;
 
+
+import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -20,16 +22,13 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @Comment("사용자가 로그인할때 쓸 id명")
+    @Comment("사용자가 로그인할때 쓸 id명, 이메일")
+    @Email
     private String username;
 
     @Column(nullable = false)
     @Comment("사용자 실명")
-    private String name;
-
-    @Column(nullable = false, unique = true)
-    @Comment("이메일")
-    private String email;
+    private String realName;
 
     @Column(nullable = false)
     @Comment("비밀번호")
@@ -52,8 +51,7 @@ public class User extends BaseEntity {
             String adminCodeValue
     ){
         this.username = request.getUsername();
-        this.name = request.getName();
-        this.email = request.getEmail();
+        this.realName = request.getRealName();
         this.password = encodedPassword;
         this.role = role;
         this.adminCode = adminCodeValue;

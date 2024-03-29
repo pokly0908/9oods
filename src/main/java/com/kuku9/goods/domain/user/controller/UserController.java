@@ -65,7 +65,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/seller-applications")
+    @PostMapping("/seller-application")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> registerSeller(
             @RequestBody RegisterSellerRequest request,

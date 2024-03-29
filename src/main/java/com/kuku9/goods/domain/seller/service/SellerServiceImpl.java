@@ -12,16 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SellerServiceImpl implements SellerService {
 
-  private final SellerRepository sellerRepository;
-  private final ProductRepository productRepository;
+    private final SellerRepository sellerRepository;
+    private final ProductRepository productRepository;
 
 
-  @Override
-  @Transactional
-  public void createProduct(ProductRegistRequestDto requestDto) {
-    Product product = new Product(requestDto);
+    @Override
+    @Transactional
+    public void createProduct(ProductRegistRequestDto requestDto) {
+        Product product = new Product(requestDto);
 
-    productRepository.save(product);
-  }
+        productRepository.save(product);
+    }
 
 }

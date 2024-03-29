@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/sellers")
 public class SellerController {
 
-  private final SellerService sellerService;
+    private final SellerService sellerService;
 
-  @PostMapping("/products")
-  public String createProduct(
-      @RequestBody ProductRegistRequestDto requestDto) {
-    sellerService.createProduct(requestDto);
+    @PostMapping("/products")
+    public String createProduct(
+            @RequestBody ProductRegistRequestDto requestDto) {
+        sellerService.createProduct(requestDto);
 
-    return "상품 생성";
-  }
+        return "상품 생성";
+    }
 
 }

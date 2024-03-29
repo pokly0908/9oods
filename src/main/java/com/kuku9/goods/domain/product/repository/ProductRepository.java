@@ -8,7 +8,7 @@ import org.springframework.data.domain.Slice;
 
 public interface ProductRepository {
 
-  void save(Product product);
+    void save(Product product);
 
   Optional<Product> findById(Long productId);
 

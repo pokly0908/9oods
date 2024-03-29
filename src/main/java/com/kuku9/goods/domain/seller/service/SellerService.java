@@ -4,5 +4,5 @@ import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
 
 public interface SellerService {
 
-  void createProduct(ProductRegistRequestDto requestDto);
+    void createProduct(ProductRegistRequestDto requestDto);
 }

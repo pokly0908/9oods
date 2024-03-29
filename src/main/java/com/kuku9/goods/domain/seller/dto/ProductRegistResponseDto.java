@@ -3,7 +3,7 @@ package com.kuku9.goods.domain.seller.dto;
 import lombok.Getter;
 
 @Getter
-public class SellerRequestDto {
+public class ProductRegistResponseDto {
 
   private String productName;
   private String productDescription;

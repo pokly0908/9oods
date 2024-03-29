@@ -1,8 +1,7 @@
 package com.kuku9.goods.domain.seller.repository;
 
-import com.kuku9.goods.domain.seller.entity.Seller;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
 
-public interface SellerRepository extends JpaRepository<Seller, Long> {
+public interface SellerRepository {
 
 }

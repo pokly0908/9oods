@@ -1,13 +1,8 @@
 package com.kuku9.goods.domain.seller.service;
 
-import com.kuku9.goods.domain.seller.repository.SellerRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
 
-@Service
-@RequiredArgsConstructor
-public class SellerService {
+public interface SellerService {
 
-  private final SellerRepository sellerRepository;
-
+  void createProduct(ProductRegistRequestDto requestDto);
 }

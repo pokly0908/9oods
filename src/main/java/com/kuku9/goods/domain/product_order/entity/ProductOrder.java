@@ -1,6 +1,6 @@
 package com.kuku9.goods.domain.order.entity;
 
-import com.kuku9.goods.domain.order_product.entity.OrderProduct;
+import com.kuku9.goods.domain.cart.entity.Cart;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,21 +19,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "product_order")
-public class ProductOrder {
+public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
 //    @ManyToOne
 //    private User user;
 
-    @OneToMany
-    private List<OrderProduct> carts = new ArrayList<>();
+  @OneToMany
+  private List<Cart> carts = new ArrayList<>();
 
-    @Column
-    private String status;
-
+  @Column
+  private String status;
 
 
 }

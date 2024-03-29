@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface EventRepository {
 
-	Event save(Event event);
+  Event save(Event event);
 
-	Event findById(Long eventId);
+  Event findById(Long eventId);
 
-	EventResponse getEvent(Long eventId);
+  EventResponse getEvent(Long eventId);
 
-	List<EventTitleResponse> getEventTitles();
+  List<EventTitleResponse> getEventTitles();
 
-	void delete(Event event);
+  void delete(Event event);
 }

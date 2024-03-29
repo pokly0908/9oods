@@ -26,7 +26,6 @@ public class AuthController {
         String token = authService.login(request);
         jwtUtil.accessTokenSetHeader(token, response);
 
-
         return ResponseEntity.ok().build();
 
     }

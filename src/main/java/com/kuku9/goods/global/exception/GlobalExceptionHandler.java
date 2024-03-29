@@ -12,6 +12,7 @@ import java.util.NoSuchElementException;
 @Slf4j(topic = "예외 핸들링")
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     public static final String INTERNAL_ERROR_500 = "서버 내부 오류가 발생했습니다. / Please Contact Admin";
 
     @ExceptionHandler(Exception.class)

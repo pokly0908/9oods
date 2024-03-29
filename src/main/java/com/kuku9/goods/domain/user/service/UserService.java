@@ -39,17 +39,19 @@ public interface UserService {
 
     /**
      * 유저 정보 조회
+     *
      * @param userId 조회할 유저 아이디
-     * @param user 유저
+     * @param user   유저
      * @return user 정보
      * @throws AccessDeniedException
      */
     UserResponse getUserInfo(Long userId, User user) throws AccessDeniedException;
 
     /**
-     *  셀러등록
+     * 셀러등록
+     *
      * @param request 셀러 등록 정보
-     * @param user 셀러등록할 유저
+     * @param user    셀러등록할 유저
      * @return 셀러
      */
     Seller registerSeller(RegisterSellerRequest request, User user);

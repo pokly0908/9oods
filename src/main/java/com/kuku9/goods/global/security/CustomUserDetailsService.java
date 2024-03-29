@@ -1,6 +1,7 @@
 package com.kuku9.goods.global.security;
 
 import com.kuku9.goods.domain.user.entity.User;
+
 import com.kuku9.goods.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

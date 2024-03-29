@@ -1,5 +1,6 @@
 package com.kuku9.goods.domain.seller.entity;
 
+import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.common.entity.BaseEntity;
@@ -9,6 +10,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "seller", uniqueConstraints = {
@@ -45,9 +49,15 @@ public class Seller extends BaseEntity {
     @Comment("판매자 문의 전화번호")
     private String phoneNumber;
 
+    @Column
+    private String status;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "seller")
+    private List<Product> products = new ArrayList<>();
 
 
     public Seller(RegisterSellerRequest request, User user) {
@@ -62,4 +72,6 @@ public class Seller extends BaseEntity {
     public static Seller from(RegisterSellerRequest request, User user) {
         return new Seller(request, user);
     }
+
+
 }

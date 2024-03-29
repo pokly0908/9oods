@@ -1,5 +1,6 @@
 package com.kuku9.goods.domain.product.entity;
 
+import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,5 +32,9 @@ public class Product {
     @Column
     private String status;
 
-
+    public Product(ProductRegistRequestDto requestDto) {
+        this.name = requestDto.getProductName();
+        this.description = requestDto.getProductDescription();
+        this.price = requestDto.getProductPrice();
+    }
 }

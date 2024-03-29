@@ -19,19 +19,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewImage {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-	@Column
-	private Double position;
+  @Column
+  private Double position;
 
-	@ManyToOne
-	@JoinColumn(name = "review_id")
-	private Review review;
+  @ManyToOne
+  @JoinColumn(name = "review_id")
+  private Review review;
 
-	@OneToOne
-	@JoinColumn(name = "file_id")
-	private File file;
+  @OneToOne
+  @JoinColumn(name = "file_id")
+  private File file;
 
 }

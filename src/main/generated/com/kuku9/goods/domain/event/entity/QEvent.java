@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -18,37 +17,37 @@ public class QEvent extends EntityPathBase<Event> {
 
     private static final long serialVersionUID = 1398106655L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QEvent event = new QEvent("event");
+
+    public final com.kuku9.goods.global.common.entity.QBaseEntity _super = new com.kuku9.goods.global.common.entity.QBaseEntity(this);
 
     public final StringPath content = createString("content");
 
-    public final com.kuku9.goods.domain.file.entity.QFile file;
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
+
+    public final NumberPath<Long> fileId = createNumber("fileId", Long.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
     public final StringPath title = createString("title");
 
     public QEvent(String variable) {
-        this(Event.class, forVariable(variable), INITS);
+        super(Event.class, forVariable(variable));
     }
 
     public QEvent(Path<? extends Event> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QEvent(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QEvent(PathMetadata metadata, PathInits inits) {
-        this(Event.class, metadata, inits);
-    }
-
-    public QEvent(Class<? extends Event> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.file = inits.isInitialized("file") ? new com.kuku9.goods.domain.file.entity.QFile(forProperty("file")) : null;
+        super(Event.class, metadata);
     }
 
 }

@@ -29,16 +29,14 @@ public class QUser extends EntityPathBase<User> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
 
-    public final StringPath email = createString("email");
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
-    public final StringPath name = createString("name");
-
     public final StringPath password = createString("password");
+
+    public final StringPath realName = createString("realName");
 
     public final EnumPath<UserRoleEnum> role = createEnum("role", UserRoleEnum.class);
 

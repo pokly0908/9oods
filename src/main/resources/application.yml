@@ -11,9 +11,9 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:mysql://localhost:3305/kukuku
+    url: jdbc:mysql://localhost:3306/goods
     username: root
-    password: 1234567@
+    password: namji
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

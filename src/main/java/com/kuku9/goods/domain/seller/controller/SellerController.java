@@ -16,7 +16,7 @@ public class SellerController {
   private final SellerService sellerService;
 
   @PostMapping("/products")
-  public String createProduct (
+  public String createProduct(
       @RequestBody ProductRegistRequestDto requestDto) {
     sellerService.createProduct(requestDto);
 

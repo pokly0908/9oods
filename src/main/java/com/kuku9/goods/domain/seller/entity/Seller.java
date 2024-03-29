@@ -45,9 +45,11 @@ public class Seller extends BaseEntity {
   private String status;
 
   @OneToOne
+  @JoinColumn(name = "userId")
   private User user;
 
   @OneToMany(mappedBy = "seller")
   private List<Product> products = new ArrayList<>();
+
 
 }

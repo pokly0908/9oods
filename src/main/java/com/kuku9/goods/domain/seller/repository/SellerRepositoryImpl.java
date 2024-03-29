@@ -5,10 +5,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class SellerRepositoryImpl implements SellerRepository{
+public class SellerRepositoryImpl implements SellerRepository {
 
   private final SellerJpaRepository sellerJpaRepository;
-
 
 
 }

@@ -18,7 +18,7 @@ public class SellerServiceImpl implements SellerService {
 
   @Override
   @Transactional
-  public void createProduct (ProductRegistRequestDto requestDto) {
+  public void createProduct(ProductRegistRequestDto requestDto) {
     Product product = new Product(requestDto);
 
     productRepository.save(product);

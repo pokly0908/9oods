@@ -14,10 +14,10 @@ import org.springframework.test.context.ActiveProfiles;
 public class EventTest {
 
 	@Autowired
-	FileRepository fileRepository;
+  FileRepository fileRepository;
 
 	@Autowired
-	EventServiceImpl eventServiceImpl;
+  EventServiceImpl eventServiceImpl;
 
 	@DisplayName("file 테스트")
 	@Test

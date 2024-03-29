@@ -8,8 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,28 +18,28 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    private Seller seller;
+  @ManyToOne
+  private Seller seller;
 
-    @Column
-    private String name;
+  @Column
+  private String name;
 
-    @Column
-    private String description;
+  @Column
+  private String description;
 
-    @Column
-    private int price;
+  @Column
+  private int price;
 
-    @Column
-    private String status;
+  @Column
+  private String status;
 
-    public Product(ProductRegistRequestDto requestDto) {
-        this.name = requestDto.getProductName();
-        this.description = requestDto.getProductDescription();
-        this.price = requestDto.getProductPrice();
-    }
+  public Product(ProductRegistRequestDto requestDto) {
+    this.name = requestDto.getProductName();
+    this.description = requestDto.getProductDescription();
+    this.price = requestDto.getProductPrice();
+  }
 }

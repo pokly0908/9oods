@@ -18,15 +18,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Comment {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-	@Column
-	private String content;
+  @Column
+  private String content;
 
-	@ManyToOne
-	@JoinColumn(name = "review_id")
-	private Review review;
+  @ManyToOne
+  @JoinColumn(name = "review_id")
+  private Review review;
 
 }

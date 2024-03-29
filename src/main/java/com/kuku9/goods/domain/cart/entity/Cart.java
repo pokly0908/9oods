@@ -19,22 +19,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Cart {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "product_id")
-    private Product product;
+  @ManyToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "product_id")
+  private Product product;
 //
 //    @ManyToOne
 //    @JoinColumn(name = "user_id")
 //    private User user;
 
-    @Column
-    private int quantity;
+  @Column
+  private int quantity;
 
-    @Column
-    private boolean status;
+  @Column
+  private boolean status;
 
 }

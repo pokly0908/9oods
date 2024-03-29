@@ -26,36 +26,33 @@ public class OrderProductController {
 
     private final OrderProductService orderProductService;
 
-    @PostMapping
-    public ResponseEntity<String> createCart(//@AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestBody OrderProductRequest requestDto) {
-        User user = new User("pokly0908", "유경진", "pokly0908@naver.com", "accel@0908", "", USER);
-        return ResponseEntity.created(URI.create("/api/v1/carts"))
-            .body(orderProductService.createCart(user, requestDto));
-    }
-
-    @GetMapping
-    public ResponseEntity<OrderProductsResponse> getCart() {
-        User user = new User("pokly0908", "유경진", "pokly0908@naver.com", "accel@0908", "", USER);
-        return ResponseEntity.ok()
-            .body(orderProductService.getCart(user));
-    }
-
-    @PutMapping("/{cartId}")
-    public ResponseEntity<String> updateCart(@PathVariable Long cartId,
-        //@AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestBody OrderProductRequest request) {
-        User user = new User("pokly0908", "유경진", "pokly0908@naver.com", "accel@0908", "", USER);
-        orderProductService.updateCart(cartId, request, user);
-        return ResponseEntity.ok().body("장바구니가 수정되었습니다.");
-    }
-
-    @DeleteMapping("/{cartId}")
-    public ResponseEntity<String> deleteCart(@PathVariable Long cartId)//, @AuthenticationPrincipal UserDetailsImpl userDetails)
-        {
-        User user = new User("pokly0908", "유경진", "pokly0908@naver.com", "accel@0908", "", USER);
-        orderProductService.deleteCart(cartId, user);
-        return ResponseEntity.notFound().build();
-    }
+//    @PostMapping
+//    public ResponseEntity<String> createCart(//@AuthenticationPrincipal UserDetailsImpl userDetails,
+//        @RequestBody OrderProductRequest requestDto) {
+//        return ResponseEntity.created(URI.create("/api/v1/carts"))
+//            .body(orderProductService.createCart(user, requestDto));
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<OrderProductsResponse> getCart() {
+//        return ResponseEntity.ok()
+//            .body(orderProductService.getCart(user));
+//    }
+//
+//    @PutMapping("/{cartId}")
+//    public ResponseEntity<String> updateCart(@PathVariable Long cartId,
+//        //@AuthenticationPrincipal UserDetailsImpl userDetails,
+//        @RequestBody OrderProductRequest request) {
+//        orderProductService.updateCart(cartId, request, user);
+//        return ResponseEntity.ok().body("장바구니가 수정되었습니다.");
+//    }
+//
+//    @DeleteMapping("/{cartId}")
+//    public ResponseEntity<String> deleteCart(@PathVariable Long cartId)//, @AuthenticationPrincipal UserDetailsImpl userDetails)
+//        {
+//
+//        orderProductService.deleteCart(cartId, user);
+//        return ResponseEntity.notFound().build();
+//    }
 }
 

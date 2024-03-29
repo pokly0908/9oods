@@ -1,6 +1,9 @@
 package com.kuku9.goods.domain.product.controller;
 
+import com.kuku9.goods.domain.product.dto.ProductResponse;
+import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.service.ProductService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,21 +21,20 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/{productId}")
-    public ResponseEntity<String> getProduct(@PathVariable String productId){
+    public ResponseEntity<Product> getProduct(@PathVariable Long productId){
         return ResponseEntity.status(200).body(productService.getProduct(productId));
     }
     @GetMapping
-    public void getAllProduct(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<Product>> getAllProduct(@RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size){
         Pageable pageable = PageRequest.of(page, size);
-
+        return ResponseEntity.status(200).body(productService.getAllProduct(pageable).getContent());
     }
     @GetMapping("/{sellerId}")
-    public void getSellerProduct(@PathVariable String sellerId, @RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<Product>> getSellerProduct(@PathVariable Long sellerId, @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size){
         Pageable pageable = PageRequest.of(page, size);
-
-
+        return productService.getSellerProduct(sellerId, pageable);
     }
 
 }

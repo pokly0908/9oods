@@ -1,9 +1,7 @@
 package com.kuku9.goods.domain.user.entity;
 
+import com.kuku9.goods.common.entity.SecureBaseEntity;
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
-
-
-import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -15,13 +13,13 @@ import org.hibernate.annotations.Comment;
 @Getter
 @Table(name = "user")
 @NoArgsConstructor
-public class User extends BaseEntity {
+public class User extends SecureBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     @Comment("사용자가 로그인할때 쓸 id명, 이메일")
     @Email
     private String username;
@@ -49,7 +47,7 @@ public class User extends BaseEntity {
             String encodedPassword,
             UserRoleEnum role,
             String adminCodeValue
-    ){
+    ) {
         this.username = request.getUsername();
         this.realName = request.getRealName();
         this.password = encodedPassword;
@@ -63,8 +61,11 @@ public class User extends BaseEntity {
             String encodedPassword,
             UserRoleEnum role,
             String adminCodeValue
-    ){
-      return new User(request, encodedPassword, role, adminCodeValue);
+    ) {
+        return new User(request, encodedPassword, role, adminCodeValue);
     }
 
+    public void modifyPassword(String encodedNewPassword) {
+        this.password = encodedNewPassword;
+    }
 }

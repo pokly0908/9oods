@@ -72,4 +72,8 @@ public class User extends BaseEntity {
     public void modifyPassword(String encodedNewPassword) {
         this.password = encodedNewPassword;
     }
+
+    public void updateRole(UserRoleEnum userRoleEnum) {
+        this.role = userRoleEnum;
+    }
 }

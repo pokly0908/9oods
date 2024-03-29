@@ -1,6 +1,6 @@
 package com.kuku9.goods.domain.order.entity;
 
-import com.kuku9.goods.domain.cart.entity.Cart;
+import com.kuku9.goods.domain.order_product.entity.OrderProduct;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +11,6 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,7 +29,7 @@ public class ProductOrder {
 //    private User user;
 
     @OneToMany
-    private List<Cart> carts = new ArrayList<>();
+    private List<OrderProduct> carts = new ArrayList<>();
 
     @Column
     private String status;

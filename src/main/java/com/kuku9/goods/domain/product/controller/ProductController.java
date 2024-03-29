@@ -17,22 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
     private final ProductService productService;
 
-//    @GetMapping("/{productId}")
-//    public ResponseEntity<String> getProduct(@PathVariable String productId){
-//        return ResponseEntity.status(200).body(productService.getProduct(productId));
-//    }
-//    @GetMapping
-//    public void getAllProduct(@RequestParam(defaultValue = "0") int page,
-//        @RequestParam(defaultValue = "20") int size){
-//        Pageable pageable = PageRequest.of(page, size);
-//
-//    }
-//    @GetMapping("/{sellerId}")
-//    public void getSellerProduct(@PathVariable String sellerId, @RequestParam(defaultValue = "0") int page,
-//        @RequestParam(defaultValue = "20") int size){
-//        Pageable pageable = PageRequest.of(page, size);
-//
-//
-//    }
+    @GetMapping("/{productId}")
+    public ResponseEntity<String> getProduct(@PathVariable String productId){
+        return ResponseEntity.status(200).body(productService.getProduct(productId));
+    }
+    @GetMapping
+    public void getAllProduct(@RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size){
+        Pageable pageable = PageRequest.of(page, size);
+
+    }
+    @GetMapping("/{sellerId}")
+    public void getSellerProduct(@PathVariable String sellerId, @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size){
+        Pageable pageable = PageRequest.of(page, size);
+
+
+    }
 
 }

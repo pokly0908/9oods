@@ -1,16 +1,16 @@
-package com.kuku9.goods.domain.cart.dto;
+package com.kuku9.goods.domain.order_product.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class CartRequest {
+public class OrderProductRequest {
 
     private Long productId;
     private int quantity;
 
-    public CartRequest(Long productId, int quantity) {
+    public OrderProductRequest(Long productId, int quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }

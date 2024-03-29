@@ -2,6 +2,7 @@ package com.kuku9.goods.domain.user.controller;
 
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
+import com.kuku9.goods.domain.user.dto.response.UserResponse;
 import com.kuku9.goods.domain.user.service.UserService;
 import com.kuku9.goods.security.CustomUserDetails;
 import jakarta.validation.Valid;
@@ -15,6 +16,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.nio.file.AccessDeniedException;
 
 @Slf4j
 @RestController
@@ -36,6 +38,17 @@ public class UserController {
         userService.signup(request);
 
         return ResponseEntity.created(URI.create("/api/v1/auth/login")).build();
+    }
+
+    @GetMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_SELLER')")
+    public ResponseEntity<UserResponse> getUserInfo(
+            @PathVariable Long userId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) throws AccessDeniedException {
+        UserResponse userResponse = userService.getUserInfo(userId, userDetails.getUser());
+
+        return ResponseEntity.ok(userResponse);
     }
 
     @PatchMapping("/password")

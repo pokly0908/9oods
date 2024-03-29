@@ -3,6 +3,7 @@ package com.kuku9.goods.global.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -51,6 +52,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> noSuchElementException(NoSuchElementException ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity.badRequest()
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> AccessDeniedException(AccessDeniedException ex) {
         log.error(ex.getMessage());
         return ResponseEntity.badRequest()
                 .body(ex.getMessage());

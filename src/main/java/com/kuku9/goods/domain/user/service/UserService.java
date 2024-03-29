@@ -3,8 +3,11 @@ package com.kuku9.goods.domain.user.service;
 
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
+import com.kuku9.goods.domain.user.dto.response.UserResponse;
 import com.kuku9.goods.domain.user.entity.User;
 import org.springframework.stereotype.Service;
+
+import java.nio.file.AccessDeniedException;
 
 @Service
 public interface UserService {
@@ -33,4 +36,5 @@ public interface UserService {
     void modifyPassword(ModifyPasswordRequest request, User user);
 
 
+    UserResponse getUserInfo(Long userId, User user) throws AccessDeniedException;
 }

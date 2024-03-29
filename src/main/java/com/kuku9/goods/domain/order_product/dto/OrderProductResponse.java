@@ -13,10 +13,4 @@ public class OrderProductResponse {
     private Product product;
     private Integer quantity;
 
-
-    public OrderProductResponse(OrderProduct cart) {
-        this.id = cart.getId();
-        this.product = cart.getProduct();
-        this.quantity = cart.getQuantity();
-    }
 }

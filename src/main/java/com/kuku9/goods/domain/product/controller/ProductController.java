@@ -30,11 +30,11 @@ public class ProductController {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.status(200).body(productService.getAllProduct(pageable).getContent());
     }
-    @GetMapping("/{sellerId}")
+    @GetMapping("/seller/{sellerId}")
     public ResponseEntity<List<Product>> getSellerProduct(@PathVariable Long sellerId, @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size){
         Pageable pageable = PageRequest.of(page, size);
-        return productService.getSellerProduct(sellerId, pageable);
+        return ResponseEntity.status(200).body(productService.getSellerProduct(sellerId, pageable).getContent());
     }
 
 }

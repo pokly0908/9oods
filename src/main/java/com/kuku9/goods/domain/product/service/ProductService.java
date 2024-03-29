@@ -22,7 +22,7 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
-    public ResponseEntity<List<Product>> getSellerProduct(Long sellerId, Pageable pageable) {
-        return ResponseEntity.status(200).body(productRepository.findBySellerId(sellerId, pageable).getContent());
+    public Page<Product> getSellerProduct(Long sellerId, Pageable pageable) {
+        return productRepository.findBySellerId(sellerId, pageable);
     }
 }

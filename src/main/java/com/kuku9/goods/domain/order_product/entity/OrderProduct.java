@@ -1,6 +1,7 @@
-package com.kuku9.goods.domain.cart.entity;
+package com.kuku9.goods.domain.order_product.entity;
 
 import com.kuku9.goods.domain.product.entity.Product;
+import com.kuku9.goods.domain.user.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cart {
+public class OrderProduct {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +27,10 @@ public class Cart {
   @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "product_id")
   private Product product;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
   @Column
   private int quantity;

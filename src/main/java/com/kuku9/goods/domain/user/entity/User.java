@@ -1,7 +1,7 @@
 package com.kuku9.goods.domain.user.entity;
 
-import com.kuku9.goods.common.entity.SecureBaseEntity;
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
+import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE user SET deleted_at=CURRENT_TIMESTAMP where id=?")
 @SQLRestriction("deleted_at IS NULL")
-public class User extends SecureBaseEntity {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

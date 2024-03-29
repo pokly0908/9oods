@@ -4,9 +4,7 @@ import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.domain.user.entity.UserRoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Value;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -14,7 +12,7 @@ import java.time.LocalDateTime;
  */
 @AllArgsConstructor
 @Getter
-public class UserResponse{
+public class UserResponse {
 
     String realName;
 

@@ -1,6 +1,6 @@
-package com.kuku9.goods.security;
+package com.kuku9.goods.global.security;
 
-import com.kuku9.goods.security.jwt.JwtUtil;
+import com.kuku9.goods.global.security.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

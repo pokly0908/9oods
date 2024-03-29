@@ -1,8 +1,8 @@
-package com.kuku9.goods.config;
+package com.kuku9.goods.global.config;
 
-import com.kuku9.goods.security.CustomUserDetailsService;
-import com.kuku9.goods.security.JwtAuthFilter;
-import com.kuku9.goods.security.jwt.JwtUtil;
+import com.kuku9.goods.global.security.CustomUserDetailsService;
+import com.kuku9.goods.global.security.JwtAuthFilter;
+import com.kuku9.goods.global.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

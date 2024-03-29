@@ -1,4 +1,4 @@
-package com.kuku9.goods.security.jwt;
+package com.kuku9.goods.global.security.jwt;
 
 import com.kuku9.goods.domain.user.entity.UserRoleEnum;
 import io.jsonwebtoken.*;

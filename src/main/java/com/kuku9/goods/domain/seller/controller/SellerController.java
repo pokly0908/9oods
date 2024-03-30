@@ -1,10 +1,8 @@
 package com.kuku9.goods.domain.seller.controller;
 
 import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
-import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.service.SellerService;
 import com.kuku9.goods.global.security.CustomUserDetails;
-import com.kuku9.goods.global.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,24 +17,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/sellers")
 public class SellerController {
 
-  private final SellerService sellerService;
+    private final SellerService sellerService;
 
-  @PostMapping("/products")
-  public String createProduct(
-      @RequestBody ProductRegistRequestDto requestDto,
-      @AuthenticationPrincipal CustomUserDetails userDetails) {
-    sellerService.createProduct(requestDto, userDetails);
+    @PostMapping("/products")
+    public String createProduct(
+        @RequestBody ProductRegistRequestDto requestDto,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        sellerService.createProduct(requestDto, userDetails);
 
-    return "상품 생성";
-  }
+        return "상품 생성";
+    }
 
-  @PatchMapping("/products/{productsId}/status")
-  public String orderProductStatus (
-      @PathVariable Long productsId,
-      @AuthenticationPrincipal CustomUserDetails userDetails) {
-    sellerService.orderProductStatus(productsId, userDetails);
+    @PatchMapping("/products/{productsId}/status")
+    public String orderProductStatus(
+        @PathVariable Long productsId,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        sellerService.orderProductStatus(productsId, userDetails);
 
-    return "물품을 배송해야 합니다.";
-  }
+        return "물품을 배송해야 합니다.";
+    }
 
 }

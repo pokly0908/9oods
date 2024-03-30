@@ -15,31 +15,30 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SellerServiceImpl implements SellerService {
 
-  private final SellerRepository sellerRepository;
-  private final ProductRepository productRepository;
+    private final SellerRepository sellerRepository;
+    private final ProductRepository productRepository;
 
+    @Override
+    @Transactional
+    public void createProduct(ProductRegistRequestDto requestDto, CustomUserDetails userDetails) {
+        if (!userDetails.getUser().getRole().equals(UserRoleEnum.SELLER)) {
+            throw new IllegalArgumentException("셀러만 상품 등록이 가능합니다.");
+        }
+        Product product = new Product(requestDto);
 
-  @Override
-  @Transactional
-  public void createProduct(ProductRegistRequestDto requestDto, CustomUserDetails userDetails) {
-    if (!userDetails.getUser().getRole().equals(UserRoleEnum.SELLER)) {
-      throw new IllegalArgumentException("셀러만 상품 등록이 가능합니다.");
+        productRepository.save(product);
     }
-    Product product = new Product(requestDto);
 
-    productRepository.save(product);
-  }
+    @Override
+    @Transactional
+    public void orderProductStatus(Long productId, CustomUserDetails userDetails) {
+        if (!userDetails.getUser().getRole().equals(UserRoleEnum.SELLER)) {
+            throw new IllegalArgumentException("셀러만 상품 등록이 가능합니다.");
+        }
+        Seller seller = sellerRepository.findByUserId(userDetails.getUser().getId());
+        Product product = productRepository.findByIdAndSellerId(productId, seller.getId());
 
-  @Override
-  @Transactional
-  public void orderProductStatus(Long productId, CustomUserDetails userDetails) {
-    if (!userDetails.getUser().getRole().equals(UserRoleEnum.SELLER)) {
-      throw new IllegalArgumentException("셀러만 상품 등록이 가능합니다.");
+        product.updateOrderStatus(product.getStatus());
     }
-    Seller seller = sellerRepository.findByUserId(userDetails.getUser().getId());
-    Product product = productRepository.findByIdAndSellerId(productId, seller.getId());
-
-    product.updateOrderStatus(product.getStatus());
-  }
 
 }

@@ -14,42 +14,42 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
-  private final EventRepository eventRepository;
-  private final FileRepository fileRepository;
+    private final EventRepository eventRepository;
+    private final FileRepository fileRepository;
 
-  @Transactional
-  public Long createEvent(String title, String content, Long fileId) {
+    @Transactional
+    public Long createEvent(String title, String content, Long fileId) {
 
-    Event savedEvent = eventRepository.save(new Event(title, content, fileId));
+        Event savedEvent = eventRepository.save(new Event(title, content, fileId));
 
-    return savedEvent.getId();
-  }
+        return savedEvent.getId();
+    }
 
-  @Transactional
-  public Long updateEvent(Long eventId, String title, String content, Long fileId) {
+    @Transactional
+    public Long updateEvent(Long eventId, String title, String content, Long fileId) {
 
-    Event event = eventRepository.findById(eventId);
-    event.update(title, content, fileId);
+        Event event = eventRepository.findById(eventId);
+        event.update(title, content, fileId);
 
-    return eventId;
-  }
+        return eventId;
+    }
 
-  @Transactional(readOnly = true)
-  public EventResponse getEvent(Long eventId) {
-    return eventRepository.getEvent(eventId);
-  }
+    @Transactional(readOnly = true)
+    public EventResponse getEvent(Long eventId) {
+        return eventRepository.getEvent(eventId);
+    }
 
-  @Transactional(readOnly = true)
-  public List<EventTitleResponse> getEventTitles() {
+    @Transactional(readOnly = true)
+    public List<EventTitleResponse> getEventTitles() {
 
-    return eventRepository.getEventTitles();
-  }
+        return eventRepository.getEventTitles();
+    }
 
-  @Transactional
-  public void deleteEvent(Long eventId) {
+    @Transactional
+    public void deleteEvent(Long eventId) {
 
-    Event event = eventRepository.findById(eventId);
-    fileRepository.delete(fileRepository.findById(event.getFileId()));
-    eventRepository.delete(event);
-  }
+        Event event = eventRepository.findById(eventId);
+        fileRepository.delete(fileRepository.findById(event.getFileId()));
+        eventRepository.delete(event);
+    }
 }

@@ -12,44 +12,42 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 public class Product {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "sellerId", nullable = false)
-  private Seller seller;
+    @ManyToOne
+    @JoinColumn(name = "sellerId", nullable = false)
+    private Seller seller;
 
-  @Column
-  private String name;
+    @Column
+    private String name;
 
-  @Column
-  private String description;
+    @Column
+    private String description;
 
-  @Column
-  private int price;
+    @Column
+    private int price;
 
-  @Column
-  private Boolean status = true;
+    @Column
+    private Boolean status = true;
 
-  public Product(ProductRegistRequestDto requestDto) {
-    this.name = requestDto.getProductName();
-    this.description = requestDto.getProductDescription();
-    this.price = requestDto.getProductPrice();
-  }
-
-  public void updateOrderStatus(Boolean status) {
-    if (status) {
-      this.status = false;
+    public Product(ProductRegistRequestDto requestDto) {
+        this.name = requestDto.getProductName();
+        this.description = requestDto.getProductDescription();
+        this.price = requestDto.getProductPrice();
     }
-  }
+
+    public void updateOrderStatus(Boolean status) {
+        if (status) {
+            this.status = false;
+        }
+    }
 }

@@ -15,40 +15,40 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class EventRepositoryImpl implements EventRepository {
 
-  private final EventJpaRepository eventJpaRepository;
-  private final JPAQueryFactory jpaQueryFactory;
+    private final EventJpaRepository eventJpaRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
-  public Event save(Event event) {
-    return eventJpaRepository.save(event);
-  }
+    public Event save(Event event) {
+        return eventJpaRepository.save(event);
+    }
 
-  public void delete(Event event) {
-    eventJpaRepository.delete(event);
-  }
+    public void delete(Event event) {
+        eventJpaRepository.delete(event);
+    }
 
-  public Event findById(Long eventId) {
-    return eventJpaRepository.findById(eventId)
-        .orElseThrow(() -> new IllegalArgumentException("해당 이벤트는 존재하지 않습니다."));
-  }
+    public Event findById(Long eventId) {
+        return eventJpaRepository.findById(eventId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 이벤트는 존재하지 않습니다."));
+    }
 
-  public EventResponse getEvent(Long eventId) {
-    List<EventResponse> result = jpaQueryFactory.select(
-            Projections.fields(EventResponse.class, QEvent.event.id, QEvent.event.title,
-                QEvent.event.content, QFile.file.url))
-        .from(QEvent.event)
-        .leftJoin(QFile.file).fetchJoin()
-        .on(QEvent.event.fileId.eq(QFile.file.id))
-        .where(QEvent.event.id.eq(eventId))
-        .fetch();
+    public EventResponse getEvent(Long eventId) {
+        List<EventResponse> result = jpaQueryFactory.select(
+                Projections.fields(EventResponse.class, QEvent.event.id, QEvent.event.title,
+                    QEvent.event.content, QFile.file.url))
+            .from(QEvent.event)
+            .leftJoin(QFile.file).fetchJoin()
+            .on(QEvent.event.fileId.eq(QFile.file.id))
+            .where(QEvent.event.id.eq(eventId))
+            .fetch();
 
-    return result.get(0);
-  }
+        return result.get(0);
+    }
 
-  public List<EventTitleResponse> getEventTitles() {
-    return jpaQueryFactory.select(
-            Projections.fields(EventTitleResponse.class, QEvent.event.title))
-        .from(QEvent.event)
-        .fetch();
-  }
+    public List<EventTitleResponse> getEventTitles() {
+        return jpaQueryFactory.select(
+                Projections.fields(EventTitleResponse.class, QEvent.event.title))
+            .from(QEvent.event)
+            .fetch();
+    }
 
 }

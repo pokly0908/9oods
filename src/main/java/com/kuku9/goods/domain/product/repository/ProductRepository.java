@@ -4,9 +4,9 @@ import com.kuku9.goods.domain.product.entity.Product;
 
 public interface ProductRepository {
 
-  void save(Product product);
+    void save(Product product);
 
-  Product findById(Long productId);
+    Product findById(Long productId);
 
-  Product findByIdAndSellerId(Long productId, Long id);
+    Product findByIdAndSellerId(Long productId, Long id);
 }

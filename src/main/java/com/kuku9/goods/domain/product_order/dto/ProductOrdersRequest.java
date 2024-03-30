@@ -11,6 +11,8 @@ import java.util.List;
 public class ProductOrdersRequest {
     private List<OrderProductRequest> products;
     private String address;
+    private Long productId;
+    private int quantity;
 
     public ProductOrdersRequest(List<OrderProductRequest> products, String address) {
         this.products = products;

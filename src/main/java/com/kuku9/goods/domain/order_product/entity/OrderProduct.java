@@ -1,6 +1,8 @@
 package com.kuku9.goods.domain.order_product.entity;
 
+import com.kuku9.goods.domain.order_product.dto.OrderProductRequest;
 import com.kuku9.goods.domain.product.entity.Product;
+import com.kuku9.goods.domain.product_order.entity.ProductOrder;
 import com.kuku9.goods.domain.user.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,18 +27,20 @@ public class OrderProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "product_order_id")
+    private ProductOrder productOrder;
+
   @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "product_id")
   private Product product;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  private User user;
-
   @Column
   private int quantity;
 
-  @Column
-  private boolean status;
-
+    public OrderProduct(ProductOrder productOrder, Product product, int quantity) {
+        this.productOrder = productOrder;
+        this.product = product;
+        this.quantity = quantity;
+    }
 }

@@ -26,11 +26,19 @@ public class ProductOrder {
   @ManyToOne
   private User user;
 
-  @OneToMany
-  private List<OrderProduct> orderProducts = new ArrayList<>();
+  @Column
+  private String status;
 
-    @Column
-    private String status;
+  @Column
+  private String address;
 
+    public ProductOrder(User user, String address) {
+        this.user = user;
+        this.status = "결제완료";
+        this.address = address;
+    }
 
+    public void updateStatus(String status) {
+        this.status = status;
+    }
 }

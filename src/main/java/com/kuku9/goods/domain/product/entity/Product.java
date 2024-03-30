@@ -7,15 +7,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 public class Product {
 
   @Id
@@ -23,6 +26,7 @@ public class Product {
   private Long id;
 
   @ManyToOne
+  @JoinColumn(name = "sellerId", nullable = false)
   private Seller seller;
 
   @Column
@@ -35,11 +39,17 @@ public class Product {
   private int price;
 
   @Column
-  private String status;
+  private Boolean status = true;
 
   public Product(ProductRegistRequestDto requestDto) {
     this.name = requestDto.getProductName();
     this.description = requestDto.getProductDescription();
     this.price = requestDto.getProductPrice();
+  }
+
+  public void updateOrderStatus(Boolean status) {
+    if (status) {
+      this.status = false;
+    }
   }
 }

@@ -24,7 +24,7 @@ public class QSeller extends EntityPathBase<Seller> {
 
     public final com.kuku9.goods.global.common.entity.QBaseEntity _super = new com.kuku9.goods.global.common.entity.QBaseEntity(this);
 
-    public final StringPath boardName = createString("boardName");
+    public final StringPath brandName = createString("brandName");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
@@ -43,11 +43,9 @@ public class QSeller extends EntityPathBase<Seller> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
-    public final StringPath phone_number = createString("phone_number");
+    public final StringPath phoneNumber = createString("phoneNumber");
 
     public final ListPath<com.kuku9.goods.domain.product.entity.Product, com.kuku9.goods.domain.product.entity.QProduct> products = this.<com.kuku9.goods.domain.product.entity.Product, com.kuku9.goods.domain.product.entity.QProduct>createList("products", com.kuku9.goods.domain.product.entity.Product.class, com.kuku9.goods.domain.product.entity.QProduct.class, PathInits.DIRECT2);
-
-    public final StringPath status = createString("status");
 
     public final com.kuku9.goods.domain.user.entity.QUser user;
 

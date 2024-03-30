@@ -32,7 +32,7 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final com.kuku9.goods.domain.seller.entity.QSeller seller;
 
-    public final StringPath status = createString("status");
+    public final BooleanPath status = createBoolean("status");
 
     public QProduct(String variable) {
         this(Product.class, forVariable(variable), INITS);

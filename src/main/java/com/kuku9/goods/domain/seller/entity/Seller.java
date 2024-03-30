@@ -13,12 +13,16 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table
 @Getter
+@Setter
 @NoArgsConstructor
 public class Seller extends BaseEntity {
 
@@ -27,7 +31,7 @@ public class Seller extends BaseEntity {
   private Long id;
 
   @Column
-  private String boardName;
+  private String brandName;
 
   @Column
   private String domainNmae;
@@ -39,10 +43,7 @@ public class Seller extends BaseEntity {
   private String email;
 
   @Column
-  private String phone_number;
-
-  @Column
-  private String status;
+  private String phoneNumber;
 
   @OneToOne
   @JoinColumn(name = "userId")
@@ -50,6 +51,4 @@ public class Seller extends BaseEntity {
 
   @OneToMany(mappedBy = "seller")
   private List<Product> products = new ArrayList<>();
-
-
 }

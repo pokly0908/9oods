@@ -22,19 +22,19 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long productId) {
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
         return ResponseEntity.status(200).body(productService.getProduct(productId));
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProduct(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<ProductResponse>> getAllProduct(@RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.status(200).body(productService.getAllProduct(pageable).getContent());
     }
 
     @GetMapping("/seller/{sellerId}")
-    public ResponseEntity<List<Product>> getSellerProduct(@PathVariable Long sellerId,
+    public ResponseEntity<List<ProductResponse>> getSellerProduct(@PathVariable Long sellerId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);

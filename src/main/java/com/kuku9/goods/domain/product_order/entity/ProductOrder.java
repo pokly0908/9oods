@@ -23,14 +23,14 @@ public class ProductOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-  @ManyToOne
-  private User user;
+    @ManyToOne
+    private User user;
 
-  @Column
-  private String status;
+    @Column
+    private String status;
 
-  @Column
-  private String address;
+    @Column
+    private String address;
 
     public ProductOrder(User user, String address) {
         this.user = user;

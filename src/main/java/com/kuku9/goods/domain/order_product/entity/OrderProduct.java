@@ -31,12 +31,12 @@ public class OrderProduct {
     @JoinColumn(name = "product_order_id")
     private ProductOrder productOrder;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "product_id")
-  private Product product;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-  @Column
-  private int quantity;
+    @Column
+    private int quantity;
 
     public OrderProduct(ProductOrder productOrder, Product product, int quantity) {
         this.productOrder = productOrder;

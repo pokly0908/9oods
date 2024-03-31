@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class ProductOrdersRequest {
+
     private List<OrderProductRequest> products;
     private String address;
     private Long productId;

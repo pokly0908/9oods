@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class OrderProductRequest {
+
     private Long productId;
     private int quantity;
 

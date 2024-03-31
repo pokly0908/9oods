@@ -15,23 +15,30 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ProductOrderService {
+
     private final ProductOrderRepository productOrderRepository;
     private final OrderProductRepository orderProductRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
     public ProductOrder createOrder(User user, ProductOrdersRequest productOrderRequest) {
-        userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
-        ProductOrder productOrder = productOrderRepository.save(new ProductOrder(user, productOrderRequest.getAddress()));
-        for(int i = 0; i < productOrderRequest.getProducts().size(); i++) {
-            Product product = productRepository.findById(productOrderRequest.getProducts().get(i).getProductId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
-            orderProductRepository.save(new OrderProduct(productOrder, product, productOrderRequest.getProducts().get(i).getQuantity()));
+        userRepository.findById(user.getId())
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        ProductOrder productOrder = productOrderRepository.save(
+            new ProductOrder(user, productOrderRequest.getAddress()));
+        for (int i = 0; i < productOrderRequest.getProducts().size(); i++) {
+            Product product = productRepository.findById(
+                    productOrderRequest.getProducts().get(i).getProductId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+            orderProductRepository.save(new OrderProduct(productOrder, product,
+                productOrderRequest.getProducts().get(i).getQuantity()));
         }
         return productOrder;
     }
 
     public ProductOrder getOrder(User user, Long orderId) {
-        ProductOrder productOrder = productOrderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
+        ProductOrder productOrder = productOrderRepository.findById(orderId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
         if (!productOrder.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("해당 주문에 접근할 수 없습니다.");
         }
@@ -40,7 +47,8 @@ public class ProductOrderService {
 
     //결제 수정권은 누가 가지고 있나요?
     public ProductOrder updateOrder(User user, Long orderId) {
-        ProductOrder productOrder = productOrderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
+        ProductOrder productOrder = productOrderRepository.findById(orderId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
         if (!productOrder.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("해당 주문에 접근할 수 없습니다.");
         }
@@ -49,7 +57,8 @@ public class ProductOrderService {
     }
 
     public void deleteOrder(User user, Long orderId) {
-        ProductOrder productOrder = productOrderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
+        ProductOrder productOrder = productOrderRepository.findById(orderId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
         if (!productOrder.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("해당 주문에 접근할 수 없습니다.");
         }

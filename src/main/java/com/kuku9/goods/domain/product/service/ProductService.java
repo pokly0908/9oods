@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
+
     private final ProductRepository productRepository;
+
     public Product getProduct(Long productId) {
-        return productRepository.findById(productId).orElseThrow(() -> new IllegalAccessError("찾지 못했습니다."));
+        return productRepository.findById(productId)
+            .orElseThrow(() -> new IllegalAccessError("찾지 못했습니다."));
     }
 
     public Page<Product> getAllProduct(Pageable pageable) {

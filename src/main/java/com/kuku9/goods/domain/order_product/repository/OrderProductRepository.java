@@ -5,6 +5,6 @@ import com.kuku9.goods.domain.user.entity.User;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderProductRepository extends JpaRepository<OrderProduct, Long>{
+public interface OrderProductRepository extends JpaRepository<OrderProduct, Long> {
 
 }

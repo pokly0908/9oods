@@ -12,7 +12,7 @@ public class RegisterSellerRequest {
     @NotNull(message = "브랜드 명칭을 꼭 입력해주세요.")
     private String brandName;
 
-    @Pattern(regexp = "^[a-z]{3,12}", message = "도메인 이름은 소문자로 3자이상 12자 이하로 입력해주세요.")
+    @Pattern(regexp = "^[a-z0-9]{3,12}", message = "도메인 이름은 소문자로 3자이상 12자 이하로 입력해주세요.")
     private String domainName;
 
     @NotNull(message = "브랜드 소개글을 200자 이하로 적어주세요.")

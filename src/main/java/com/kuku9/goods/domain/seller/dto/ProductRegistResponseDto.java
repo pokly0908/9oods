@@ -7,6 +7,6 @@ public class ProductRegistResponseDto {
 
     private String productName;
     private String productDescription;
-    private int productPrice;
+    private String productPrice;
 
 }

@@ -1,5 +1,12 @@
 package com.kuku9.goods.domain.user.service;
 
+import static com.kuku9.goods.global.exception.ExceptionStatus.DUPLICATED_SELLER;
+import static com.kuku9.goods.global.exception.ExceptionStatus.DUPLICATED_USERNAME;
+import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_ADMIN_CODE;
+import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_PASSWORD;
+import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_EQUAL_USER_ID;
+import static com.kuku9.goods.global.exception.ExceptionStatus.NO_SUCH_USER;
+
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
@@ -12,27 +19,23 @@ import com.kuku9.goods.domain.user.repository.UserRepository;
 import com.kuku9.goods.global.exception.DuplicatedException;
 import com.kuku9.goods.global.exception.InvalidAdminCodeException;
 import com.kuku9.goods.global.exception.InvalidPasswordException;
+import java.nio.file.AccessDeniedException;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.AccessDeniedException;
-import java.util.NoSuchElementException;
-
-import static com.kuku9.goods.global.exception.ExceptionStatus.*;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Value("${admin.code}")
-    private String adminCode;
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final SellerRepository sellerRepository;
+    @Value("${admin.code}")
+    private String adminCode;
 
     @Override
     @Transactional
@@ -57,7 +60,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(
-                () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
+            () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
         );
     }
 
@@ -118,7 +121,7 @@ public class UserServiceImpl implements UserService {
 
     private User findById(Long userId) {
         return userRepository.findById(userId).orElseThrow(
-                () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
+            () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
         );
     }
 

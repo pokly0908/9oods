@@ -4,7 +4,10 @@ import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
 import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
 import com.kuku9.goods.domain.seller.service.SellerService;
 import com.kuku9.goods.global.security.CustomUserDetails;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,31 +24,31 @@ public class SellerController {
     private final SellerService sellerService;
 
     @PostMapping("/products")
-    public String createProduct(
+    public ResponseEntity<String> createProduct(
         @RequestBody ProductRegistRequestDto requestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        sellerService.createProduct(requestDto, userDetails);
+        Long sellerId = sellerService.createProduct(requestDto, userDetails);
 
-        return "상품 생성";
+        return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
     }
 
     @PatchMapping("/products/{productsId}/status")
-    public String orderProductStatus(
+    public ResponseEntity<Void> orderProductStatus(
         @PathVariable Long productsId,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        sellerService.orderProductStatus(productsId, userDetails);
+        Long sellerId = sellerService.orderProductStatus(productsId, userDetails);
 
-        return "물품을 배송해야 합니다.";
+        return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
     }
 
     @PatchMapping("/products/{productId}")
-    public String updateProduct(
+    public ResponseEntity<Void> updateProduct(
         @PathVariable Long productId,
         @RequestBody ProductUpdateRequestDto requestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        sellerService.updateProduct(productId, requestDto, userDetails);
+        Long sellerId = sellerService.updateProduct(productId, requestDto, userDetails);
 
-        return "상품 정보가 수정되었습니다.";
+        return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
     }
 
 }

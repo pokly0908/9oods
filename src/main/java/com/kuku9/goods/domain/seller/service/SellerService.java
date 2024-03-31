@@ -6,10 +6,10 @@ import com.kuku9.goods.global.security.CustomUserDetails;
 
 public interface SellerService {
 
-    void createProduct(ProductRegistRequestDto requestDto, CustomUserDetails userDetails);
+    Long createProduct(ProductRegistRequestDto requestDto, CustomUserDetails userDetails);
 
-    void orderProductStatus(Long productsId, CustomUserDetails userDetails);
+    Long orderProductStatus(Long productsId, CustomUserDetails userDetails);
 
-    void updateProduct(
+    Long updateProduct(
         Long productId, ProductUpdateRequestDto requestDto, CustomUserDetails userDetails);
 }

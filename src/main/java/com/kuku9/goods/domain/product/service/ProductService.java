@@ -1,5 +1,6 @@
 package com.kuku9.goods.domain.product.service;
 
+import com.kuku9.goods.domain.product.dto.ProductResponse;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import java.util.List;
@@ -16,16 +17,15 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public Product getProduct(Long productId) {
-        return productRepository.findById(productId)
-            .orElseThrow(() -> new IllegalAccessError("찾지 못했습니다."));
+    public ProductResponse getProduct(Long productId) {
+        return new ProductResponse(productRepository.findById(productId).orElseThrow());
     }
 
-    public Page<Product> getAllProduct(Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public Page<ProductResponse> getAllProduct(Pageable pageable) {
+        return productRepository.findAll(pageable).map(ProductResponse::new);
     }
 
-    public Page<Product> getSellerProduct(Long sellerId, Pageable pageable) {
-        return productRepository.findBySellerId(sellerId, pageable);
+    public Page<ProductResponse> getSellerProduct(Long sellerId, Pageable pageable) {
+        return productRepository.findBySellerId(sellerId, pageable).map(ProductResponse::new);
     }
 }

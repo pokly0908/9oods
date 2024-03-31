@@ -1,6 +1,7 @@
 package com.kuku9.goods.domain.product.entity;
 
 import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
+import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +25,7 @@ public class Product {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "sellerId", nullable = false)
+    @JoinColumn(name = "seller_id", nullable = false)
     private Seller seller;
 
     @Column
@@ -34,20 +35,33 @@ public class Product {
     private String description;
 
     @Column
-    private int price;
+    private String price;
 
     @Column
     private Boolean status = true;
 
-    public Product(ProductRegistRequestDto requestDto) {
+    public Product(ProductRegistRequestDto requestDto, Seller seller) {
         this.name = requestDto.getProductName();
         this.description = requestDto.getProductDescription();
         this.price = requestDto.getProductPrice();
+        this.seller = seller;
     }
 
     public void updateOrderStatus(Boolean status) {
         if (status) {
             this.status = false;
+        }
+    }
+
+    public void updateProduct(ProductUpdateRequestDto requestDto) {
+        if (!requestDto.getName().isEmpty()) {
+            this.name = requestDto.getName();
+        }
+        if (!requestDto.getDescription().isEmpty()) {
+            this.description = requestDto.getDescription();
+        }
+        if (!requestDto.getPrice().isEmpty()) {
+            this.price = requestDto.getPrice();
         }
     }
 }

@@ -32,7 +32,7 @@ public class QSeller extends EntityPathBase<Seller> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
 
-    public final StringPath domainNmae = createString("domainNmae");
+    public final StringPath domainName = createString("domainName");
 
     public final StringPath email = createString("email");
 

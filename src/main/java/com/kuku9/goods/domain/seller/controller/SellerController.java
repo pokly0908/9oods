@@ -1,6 +1,7 @@
 package com.kuku9.goods.domain.seller.controller;
 
 import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
+import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
 import com.kuku9.goods.domain.seller.service.SellerService;
 import com.kuku9.goods.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,16 @@ public class SellerController {
         sellerService.orderProductStatus(productsId, userDetails);
 
         return "물품을 배송해야 합니다.";
+    }
+
+    @PatchMapping("/products/{productId}")
+    public String updateProduct(
+        @PathVariable Long productId,
+        @RequestBody ProductUpdateRequestDto requestDto,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        sellerService.updateProduct(productId, requestDto, userDetails);
+
+        return "상품 정보가 수정되었습니다.";
     }
 
 }

@@ -32,42 +32,30 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("deleted_at IS NULL")
 public class Seller extends BaseEntity {
 
+    @OneToMany(mappedBy = "seller")
+    private final List<Product> products = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Comment("셀러 고유 식별자")
     private Long id;
-
-    @Column
-    private String brandName;
     @Column
     @Comment("브랜드 이름")
     private String brandName;
-
     @Column
     @Comment("도메인 이름")
     private String domainName;
-
     @Column
     @Comment("브랜드 소개")
     private String introduce;
-
     @Column
     @Comment("판매자 문의 이메일")
     private String email;
-
     @Column
     @Comment("판매자 문의 전화번호")
     private String phoneNumber;
-
-    @Column
-    private String status;
-
     @OneToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @OneToMany(mappedBy = "seller")
-    private final List<Product> products = new ArrayList<>();
 
 
     public Seller(RegisterSellerRequest request, User user) {

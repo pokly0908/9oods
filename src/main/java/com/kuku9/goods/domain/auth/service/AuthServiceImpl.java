@@ -1,5 +1,7 @@
 package com.kuku9.goods.domain.auth.service;
 
+import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_PASSWORD;
+
 import com.kuku9.goods.domain.auth.dto.LoginRequest;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.domain.user.service.UserService;
@@ -9,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_PASSWORD;
 
 @Service
 @RequiredArgsConstructor

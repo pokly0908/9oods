@@ -2,7 +2,14 @@ package com.kuku9.goods.domain.user.entity;
 
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
 import com.kuku9.goods.global.common.entity.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,10 +54,10 @@ public class User extends BaseEntity {
 
 
     public User(
-            UserSignupRequest request,
-            String encodedPassword,
-            UserRoleEnum role,
-            String adminCodeValue
+        UserSignupRequest request,
+        String encodedPassword,
+        UserRoleEnum role,
+        String adminCodeValue
     ) {
         this.username = request.getUsername();
         this.realName = request.getRealName();
@@ -61,10 +68,10 @@ public class User extends BaseEntity {
     }
 
     public static User from(
-            UserSignupRequest request,
-            String encodedPassword,
-            UserRoleEnum role,
-            String adminCodeValue
+        UserSignupRequest request,
+        String encodedPassword,
+        UserRoleEnum role,
+        String adminCodeValue
     ) {
         return new User(request, encodedPassword, role, adminCodeValue);
     }

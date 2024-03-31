@@ -1,14 +1,13 @@
 package com.kuku9.goods.global.security.jwt.token;
 
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
@@ -47,7 +46,8 @@ public class RedisService {
     @Transactional(readOnly = true)
     public String getHashOps(String key, String hashKey) {
         HashOperations<String, Object, Object> values = redisTemplate.opsForHash();
-        return Boolean.TRUE.equals(values.hasKey(key, hashKey)) ? (String) redisTemplate.opsForHash().get(key, hashKey) : "";
+        return Boolean.TRUE.equals(values.hasKey(key, hashKey))
+            ? (String) redisTemplate.opsForHash().get(key, hashKey) : "";
     }
 
     public void deleteHashOps(String key, String hashKey) {

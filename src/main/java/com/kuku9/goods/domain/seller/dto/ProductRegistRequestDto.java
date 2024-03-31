@@ -7,7 +7,7 @@ public class ProductRegistRequestDto {
 
     private String productName;
     private String productDescription;
-    private int productPrice;
+    private String productPrice;
     private Long sellerId;
 
 }

@@ -1,31 +1,34 @@
 package com.kuku9.goods.domain.product.service;
 
 import com.kuku9.goods.domain.product.dto.ProductResponse;
-import com.kuku9.goods.domain.product.entity.Product;
-import com.kuku9.goods.domain.product.repository.ProductRepository;
-import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class ProductService {
+public interface ProductService {
 
-    private final ProductRepository productRepository;
+    /**
+     * 상품 조회
+     *
+     * @param productId 상품 아이디
+     * @return 상품
+     */
+    ProductResponse getProduct(Long productId);
 
-    public ProductResponse getProduct(Long productId) {
-        return new ProductResponse(productRepository.findById(productId).orElseThrow());
-    }
+    /**
+     * 전체 상품 조회
+     *
+     * @param pageable 페이징 정보
+     * @return 전체 상품
+     */
+    Page<ProductResponse> getAllProduct(Pageable pageable);
 
-    public Page<ProductResponse> getAllProduct(Pageable pageable) {
-        return productRepository.findAll(pageable).map(ProductResponse::new);
-    }
+    /**
+     * 셀러 상품 조회
+     *
+     * @param sellerId 셀러 아이디
+     * @param pageable 페이징 정보
+     * @return 셀러 상품
+     */
+    Page<ProductResponse> getSellerProduct(Long sellerId, Pageable pageable);
 
-    public Page<ProductResponse> getSellerProduct(Long sellerId, Pageable pageable) {
-        return productRepository.findBySellerId(sellerId, pageable).map(ProductResponse::new);
-    }
 }

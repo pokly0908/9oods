@@ -3,6 +3,7 @@ package com.kuku9.goods.domain.product.entity;
 import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
 import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
 import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

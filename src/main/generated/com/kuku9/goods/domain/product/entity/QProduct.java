@@ -22,13 +22,24 @@ public class QProduct extends EntityPathBase<Product> {
 
     public static final QProduct product = new QProduct("product");
 
+    public final com.kuku9.goods.global.common.entity.QBaseEntity _super = new com.kuku9.goods.global.common.entity.QBaseEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
+
     public final StringPath description = createString("description");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
+
     public final StringPath name = createString("name");
 
-    public final StringPath price = createString("price");
+    public final NumberPath<Long> price = createNumber("price", Long.class);
 
     public final com.kuku9.goods.domain.seller.entity.QSeller seller;
 

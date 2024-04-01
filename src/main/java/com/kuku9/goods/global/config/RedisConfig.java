@@ -1,4 +1,4 @@
-package com.kuku9.goods.config;
+package com.kuku9.goods.global.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

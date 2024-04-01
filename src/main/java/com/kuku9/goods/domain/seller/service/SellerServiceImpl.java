@@ -1,22 +1,30 @@
 package com.kuku9.goods.domain.seller.service;
 
+import com.kuku9.goods.domain.order_product.entity.OrderProduct;
+import com.kuku9.goods.domain.order_product.repository.OrderProductRepository;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
 import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
+import com.kuku9.goods.domain.seller.dto.SellingProductResponseDto;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.global.security.CustomUserDetails;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SellerServiceImpl implements SellerService {
 
     private final SellerRepository sellerRepository;
     private final ProductRepository productRepository;
+    private final OrderProductRepository orderProductRepository;
 
     @Override
     @Transactional
@@ -66,6 +74,44 @@ public class SellerServiceImpl implements SellerService {
         product.updateProduct(requestDto);
 
         return product.getSeller().getId();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SellingProductResponseDto> getSellingProduct (CustomUserDetails userDetails) {
+        Seller seller = findSeller(userDetails);
+
+        List<OrderProduct> orderProductList = new ArrayList<>();
+        for (Product product : productRepository.findBySellerId(seller.getId())) {
+            OrderProduct orderProduct = orderProductRepository.findByProductId(product.getId());
+            if (orderProduct != null) {
+                orderProductList.add(orderProduct);
+            }
+        }
+
+//        for (Product product : productRepository.findBySellerId(seller.getId())) {
+//            orderProductList.add(orderProductRepository.findByProductId(product.getId()));
+//        }
+        /*
+        todo :: product에 3개의 데이터가 찾아오는건 맞지만
+         orderProductRepository에서 null 값까지 찾아와서 add 되는 이유?
+         */
+
+        List<SellingProductResponseDto> responseDtoList = new ArrayList<>();
+        long totalPrice = 0L;
+        for (OrderProduct orderProduct : orderProductList) {
+            long productTotalPrice = orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
+            totalPrice += productTotalPrice;
+            responseDtoList.add(
+                new SellingProductResponseDto(
+                    orderProduct.getProduct().getName(),
+                    orderProduct.getProduct().getPrice(),
+                    orderProduct.getQuantity(),
+                    productTotalPrice,
+                    totalPrice));
+        }
+
+        return responseDtoList;
     }
 
     private Seller findSeller(CustomUserDetails userDetails) {

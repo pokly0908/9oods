@@ -3,6 +3,7 @@ package com.kuku9.goods.domain.product.entity;
 import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
 import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
 import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.FlashMap;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +37,7 @@ public class Product {
     private String description;
 
     @Column
-    private String price;
+    private Long price;
 
     @Column
     private Boolean status = true;
@@ -61,8 +62,8 @@ public class Product {
         if (!requestDto.getDescription().isEmpty()) {
             this.description = requestDto.getDescription();
         }
-        if (!requestDto.getPrice().isEmpty()) {
-            this.price = requestDto.getPrice();
-        }
+//        if (!requestDto.getPrice().isEmpty()) {
+//            this.price = requestDto.getPrice();
+//        }
     }
 }

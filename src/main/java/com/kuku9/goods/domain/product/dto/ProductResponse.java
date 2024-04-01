@@ -11,7 +11,7 @@ public class ProductResponse {
     private Long productId;
     private String productName;
     private String productDescription;
-    private String productPrice;
+    private Long  productPrice;
     private String brandName;
 
     public ProductResponse(Product product) {

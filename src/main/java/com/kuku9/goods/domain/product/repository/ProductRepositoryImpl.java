@@ -1,6 +1,7 @@
 package com.kuku9.goods.domain.product.repository;
 
 import com.kuku9.goods.domain.product.entity.Product;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,5 +37,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Page<Product> findBySellerId(Long sellerId, Pageable pageable) {
         return productJpaRepository.findBySellerId(sellerId, pageable);
+    }
+
+    @Override
+    public List<Product> findBySellerId (Long sellerId) {
+        return productJpaRepository.findBySellerId(sellerId);
     }
 }

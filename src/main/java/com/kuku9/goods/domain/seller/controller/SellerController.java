@@ -70,4 +70,14 @@ public class SellerController {
         return ResponseEntity.ok(responseDto);
     }
 
+    // 셀러의 판매된 상품 통계
+    @GetMapping("/products/selled/statistics")
+    public ResponseEntity<SellProductStatisticsResponseDto> getSellProductStatistics (
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        SellProductStatisticsResponseDto responseDto = sellerService.getSellProductStatistics (
+            userDetails.getUser());
+
+        return ResponseEntity.ok(responseDto);
+    }
+
 }

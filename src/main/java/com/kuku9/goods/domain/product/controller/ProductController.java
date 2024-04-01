@@ -1,7 +1,6 @@
 package com.kuku9.goods.domain.product.controller;
 
 import com.kuku9.goods.domain.product.dto.ProductResponse;
-import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.service.ProductService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAllProduct(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<ProductResponse>> getAllProduct(
+        @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.status(200).body(productService.getAllProduct(pageable).getContent());

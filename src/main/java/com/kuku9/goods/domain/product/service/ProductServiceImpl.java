@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
@@ -22,6 +22,7 @@ public class ProductServiceImpl implements ProductService{
     public Page<ProductResponse> getAllProduct(Pageable pageable) {
         return productRepository.findAll(pageable).map(ProductResponse::new);
     }
+
     @Override
     public Page<ProductResponse> getSellerProduct(Long sellerId, Pageable pageable) {
         return productRepository.findBySellerId(sellerId, pageable).map(ProductResponse::new);

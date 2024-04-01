@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
+
     /**
      * 상품 조회
      *
@@ -12,6 +13,7 @@ public interface ProductService {
      * @return 상품
      */
     ProductResponse getProduct(Long productId);
+
     /**
      * 전체 상품 조회
      *

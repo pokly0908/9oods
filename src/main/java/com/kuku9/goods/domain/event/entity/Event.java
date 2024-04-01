@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,14 +32,24 @@ public class Event extends BaseEntity {
     @Column
     private String content;
 
-    public Event(String title, String content) {
+    @Column
+    private Long limitNum;
+
+    @Column
+    private LocalDate openAt;
+
+    public Event(String title, String content, Long limitNum, LocalDate openAt) {
         this.title = title;
         this.content = content;
+        this.limitNum = limitNum;
+        this.openAt = openAt;
     }
 
-    public void update(String title, String content) {
+    public void update(String title, String content, Long limitNum, LocalDate openAt) {
         this.title = title;
         this.content = content;
+        this.limitNum = limitNum;
+        this.openAt = openAt;
     }
 
 }

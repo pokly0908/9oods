@@ -13,9 +13,10 @@ public interface EventService {
      * 이벤트 등록
      *
      * @param request 이벤트 등록에 필요한 정보
+     * @param user 유저
      * @return eventId
 	 */
-    Long createEvent(EventRequest request);
+    Long createEvent(EventRequest request, User user);
 
     /**
      * 이벤트 수정

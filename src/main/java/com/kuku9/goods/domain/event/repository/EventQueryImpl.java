@@ -16,19 +16,6 @@ public class EventQueryImpl implements EventQuery {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public EventResponse getEvent(Long eventId) {
-        List<EventResponse> result = jpaQueryFactory.select(
-                Projections.fields(EventResponse.class, QEvent.event.id, QEvent.event.title,
-                    QEvent.event.content, QFile.file.url))
-            .from(QEvent.event)
-            .leftJoin(QFile.file).fetchJoin()
-            .on(QEvent.event.fileId.eq(QFile.file.id))
-            .where(QEvent.event.id.eq(eventId))
-            .fetch();
-
-        return result.get(0);
-    }
-
     public List<EventTitleResponse> getEventTitles() {
         return jpaQueryFactory.select(
                 Projections.fields(EventTitleResponse.class, QEvent.event.title))

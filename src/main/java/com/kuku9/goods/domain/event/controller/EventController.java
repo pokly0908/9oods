@@ -29,9 +29,10 @@ public class EventController {
 	private final EventService eventService;
 
 	@PostMapping
-	public ResponseEntity<String> createEvent(@Valid @RequestBody EventRequest request) {
+	public ResponseEntity<String> createEvent(@Valid @RequestBody EventRequest request,
+		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
-		Long eventId = eventService.createEvent(request);
+		Long eventId = eventService.createEvent(request, customUserDetails.getUser());
 
 		return ResponseEntity.created(URI.create("/api/v1/events/" + eventId)).build();
 	}

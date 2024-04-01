@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface EventQuery {
 
-    EventResponse getEvent(Long eventId);
-
     List<EventTitleResponse> getEventTitles();
 
 }

@@ -1,5 +1,6 @@
 package com.kuku9.goods.domain.event.dto;
 
+import com.kuku9.goods.domain.event.entity.Event;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,8 @@ public class EventResponse {
     private Long id;
     private String title;
     private String content;
-    private String url;
 
+    public static EventResponse from(Event event) {
+        return new EventResponse(event.getId(), event.getTitle(), event.getContent());
+    }
 }

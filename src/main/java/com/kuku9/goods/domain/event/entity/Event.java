@@ -31,19 +31,14 @@ public class Event extends BaseEntity {
     @Column
     private String content;
 
-    @Column(name = " file_id")
-    private Long fileId;
-
-    public Event(String title, String content, Long fileId) {
+    public Event(String title, String content) {
         this.title = title;
         this.content = content;
-        this.fileId = fileId;
     }
 
-    public void update(String title, String content, Long fileId) {
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
-        this.fileId = fileId;
     }
 
 }

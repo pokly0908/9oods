@@ -6,11 +6,10 @@ import lombok.Getter;
 @Getter
 public class EventRequest {
 
-    @NotNull(message = "제목을 입력하세요.")
+    @NotNull(message = "이벤트를 등록하시려면 제목을 입력하세요.")
     private String title;
 
-    @NotNull(message = "내용을 입력하세요.")
+    @NotNull(message = "이벤트를 등록하시려면 내용을 입력하세요.")
     private String content;
 
-    private Long fileId;
 }

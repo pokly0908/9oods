@@ -2,6 +2,7 @@ package com.kuku9.goods.domain.product_order.entity;
 
 import com.kuku9.goods.domain.order_product.entity.OrderProduct;
 import com.kuku9.goods.domain.user.entity.User;
+import com.kuku9.goods.global.common.entity.BaseEntity;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.*;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "product_order")
-public class ProductOrder {
+public class ProductOrder extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,8 +1,9 @@
 package com.kuku9.goods.domain.product_order.controller;
 
+import com.kuku9.goods.domain.product_order.dto.ProductOrderResponse;
 import com.kuku9.goods.domain.product_order.dto.ProductOrdersRequest;
 import com.kuku9.goods.domain.product_order.entity.ProductOrder;
-import com.kuku9.goods.domain.product_order.service.ProductOrderService;
+import com.kuku9.goods.domain.product_order.service.ProductOrderServiceImpl;
 import com.kuku9.goods.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,10 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/order")
+@RequestMapping("/api/v1/orders")
 public class ProductOrderController {
 
-    private final ProductOrderService productOrderService;
+    private final ProductOrderServiceImpl productOrderService;
 
     @PostMapping
     public ResponseEntity<String> createOrder(
@@ -28,16 +29,16 @@ public class ProductOrderController {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<ProductOrder> getOrder(
+    public ResponseEntity<ProductOrderResponse> getOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderId) {
-        ProductOrder productOrder = productOrderService.getOrder(userDetails.getUser(), orderId);
+        ProductOrderResponse productOrder = productOrderService.getOrder(userDetails.getUser(), orderId);
         return ResponseEntity.ok(productOrder);
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<ProductOrder> updateOrder(
+    public ResponseEntity<ProductOrderResponse> updateOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderId) {
-        ProductOrder productOrder = productOrderService.updateOrder(userDetails.getUser(), orderId);
+        ProductOrderResponse productOrder = productOrderService.updateOrder(userDetails.getUser(), orderId);
         return ResponseEntity.ok(productOrder);
     }
 

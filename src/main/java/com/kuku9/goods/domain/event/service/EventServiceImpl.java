@@ -6,9 +6,16 @@ import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND_EVENT;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventTitleResponse;
+import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
+import com.kuku9.goods.domain.event.dto.ProductInfo;
 import com.kuku9.goods.domain.event.entity.Event;
 import com.kuku9.goods.domain.event.repository.EventQuery;
 import com.kuku9.goods.domain.event.repository.EventRepository;
+import com.kuku9.goods.domain.event_product.dto.EventProductRequest;
+import com.kuku9.goods.domain.event_product.entity.EventProduct;
+import com.kuku9.goods.domain.event_product.repository.EventProductRepository;
+import com.kuku9.goods.domain.product.entity.Product;
+import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
@@ -25,15 +32,16 @@ public class EventServiceImpl implements EventService {
 
 	private final EventRepository eventRepository;
 	private final SellerRepository sellerRepository;
- 	private final EventQuery eventQuery;
+	private final EventQuery eventQuery;
+	private final EventProductRepository eventProductRepository;
+	private final ProductRepository productRepository;
 
-	//todo: seller 권한이 있는 유저만 이벤트 등록하게 하기
 	@Transactional
 	public Long createEvent(EventRequest eventRequest, User user) {
 
 		Seller seller = sellerRepository.findByUserId(user.getId());
 
-		if(seller == null) {
+		if (seller == null) {
 			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
 		}
 
@@ -41,11 +49,18 @@ public class EventServiceImpl implements EventService {
 			eventRequest.getLimitNum(), eventRequest.getOpenAt());
 		Event savedEvent = eventRepository.save(event);
 
+		eventRequest.getEventProducts().stream()
+			.map(EventProductRequest::getProductId)
+			.map(productId -> productRepository.findById(productId)
+				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
+			.map(product -> new EventProduct(savedEvent, product))
+			.forEach(eventProductRepository::save);
+
 		return savedEvent.getId();
 	}
 
 	@Transactional
-	public Long updateEvent(Long eventId, EventRequest eventRequest, User user) {
+	public Long updateEvent(Long eventId, EventUpdateRequest eventRequest, User user) {
 
 		Event event = findEvent(eventId);
 		event.update(eventRequest.getTitle(), eventRequest.getContent(),
@@ -60,7 +75,8 @@ public class EventServiceImpl implements EventService {
 	public EventResponse getEvent(Long eventId) {
 
 		Event event = findEvent(eventId);
-		return EventResponse.from(event);
+		List<ProductInfo> infos = eventQuery.getEventProductInfo(event.getId());
+		return EventResponse.from(event, infos);
 	}
 
 	@Transactional(readOnly = true)
@@ -75,9 +91,20 @@ public class EventServiceImpl implements EventService {
 		Event event = findEvent(eventId);
 
 		//todo: 생성자가 삭제할 수 있도록 검증 처리 추가하기
-
+		eventQuery.deleteEventProduct(eventId);
 		eventRepository.delete(event);
 
+	}
+
+	@Transactional
+	public void deleteEventProduct(Long eventProductId, User user) {
+
+		EventProduct eventProduct = eventProductRepository.findById(eventProductId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));
+
+		//todo: 생성자가 삭제할 수 있도록 검증 처리 추가하기
+
+		eventProductRepository.delete(eventProduct);
 	}
 
 	private Event findEvent(Long eventId) {

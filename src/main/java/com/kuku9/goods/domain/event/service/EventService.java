@@ -3,6 +3,7 @@ package com.kuku9.goods.domain.event.service;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventTitleResponse;
+import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
 import com.kuku9.goods.domain.user.entity.User;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
@@ -25,7 +26,7 @@ public interface EventService {
      * @param user 유저
      * @return eventId
      */
-    Long updateEvent(Long eventId, EventRequest request, User user);
+    Long updateEvent(Long eventId, EventUpdateRequest request, User user);
 
     /**
      * 이벤트 단건 조회
@@ -49,4 +50,12 @@ public interface EventService {
      * @param user 유저
      */
     void deleteEvent(Long eventId, User user);
+
+    /**
+     * 이벤트 상품 삭제 - 이벤트 수정할 때 이벤트 상품을 수정하고 싶을 때 delete api 개별적으로 날리도록 생각해서 만들었음
+     *
+     * @param eventProductId 이벤트 상품 Id
+     * @param user 유저
+     */
+    void deleteEventProduct(Long eventProductId, User user);
 }

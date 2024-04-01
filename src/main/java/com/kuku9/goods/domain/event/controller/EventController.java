@@ -3,8 +3,10 @@ package com.kuku9.goods.domain.event.controller;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventTitleResponse;
+import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
 import com.kuku9.goods.domain.event.service.EventService;
 import com.kuku9.goods.global.security.CustomUserDetails;
+import com.kuku9.goods.global.security.jwt.token.RedisService;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -39,7 +41,7 @@ public class EventController {
 
 	@PutMapping("/{eventId}")
 	public ResponseEntity<String> updateEvent(
-		@Valid @RequestBody EventRequest request,
+		@Valid @RequestBody EventUpdateRequest request,
 		@PathVariable Long eventId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
 		Long updatedEventId = eventService.updateEvent(eventId, request,
@@ -72,4 +74,14 @@ public class EventController {
 
 		return ResponseEntity.ok().build();
 	}
+
+	@DeleteMapping("/eventProducts/{eventProductId}")
+	public ResponseEntity<Void> deleteEventProduct(@PathVariable Long eventProductId,
+		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+
+		eventService.deleteEventProduct(eventProductId, customUserDetails.getUser());
+
+		return ResponseEntity.ok().build();
+	}
+
 }

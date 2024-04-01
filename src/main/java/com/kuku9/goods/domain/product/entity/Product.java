@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.servlet.FlashMap;
 
 @Getter
 @Entity
@@ -36,7 +37,7 @@ public class Product extends BaseEntity {
     private String description;
 
     @Column
-    private String price;
+    private Long price;
 
     @Column
     private Boolean status = true;
@@ -61,8 +62,8 @@ public class Product extends BaseEntity {
         if (!requestDto.getDescription().isEmpty()) {
             this.description = requestDto.getDescription();
         }
-        if (!requestDto.getPrice().isEmpty()) {
-            this.price = requestDto.getPrice();
-        }
+//        if (!requestDto.getPrice().isEmpty()) {
+//            this.price = requestDto.getPrice();
+//        }
     }
 }

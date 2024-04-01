@@ -3,7 +3,7 @@ package com.kuku9.goods.domain.product_order.controller;
 import com.kuku9.goods.domain.product_order.dto.ProductOrderResponse;
 import com.kuku9.goods.domain.product_order.dto.ProductOrdersRequest;
 import com.kuku9.goods.domain.product_order.entity.ProductOrder;
-import com.kuku9.goods.domain.product_order.service.ProductOrderServiceImpl;
+import com.kuku9.goods.domain.product_order.service.ProductOrderService;
 import com.kuku9.goods.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.net.URI;
 @RequestMapping("/api/v1/orders")
 public class ProductOrderController {
 
-    private final ProductOrderServiceImpl productOrderService;
+    private final ProductOrderService productOrderService;
 
     @PostMapping
     public ResponseEntity<String> createOrder(

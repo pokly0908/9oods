@@ -27,8 +27,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
     @Override
     public ProductOrder createOrder(User user, ProductOrdersRequest productOrderRequest) {
-        userRepository.findById(user.getId())
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
         ProductOrder productOrder = productOrderRepository.save(
             new ProductOrder(user, productOrderRequest.getAddress()));
         for (int i = 0; i < productOrderRequest.getProducts().size(); i++) {

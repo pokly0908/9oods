@@ -34,7 +34,7 @@ public class SellerController {
     public ResponseEntity<String> createProduct(
         @RequestBody ProductRegistRequestDto requestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long sellerId = sellerService.createProduct(requestDto, userDetails);
+        Long sellerId = sellerService.createProduct(requestDto, userDetails.getUser());
 
         return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
     }
@@ -44,7 +44,7 @@ public class SellerController {
     public ResponseEntity<Void> orderProductStatus(
         @PathVariable Long productsId,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long sellerId = sellerService.orderProductStatus(productsId, userDetails);
+        Long sellerId = sellerService.orderProductStatus(productsId, userDetails.getUser());
 
         return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
     }
@@ -55,7 +55,7 @@ public class SellerController {
         @PathVariable Long productId,
         @RequestBody ProductUpdateRequestDto requestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long sellerId = sellerService.updateProduct(productId, requestDto, userDetails);
+        Long sellerId = sellerService.updateProduct(productId, requestDto, userDetails.getUser());
 
         return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
     }
@@ -64,7 +64,8 @@ public class SellerController {
     @GetMapping("/products/selled")
     public ResponseEntity<List<SellingProductResponseDto>> getSellingProduct (
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        List<SellingProductResponseDto> responseDto = sellerService.getSellingProduct(userDetails);
+        List<SellingProductResponseDto> responseDto = sellerService.getSellingProduct(
+            userDetails.getUser());
 
         return ResponseEntity.ok(responseDto);
     }

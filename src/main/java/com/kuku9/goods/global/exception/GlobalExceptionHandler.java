@@ -64,5 +64,15 @@ public class GlobalExceptionHandler {
             .body(ex.getMessage());
     }
 
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<String> EventNotFoundException(EventNotFoundException ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
 
+    @ExceptionHandler(InvalidAdminEventException.class)
+    public ResponseEntity<String> InvalidAdminEventException(InvalidAdminEventException ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
 }

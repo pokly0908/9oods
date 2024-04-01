@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,19 +32,24 @@ public class Event extends BaseEntity {
     @Column
     private String content;
 
-    @Column(name = " file_id")
-    private Long fileId;
+    @Column
+    private Long limitNum;
 
-    public Event(String title, String content, Long fileId) {
+    @Column
+    private LocalDate openAt;
+
+    public Event(String title, String content, Long limitNum, LocalDate openAt) {
         this.title = title;
         this.content = content;
-        this.fileId = fileId;
+        this.limitNum = limitNum;
+        this.openAt = openAt;
     }
 
-    public void update(String title, String content, Long fileId) {
+    public void update(String title, String content, Long limitNum, LocalDate openAt) {
         this.title = title;
         this.content = content;
-        this.fileId = fileId;
+        this.limitNum = limitNum;
+        this.openAt = openAt;
     }
 
 }

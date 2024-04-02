@@ -3,6 +3,7 @@ package com.kuku9.goods.domain.event.service;
 import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_ADMIN_EVENT;
 import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND_EVENT;
 
+import com.kuku9.goods.domain.event.dto.EventDto;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventTitleResponse;
@@ -23,6 +24,8 @@ import com.kuku9.goods.global.exception.EventNotFoundException;
 import com.kuku9.goods.global.exception.InvalidAdminEventException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,9 +84,9 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<EventTitleResponse> getEventTitles() {
+	public Page<EventDto> getAllEvents(Pageable pageable) {
 
-		return eventQuery.getEventTitles();
+		return eventRepository.findAll(pageable).map(EventDto::new);
 	}
 
 	@Transactional

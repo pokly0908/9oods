@@ -1,12 +1,16 @@
 package com.kuku9.goods.domain.event.service;
 
+import com.kuku9.goods.domain.event.dto.EventDto;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventTitleResponse;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
+import com.kuku9.goods.domain.event.entity.Event;
 import com.kuku9.goods.domain.user.entity.User;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface EventService {
 
@@ -39,9 +43,10 @@ public interface EventService {
     /**
      * 이벤트 제목 리스트 조회
      *
-     * @return List<EventTitleResponse>
+     * @param pageable 페이지
+     * @return Page<EventResponse>
      */
-    List<EventTitleResponse> getEventTitles();
+    Page<EventDto> getAllEvents(Pageable pageable);
 
     /**
      * 이벤트 삭제

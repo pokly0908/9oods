@@ -1,9 +1,11 @@
 package com.kuku9.goods.domain.event.controller;
 
+import com.kuku9.goods.domain.event.dto.EventDto;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventTitleResponse;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
+import com.kuku9.goods.domain.event.entity.Event;
 import com.kuku9.goods.domain.event.service.EventService;
 import com.kuku9.goods.global.security.CustomUserDetails;
 import com.kuku9.goods.global.security.jwt.token.RedisService;
@@ -11,6 +13,9 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -59,9 +65,11 @@ public class EventController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<EventTitleResponse>> getEventTitles() {
-
-		List<EventTitleResponse> eventResponses = eventService.getEventTitles();
+	public ResponseEntity<Page<EventDto>> getAllEvents(
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<EventDto> eventResponses = eventService.getAllEvents(pageable);
 
 		return ResponseEntity.ok().body(eventResponses);
 	}

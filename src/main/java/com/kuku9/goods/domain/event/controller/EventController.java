@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class EventController {
 	private final EventService eventService;
 
 	@PostMapping
+	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
 	public ResponseEntity<String> createEvent(@Valid @RequestBody EventRequest request,
 		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
@@ -34,6 +36,7 @@ public class EventController {
 	}
 
 	@PutMapping("/{eventId}")
+	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
 	public ResponseEntity<String> updateEvent(
 		@Valid @RequestBody EventUpdateRequest request,
 		@PathVariable Long eventId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
@@ -63,6 +66,7 @@ public class EventController {
 	}
 
 	@DeleteMapping("/{eventId}")
+	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
 	public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId,
 		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
@@ -72,6 +76,7 @@ public class EventController {
 	}
 
 	@DeleteMapping("/eventProducts/{eventProductId}")
+	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
 	public ResponseEntity<Void> deleteEventProduct(
 		@PathVariable Long eventProductId,
 		@AuthenticationPrincipal CustomUserDetails customUserDetails) {

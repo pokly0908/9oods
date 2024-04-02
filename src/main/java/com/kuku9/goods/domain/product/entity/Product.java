@@ -1,7 +1,7 @@
 package com.kuku9.goods.domain.product.entity;
 
-import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
-import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
+import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
+import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;

@@ -38,13 +38,7 @@ public class EventServiceImpl implements EventService {
 	@Transactional
 	public Long createEvent(EventRequest eventRequest, User user) {
 
-		Seller seller = sellerRepository.findByUserId(user.getId());
-
-		if (seller == null) {
-			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
-		}
-
-		Event event = new Event(eventRequest, seller);
+		Event event = new Event(eventRequest, user);
 		Event savedEvent = eventRepository.save(event);
 
 		eventRequest.getEventProducts().stream()
@@ -62,7 +56,7 @@ public class EventServiceImpl implements EventService {
 
 		Event event = findEvent(eventId);
 
-		if (sellerRepository.findByUserId(user.getId()) == null) {
+		if (!event.getUser().getId().equals(user.getId())) {
 			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
 		}
 
@@ -94,7 +88,7 @@ public class EventServiceImpl implements EventService {
 
 		Event event = findEvent(eventId);
 
-		if (sellerRepository.findByUserId(user.getId()) == null) {
+		if (!event.getUser().getId().equals(user.getId())) {
 			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
 		}
 
@@ -105,10 +99,6 @@ public class EventServiceImpl implements EventService {
 
 	@Transactional
 	public void deleteEventProduct(Long eventProductId, User user) {
-
-		if (sellerRepository.findByUserId(user.getId()) == null) {
-			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
-		}
 
 		EventProduct eventProduct = eventProductRepository.findById(eventProductId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));

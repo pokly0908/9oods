@@ -3,6 +3,7 @@ package com.kuku9.goods.domain.event.entity;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
 import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -39,14 +40,14 @@ public class Event extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "seller_id")
-	private Seller seller;
+	private User user;
 
-	public Event(EventRequest request, Seller seller) {
+	public Event(EventRequest request, User user) {
 		this.title = request.getTitle();
 		this.content = request.getContent();
 		this.limitNum = request.getLimitNum();
 		this.openAt = request.getOpenAt();
-		this.seller = seller;
+		this.user = user;
 	}
 
 	public void update(EventUpdateRequest request) {

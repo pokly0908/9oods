@@ -3,19 +3,15 @@ package com.kuku9.goods.domain.event.service;
 import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_ADMIN_EVENT;
 import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND_EVENT;
 
-import com.kuku9.goods.domain.event.dto.EventDto;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
-import com.kuku9.goods.domain.event.dto.EventTitleResponse;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
-import com.kuku9.goods.domain.event.dto.ProductInfo;
 import com.kuku9.goods.domain.event.entity.Event;
 import com.kuku9.goods.domain.event.repository.EventQuery;
 import com.kuku9.goods.domain.event.repository.EventRepository;
 import com.kuku9.goods.domain.event_product.dto.EventProductRequest;
 import com.kuku9.goods.domain.event_product.entity.EventProduct;
 import com.kuku9.goods.domain.event_product.repository.EventProductRepository;
-import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
@@ -84,9 +80,13 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<EventDto> getAllEvents(Pageable pageable) {
+	public Page<EventResponse> getAllEvents(Pageable pageable) {
 
-		return eventRepository.findAll(pageable).map(EventDto::new);
+		return eventRepository.findAll(pageable)
+			.map(event -> {
+				List<Long> eventProducts = eventQuery.getEventProductInfo(event.getId());
+				return EventResponse.from(event, eventProducts);
+			});
 	}
 
 	@Transactional

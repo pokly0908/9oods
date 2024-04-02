@@ -18,13 +18,6 @@ public class EventQueryImpl implements EventQuery {
 
 	private final JPAQueryFactory jpaQueryFactory;
 
-	public List<EventTitleResponse> getEventTitles() {
-		return jpaQueryFactory.select(
-				Projections.fields(EventTitleResponse.class, QEvent.event.title))
-			.from(QEvent.event)
-			.fetch();
-	}
-
 	public List<Long> getEventProductInfo(Long eventId) {
 		return jpaQueryFactory.select(
 			QEventProduct.eventProduct.product.id)

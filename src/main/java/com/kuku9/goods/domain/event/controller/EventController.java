@@ -1,17 +1,12 @@
 package com.kuku9.goods.domain.event.controller;
 
-import com.kuku9.goods.domain.event.dto.EventDto;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
-import com.kuku9.goods.domain.event.dto.EventTitleResponse;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
-import com.kuku9.goods.domain.event.entity.Event;
 import com.kuku9.goods.domain.event.service.EventService;
 import com.kuku9.goods.global.security.CustomUserDetails;
-import com.kuku9.goods.global.security.jwt.token.RedisService;
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,11 +61,11 @@ public class EventController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<EventDto>> getAllEvents(
+	public ResponseEntity<Page<EventResponse>> getAllEvents(
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "createdAt"));
-		Page<EventDto> eventResponses = eventService.getAllEvents(pageable);
+		Page<EventResponse> eventResponses = eventService.getAllEvents(pageable);
 
 		return ResponseEntity.ok().body(eventResponses);
 	}

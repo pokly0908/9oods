@@ -1,7 +1,6 @@
 package com.kuku9.goods.domain.user.service;
 
 import com.kuku9.goods.domain.seller.entity.Seller;
-import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.seller.service.SellerService;
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
 import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
@@ -44,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(
-            () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
+                () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
         );
     }
 
@@ -106,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     private User findById(Long userId) {
         return userRepository.findById(userId).orElseThrow(
-            () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
+                () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
         );
     }
 
@@ -115,5 +114,5 @@ public class UserServiceImpl implements UserService {
             throw new DuplicatedException(DUPLICATED_USERNAME);
         }
     }
-    
+
 }

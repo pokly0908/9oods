@@ -1,18 +1,8 @@
 package com.kuku9.goods.domain.order_product.entity;
 
-import com.kuku9.goods.domain.order_product.dto.OrderProductRequest;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product_order.entity.ProductOrder;
-import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.common.entity.BaseEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

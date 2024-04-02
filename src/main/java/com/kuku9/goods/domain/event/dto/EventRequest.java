@@ -1,13 +1,12 @@
 package com.kuku9.goods.domain.event.dto;
 
 import com.kuku9.goods.domain.event_product.dto.EventProductRequest;
-import com.kuku9.goods.domain.event_product.entity.EventProduct;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 public class EventRequest {

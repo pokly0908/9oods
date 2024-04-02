@@ -1,14 +1,10 @@
 package com.kuku9.goods.domain.event.entity;
 
-import com.kuku9.goods.global.common.entity.BaseEntity;
+import com.kuku9.goods.global.common.entity.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-
-import java.time.LocalDate;
+import java.time.*;
+import lombok.*;
+import org.hibernate.annotations.*;
 
 
 @Getter

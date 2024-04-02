@@ -1,13 +1,11 @@
 package com.kuku9.goods.global.security;
 
 import com.kuku9.goods.domain.user.entity.User;
-import com.kuku9.goods.domain.user.entity.UserRoleEnum;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import com.kuku9.goods.domain.user.entity.*;
+import java.util.*;
+import org.springframework.security.core.*;
+import org.springframework.security.core.authority.*;
+import org.springframework.security.core.userdetails.*;
 
 
 public class CustomUserDetails implements UserDetails {

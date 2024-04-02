@@ -1,9 +1,10 @@
 package com.kuku9.goods.domain.order_product.repository;
 
-import com.kuku9.goods.domain.order_product.entity.OrderProduct;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
+import com.kuku9.goods.domain.order_product.entity.*;
+import com.kuku9.goods.domain.product.entity.*;
+import java.time.*;
+import java.util.*;
+import org.springframework.data.jpa.repository.*;
 
 public interface OrderProductRepository extends JpaRepository<OrderProduct, Long> {
 
@@ -11,4 +12,6 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Long
 
     List<OrderProduct> findAllByProductOrderId(Long orderId);
 
+    List<OrderProduct> findByProductAndCreatedAtBetween(
+        Product product, LocalDateTime localDateTime, LocalDateTime localDateTime1);
 }

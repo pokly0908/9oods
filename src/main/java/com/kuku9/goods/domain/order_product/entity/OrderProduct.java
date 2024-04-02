@@ -1,12 +1,10 @@
 package com.kuku9.goods.domain.order_product.entity;
 
-import com.kuku9.goods.domain.product.entity.Product;
-import com.kuku9.goods.domain.product_order.entity.ProductOrder;
-import com.kuku9.goods.global.common.entity.BaseEntity;
+import com.kuku9.goods.domain.product.entity.*;
+import com.kuku9.goods.domain.product_order.entity.*;
+import com.kuku9.goods.global.common.entity.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity

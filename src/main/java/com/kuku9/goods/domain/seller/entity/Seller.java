@@ -1,23 +1,18 @@
 package com.kuku9.goods.domain.seller.entity;
 
-import com.kuku9.goods.domain.product.entity.Product;
-import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
-import com.kuku9.goods.domain.user.entity.User;
-import com.kuku9.goods.global.common.entity.BaseEntity;
+import com.kuku9.goods.domain.product.entity.*;
+import com.kuku9.goods.domain.user.dto.request.*;
+import com.kuku9.goods.domain.user.entity.*;
+import com.kuku9.goods.global.common.entity.*;
+import jakarta.persistence.Table;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import lombok.*;
+import org.hibernate.annotations.*;
 
 @Entity
 @Table(name = "seller", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"brand_name", "domain_name", "email", "phone_number"})
+    @UniqueConstraint(columnNames = {"brand_name", "domain_name", "email", "phone_number"})
 })
 @Getter
 @NoArgsConstructor

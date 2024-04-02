@@ -1,12 +1,8 @@
 package com.kuku9.goods.domain.event.service;
 
-import com.kuku9.goods.domain.event.dto.EventRequest;
-import com.kuku9.goods.domain.event.dto.EventResponse;
-import com.kuku9.goods.domain.event.dto.EventTitleResponse;
-import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
-import com.kuku9.goods.domain.user.entity.User;
-
-import java.util.List;
+import com.kuku9.goods.domain.event.dto.*;
+import com.kuku9.goods.domain.user.entity.*;
+import java.util.*;
 
 public interface EventService {
 

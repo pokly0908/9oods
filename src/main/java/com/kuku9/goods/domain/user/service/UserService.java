@@ -1,15 +1,12 @@
 package com.kuku9.goods.domain.user.service;
 
 
-import com.kuku9.goods.domain.seller.entity.Seller;
-import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
-import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
-import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
-import com.kuku9.goods.domain.user.dto.response.UserResponse;
-import com.kuku9.goods.domain.user.entity.User;
-import org.springframework.stereotype.Service;
-
-import java.nio.file.AccessDeniedException;
+import com.kuku9.goods.domain.seller.entity.*;
+import com.kuku9.goods.domain.user.dto.request.*;
+import com.kuku9.goods.domain.user.dto.response.*;
+import com.kuku9.goods.domain.user.entity.*;
+import java.nio.file.*;
+import org.springframework.stereotype.*;
 
 @Service
 public interface UserService {

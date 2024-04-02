@@ -1,8 +1,7 @@
 package com.kuku9.goods.domain.product.service;
 
-import com.kuku9.goods.domain.product.dto.ProductResponse;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.kuku9.goods.domain.product.dto.*;
+import org.springframework.data.domain.*;
 
 public interface ProductService {
 

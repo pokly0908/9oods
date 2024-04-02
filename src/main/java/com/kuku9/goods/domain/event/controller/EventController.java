@@ -1,19 +1,15 @@
 package com.kuku9.goods.domain.event.controller;
 
-import com.kuku9.goods.domain.event.dto.EventRequest;
-import com.kuku9.goods.domain.event.dto.EventResponse;
-import com.kuku9.goods.domain.event.dto.EventTitleResponse;
-import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
-import com.kuku9.goods.domain.event.service.EventService;
-import com.kuku9.goods.global.security.CustomUserDetails;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.kuku9.goods.domain.event.dto.*;
+import com.kuku9.goods.domain.event.service.*;
+import com.kuku9.goods.global.security.*;
+import jakarta.validation.*;
+import java.net.*;
+import java.util.*;
+import lombok.*;
+import org.springframework.http.*;
+import org.springframework.security.core.annotation.*;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,8 +19,9 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping
-    public ResponseEntity<String> createEvent(@Valid @RequestBody EventRequest request,
-                                              @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public ResponseEntity<String> createEvent(
+        @Valid @RequestBody EventRequest request,
+        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         Long eventId = eventService.createEvent(request, customUserDetails.getUser());
 
@@ -33,11 +30,11 @@ public class EventController {
 
     @PutMapping("/{eventId}")
     public ResponseEntity<String> updateEvent(
-            @Valid @RequestBody EventUpdateRequest request,
-            @PathVariable Long eventId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        @Valid @RequestBody EventUpdateRequest request,
+        @PathVariable Long eventId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         Long updatedEventId = eventService.updateEvent(eventId, request,
-                customUserDetails.getUser());
+            customUserDetails.getUser());
 
         return ResponseEntity.created(URI.create("/api/v1/events/" + updatedEventId)).build();
     }
@@ -59,8 +56,9 @@ public class EventController {
     }
 
     @DeleteMapping("/{eventId}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId,
-                                            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public ResponseEntity<Void> deleteEvent(
+        @PathVariable Long eventId,
+        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         eventService.deleteEvent(eventId, customUserDetails.getUser());
 
@@ -68,8 +66,9 @@ public class EventController {
     }
 
     @DeleteMapping("/eventProducts/{eventProductId}")
-    public ResponseEntity<Void> deleteEventProduct(@PathVariable Long eventProductId,
-                                                   @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public ResponseEntity<Void> deleteEventProduct(
+        @PathVariable Long eventProductId,
+        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         eventService.deleteEventProduct(eventProductId, customUserDetails.getUser());
 

@@ -1,20 +1,19 @@
 package com.kuku9.goods.global.security.jwt;
 
-import com.kuku9.goods.domain.user.entity.UserRoleEnum;
+import com.kuku9.goods.domain.user.entity.*;
+import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import io.jsonwebtoken.security.*;
+import jakarta.annotation.*;
+import jakarta.servlet.http.*;
+import java.security.*;
+import java.util.*;
+import lombok.*;
+import lombok.extern.slf4j.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
-import java.security.Key;
-import java.util.Base64;
-import java.util.Date;
+import org.springframework.stereotype.*;
+import org.springframework.util.*;
+import java.lang.SecurityException;
 
 @Slf4j(topic = "JwtUtil")
 @Component
@@ -44,14 +43,14 @@ public class JwtUtil {
         Date date = new Date();
 
         return BEARER_PREFIX +
-                Jwts.builder()
-                        .setSubject(username) //사용자 식별자값(ID)
-                        .claim("username", username)
-                        .claim("role", role)
-                        .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME)) // 만료 시간
-                        .setIssuedAt(date) // 발급일
-                        .signWith(key, signatureAlgorithm) // 암호화 알고리즘
-                        .compact();
+            Jwts.builder()
+                .setSubject(username) //사용자 식별자값(ID)
+                .claim("username", username)
+                .claim("role", role)
+                .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME)) // 만료 시간
+                .setIssuedAt(date) // 발급일
+                .signWith(key, signatureAlgorithm) // 암호화 알고리즘
+                .compact();
     }
 
     // header 에서 JWT 가져오기

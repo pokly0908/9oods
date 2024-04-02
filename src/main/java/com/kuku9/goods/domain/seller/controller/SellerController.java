@@ -1,18 +1,17 @@
 package com.kuku9.goods.domain.seller.controller;
 
-import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
-import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
-import com.kuku9.goods.domain.seller.dto.SellProductStatisticsResponseDto;
-import com.kuku9.goods.domain.seller.dto.SellingProductResponseDto;
-import com.kuku9.goods.domain.seller.service.SellerService;
-import com.kuku9.goods.global.security.CustomUserDetails;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.kuku9.goods.domain.seller.dto.request.*;
+import com.kuku9.goods.domain.seller.dto.response.*;
+import com.kuku9.goods.domain.seller.service.*;
+import com.kuku9.goods.global.security.*;
+import java.net.*;
+import java.time.*;
+import java.util.*;
+import lombok.*;
+import org.springframework.format.annotation.*;
+import org.springframework.http.*;
+import org.springframework.security.core.annotation.*;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,8 +23,8 @@ public class SellerController {
     // 상품 등록 기능
     @PostMapping("/products")
     public ResponseEntity<String> createProduct(
-            @RequestBody ProductRegistRequestDto requestDto,
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        @RequestBody ProductRegistRequest requestDto,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long sellerId = sellerService.createProduct(requestDto, userDetails.getUser());
 
         return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
@@ -34,8 +33,8 @@ public class SellerController {
     // 상품 판매 여부 기능
     @PatchMapping("/products/{productsId}/status")
     public ResponseEntity<Void> orderProductStatus(
-            @PathVariable Long productsId,
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        @PathVariable Long productsId,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long sellerId = sellerService.orderProductStatus(productsId, userDetails.getUser());
 
         return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
@@ -44,9 +43,9 @@ public class SellerController {
     // 상품 정보 수정 기능
     @PatchMapping("/products/{productId}")
     public ResponseEntity<Void> updateProduct(
-            @PathVariable Long productId,
-            @RequestBody ProductUpdateRequestDto requestDto,
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        @PathVariable Long productId,
+        @RequestBody ProductUpdateRequest requestDto,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long sellerId = sellerService.updateProduct(productId, requestDto, userDetails.getUser());
 
         return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
@@ -54,20 +53,22 @@ public class SellerController {
 
     // 셀러의 판매된 상품 정보 조회 기능
     @GetMapping("/products/selled")
-    public ResponseEntity<List<SellingProductResponseDto>> getSellingProduct(
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
-        List<SellingProductResponseDto> responseDto = sellerService.getSellingProduct(
-                userDetails.getUser());
+    public ResponseEntity<List<SellingProductResponse>> getSellingProduct(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+        List<SellingProductResponse> responseDto = sellerService.getSellingProduct(
+            userDetails.getUser(), startDate, endDate);
 
         return ResponseEntity.ok(responseDto);
     }
 
     // 셀러의 판매된 상품 통계
     @GetMapping("/products/selled/statistics")
-    public ResponseEntity<SellProductStatisticsResponseDto> getSellProductStatistics(
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
-        SellProductStatisticsResponseDto responseDto = sellerService.getSellProductStatistics(
-                userDetails.getUser());
+    public ResponseEntity<SellProductStatisticsResponse> getSellProductStatistics(
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        SellProductStatisticsResponse responseDto = sellerService.getSellProductStatistics(
+            userDetails.getUser());
 
         return ResponseEntity.ok(responseDto);
     }

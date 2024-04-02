@@ -1,23 +1,20 @@
 package com.kuku9.goods.domain.seller.service;
 
-import com.kuku9.goods.domain.order_product.entity.OrderProduct;
-import com.kuku9.goods.domain.order_product.repository.OrderProductRepository;
-import com.kuku9.goods.domain.product.entity.Product;
-import com.kuku9.goods.domain.product.repository.ProductRepository;
-import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
-import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
-import com.kuku9.goods.domain.seller.dto.SellProductStatisticsResponseDto;
-import com.kuku9.goods.domain.seller.dto.SellingProductResponseDto;
-import com.kuku9.goods.domain.seller.entity.Seller;
-import com.kuku9.goods.domain.seller.repository.SellerRepository;
-import com.kuku9.goods.domain.user.entity.User;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.kuku9.goods.domain.order_product.entity.*;
+import com.kuku9.goods.domain.order_product.repository.*;
+import com.kuku9.goods.domain.product.entity.*;
+import com.kuku9.goods.domain.product.repository.*;
+import com.kuku9.goods.domain.seller.dto.request.*;
+import com.kuku9.goods.domain.seller.dto.response.*;
+import com.kuku9.goods.domain.seller.entity.*;
+import com.kuku9.goods.domain.seller.repository.*;
+import com.kuku9.goods.domain.user.entity.*;
+import java.time.*;
+import java.util.*;
+import lombok.*;
+import lombok.extern.slf4j.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +27,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional
-    public Long createProduct(ProductRegistRequestDto requestDto, User user) {
+    public Long createProduct(ProductRegistRequest requestDto, User user) {
         Seller seller = findSeller(user);
         if (seller == null) {
             throw new IllegalArgumentException("셀러만 상품을 등록할 수 있습니다. 셀러 신청하세요.");
@@ -63,7 +60,7 @@ public class SellerServiceImpl implements SellerService {
     @Override
     @Transactional
     public Long updateProduct(
-            Long productId, ProductUpdateRequestDto requestDto, User user) {
+        Long productId, ProductUpdateRequest requestDto, User user) {
         Seller seller = findSeller(user);
         if (seller == null) {
             throw new IllegalArgumentException("셀러만 상품 정보를 수정할 수 있습니다. 셀러 신청하세요.");
@@ -80,30 +77,35 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SellingProductResponseDto> getSellingProduct(User user) {
+    public List<SellingProductResponse> getSellingProduct(
+        User user, LocalDate startDate, LocalDate endDate) {
         Seller seller = findSeller(user);
 
         List<OrderProduct> orderProductList = new ArrayList<>();
         for (Product product : productRepository.findBySellerId(seller.getId())) {
-            OrderProduct orderProduct = orderProductRepository.findByProductId(product.getId());
-            if (orderProduct != null) {
-                orderProductList.add(orderProduct);
+            List<OrderProduct> orderProducts =
+                orderProductRepository.findByProductAndCreatedAtBetween(
+                    product,
+                    startDate.atStartOfDay(),
+                    endDate.plusDays(1).atStartOfDay());
+            // 변경된 부분: orderDate -> createdAt로 수정
+
+            if (orderProducts != null) {
+                orderProductList.addAll(orderProducts);
             }
         }
 
-        List<SellingProductResponseDto> responseDtoList = new ArrayList<>();
+        List<SellingProductResponse> responseDtoList = new ArrayList<>();
         long totalPrice = 0L;
         for (OrderProduct orderProduct : orderProductList) {
             long productTotalPrice =
-                    orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
-            totalPrice += productTotalPrice;
+                orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
             responseDtoList.add(
-                    new SellingProductResponseDto(
-                            orderProduct.getProduct().getName(),
-                            orderProduct.getProduct().getPrice(),
-                            orderProduct.getQuantity(),
-                            productTotalPrice,
-                            totalPrice));
+                new SellingProductResponse(
+                    orderProduct.getProduct().getName(),
+                    orderProduct.getProduct().getPrice(),
+                    orderProduct.getQuantity(),
+                    productTotalPrice));
         }
 
         return responseDtoList;
@@ -111,7 +113,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional(readOnly = true)
-    public SellProductStatisticsResponseDto getSellProductStatistics(User user) {
+    public SellProductStatisticsResponse getSellProductStatistics(User user) {
         Seller seller = findSeller(user);
 
         List<OrderProduct> orderProductList = new ArrayList<>();
@@ -126,14 +128,13 @@ public class SellerServiceImpl implements SellerService {
         long statisticsPrice = 0L;
         for (OrderProduct orderProduct : orderProductList) {
             long productTotalPrice =
-                    (orderProduct.getProduct().getPrice() * orderProduct.getQuantity());
+                (orderProduct.getProduct().getPrice() * orderProduct.getQuantity());
             totalPrice += productTotalPrice;
         }
         statisticsPrice = totalPrice / orderProductList.size();
 
-        return new SellProductStatisticsResponseDto(statisticsPrice);
+        return new SellProductStatisticsResponse(statisticsPrice);
     }
-
 
     private Seller findSeller(User user) {
         return sellerRepository.findByUserId(user.getId());

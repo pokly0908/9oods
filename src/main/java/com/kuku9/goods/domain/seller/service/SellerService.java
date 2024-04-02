@@ -1,26 +1,26 @@
 package com.kuku9.goods.domain.seller.service;
 
-import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
-import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
-import com.kuku9.goods.domain.seller.dto.SellProductStatisticsResponseDto;
-import com.kuku9.goods.domain.seller.dto.SellingProductResponseDto;
-import com.kuku9.goods.domain.seller.entity.Seller;
-import com.kuku9.goods.domain.user.entity.User;
-
-import java.util.List;
+import com.kuku9.goods.domain.seller.dto.request.*;
+import com.kuku9.goods.domain.seller.dto.response.*;
+import com.kuku9.goods.domain.seller.entity.*;
+import com.kuku9.goods.domain.user.entity.*;
+import java.time.*;
+import java.util.*;
 
 public interface SellerService {
 
-    Long createProduct(ProductRegistRequestDto requestDto, User user);
+    // todo :: Parameter 주석 설명 추가하기
+    Long createProduct(ProductRegistRequest requestDto, User user);
 
     Long orderProductStatus(Long productsId, User user);
 
     Long updateProduct(
-            Long productId, ProductUpdateRequestDto requestDto, User user);
+        Long productId, ProductUpdateRequest requestDto, User user);
 
-    List<SellingProductResponseDto> getSellingProduct(User user);
+    List<SellingProductResponse> getSellingProduct(
+        User user, LocalDate startDate, LocalDate endDate);
 
-    SellProductStatisticsResponseDto getSellProductStatistics(User user);
+    SellProductStatisticsResponse getSellProductStatistics(User user);
 
     /**
      * 셀러 db 저장

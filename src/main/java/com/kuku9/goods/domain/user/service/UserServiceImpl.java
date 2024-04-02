@@ -1,10 +1,6 @@
 package com.kuku9.goods.domain.user.service;
 
-import static com.kuku9.goods.global.exception.ExceptionStatus.DUPLICATED_SELLER;
-import static com.kuku9.goods.global.exception.ExceptionStatus.DUPLICATED_USERNAME;
-import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_PASSWORD;
-import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_EQUAL_USER_ID;
-import static com.kuku9.goods.global.exception.ExceptionStatus.NO_SUCH_USER;
+import static com.kuku9.goods.global.exception.ExceptionStatus.*;
 
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.service.SellerService;

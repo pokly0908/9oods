@@ -20,48 +20,48 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("deleted_at IS NULL")
 public class Product extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "seller_id", nullable = false)
-	private Seller seller;
+    @ManyToOne
+    @JoinColumn(name = "seller_id", nullable = false)
+    private Seller seller;
 
-	@Column
-	private String name;
+    @Column
+    private String name;
 
-	@Column
-	private String description;
+    @Column
+    private String description;
 
-	@Column
-	private Long price;
+    @Column
+    private Long price;
 
-	@Column
-	private Boolean status = true;
+    @Column
+    private Boolean status = true;
 
-	public Product(ProductRegistRequestDto requestDto, Seller seller) {
-		this.name = requestDto.getProductName();
-		this.description = requestDto.getProductDescription();
-		this.price = requestDto.getProductPrice();
-		this.seller = seller;
-	}
+    public Product(ProductRegistRequest requestDto, Seller seller) {
+        this.name = requestDto.getProductName();
+        this.description = requestDto.getProductDescription();
+        this.price = requestDto.getProductPrice();
+        this.seller = seller;
+    }
 
-	public void updateOrderStatus(Boolean status) {
-		if (status) {
-			this.status = false;
-		}
-	}
+    public void updateOrderStatus(Boolean status) {
+        if (status) {
+            this.status = false;
+        }
+    }
 
-	public void updateProduct(ProductUpdateRequestDto requestDto) {
-		if (!requestDto.getName().isEmpty()) {
-			this.name = requestDto.getName();
-		}
-		if (!requestDto.getDescription().isEmpty()) {
-			this.description = requestDto.getDescription();
-		}
+    public void updateProduct(ProductUpdateRequest requestDto) {
+        if (!requestDto.getName().isEmpty()) {
+            this.name = requestDto.getName();
+        }
+        if (!requestDto.getDescription().isEmpty()) {
+            this.description = requestDto.getDescription();
+        }
 //        if (!requestDto.getPrice().isEmpty()) {
 //            this.price = requestDto.getPrice();
 //        }
-	}
+    }
 }

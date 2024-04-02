@@ -1,6 +1,6 @@
 package com.kuku9.goods.domain.file.repository;
 
-import com.kuku9.goods.domain.file.entity.File;
+import com.kuku9.goods.domain.file.entity.*;
 
 public interface FileRepository {
 

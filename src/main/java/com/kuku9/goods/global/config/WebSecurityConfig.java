@@ -24,40 +24,40 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
 
-	private final JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-	private final CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
-		throws Exception {
-		return configuration.getAuthenticationManager();
-	}
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
+        throws Exception {
+        return configuration.getAuthenticationManager();
+    }
 
-	@Bean
-	public JwtAuthFilter jwtAuthFilter() {
-		return new JwtAuthFilter(jwtUtil, userDetailsService);
-	}
+    @Bean
+    public JwtAuthFilter jwtAuthFilter() {
+        return new JwtAuthFilter(jwtUtil, userDetailsService);
+    }
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.csrf(AbstractHttpConfigurer::disable);
-		http.sessionManagement((sessionManagement) ->
-			sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.sessionManagement((sessionManagement) ->
+            sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        );
 
-		http.authorizeHttpRequests(authorize -> authorize
-			.requestMatchers("/api/**").permitAll()
-			.anyRequest().authenticated()
-		);
+        http.authorizeHttpRequests(authorize -> authorize
+            .requestMatchers("/api/**").permitAll()
+            .anyRequest().authenticated()
+        );
 
-		http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
-		return http.build();
-	}
+        http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
 }

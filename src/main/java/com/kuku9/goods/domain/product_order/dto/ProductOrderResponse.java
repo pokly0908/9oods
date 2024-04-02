@@ -9,11 +9,11 @@ import lombok.Getter;
 @Getter
 public class ProductOrderResponse {
 
-	private final Long orderId;
-	private final String orderStatus;
-	private final LocalDateTime orderDate;
-	private final String address;
-	private final List<ProductResponse> products;
+    private final Long orderId;
+    private final String orderStatus;
+    private final LocalDateTime orderDate;
+    private final String address;
+    private final List<ProductResponse> products;
 
 	public ProductOrderResponse(ProductOrder productOrder, List<ProductResponse> products) {
 		this.orderId = productOrder.getId();

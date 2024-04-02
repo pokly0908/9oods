@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductJpaRepository extends JpaRepository<Product, Long> {
 
-	Product findByIdAndSellerId(Long productId, Long id);
+    Product findByIdAndSellerId(Long productId, Long id);
 
-	Page<Product> findBySellerId(Long sellerId, Pageable pageable);
+    Page<Product> findBySellerId(Long sellerId, Pageable pageable);
 
-	List<Product> findBySellerId(Long sellerId);
+    List<Product> findBySellerId(Long sellerId);
 }

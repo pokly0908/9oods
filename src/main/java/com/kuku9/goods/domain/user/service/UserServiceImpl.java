@@ -24,94 +24,94 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-	private final UserRepository userRepository;
-	private final PasswordEncoder passwordEncoder;
-	private final SellerService sellerService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final SellerService sellerService;
 
-	@Override
-	@Transactional
-	public void signup(UserSignupRequest request) {
-		checkIfUsernameAlreadyExists(request.getUsername());
-		String encodedPassword = passwordEncoder.encode(request.getPassword());
+    @Override
+    @Transactional
+    public void signup(UserSignupRequest request) {
+        checkIfUsernameAlreadyExists(request.getUsername());
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
 
-		User user = User.from(request, encodedPassword);
-		userRepository.save(user);
+        User user = User.from(request, encodedPassword);
+        userRepository.save(user);
 
-	}
+    }
 
-	@Override
-	public User findByUsername(String username) {
-		return userRepository.findByUsername(username).orElseThrow(
-			() -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
-		);
-	}
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(
+            () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
+        );
+    }
 
-	@Override
-	@Transactional
-	public void modifyPassword(ModifyPasswordRequest request, User user) {
-		User findUser = findByUsername(user.getUsername());
+    @Override
+    @Transactional
+    public void modifyPassword(ModifyPasswordRequest request, User user) {
+        User findUser = findByUsername(user.getUsername());
 
-		if (!passwordEncoder.matches(request.getPrePassword(), findUser.getPassword())) {
-			throw new InvalidPasswordException(INVALID_PASSWORD);
-		}
+        if (!passwordEncoder.matches(request.getPrePassword(), findUser.getPassword())) {
+            throw new InvalidPasswordException(INVALID_PASSWORD);
+        }
 
-		findUser.modifyPassword(passwordEncoder.encode(request.getNewPassword()));
+        findUser.modifyPassword(passwordEncoder.encode(request.getNewPassword()));
 
-	}
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public UserResponse getUserInfo(Long userId, User user) throws AccessDeniedException {
-		User findUser = findById(userId);
-		if (!user.getId().equals(userId)) {
-			throw new AccessDeniedException(String.valueOf(NOT_EQUAL_USER_ID));
-		}
-		return UserResponse.from(findUser);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public UserResponse getUserInfo(Long userId, User user) throws AccessDeniedException {
+        User findUser = findById(userId);
+        if (!user.getId().equals(userId)) {
+            throw new AccessDeniedException(String.valueOf(NOT_EQUAL_USER_ID));
+        }
+        return UserResponse.from(findUser);
+    }
 
-	@Override
-	@Transactional
-	public Seller registerSeller(RegisterSellerRequest request, User user) {
+    @Override
+    @Transactional
+    public Seller registerSeller(RegisterSellerRequest request, User user) {
 
-		if (sellerService.checkSellerExistsByUserId(user.getId())) {
-			throw new DuplicatedException(DUPLICATED_SELLER);
-		}
+        if (sellerService.checkSellerExistsByUserId(user.getId())) {
+            throw new DuplicatedException(DUPLICATED_SELLER);
+        }
 
-		if (!sellerService.isBrandNameUnique(request.getBrandName())) {
-			throw new DuplicatedException(DUPLICATED_SELLER);
-		}
+        if (!sellerService.isBrandNameUnique(request.getBrandName())) {
+            throw new DuplicatedException(DUPLICATED_SELLER);
+        }
 
-		if (!sellerService.isDomainNameUnique(request.getDomainName())) {
-			throw new DuplicatedException(DUPLICATED_SELLER);
-		}
+        if (!sellerService.isDomainNameUnique(request.getDomainName())) {
+            throw new DuplicatedException(DUPLICATED_SELLER);
+        }
 
-		if (!sellerService.isEmailUnique(request.getEmail())) {
-			throw new DuplicatedException(DUPLICATED_SELLER);
-		}
+        if (!sellerService.isEmailUnique(request.getEmail())) {
+            throw new DuplicatedException(DUPLICATED_SELLER);
+        }
 
-		if (!sellerService.isPhoneNumberUnique(request.getPhoneNumber())) {
-			throw new DuplicatedException(DUPLICATED_SELLER);
-		}
+        if (!sellerService.isPhoneNumberUnique(request.getPhoneNumber())) {
+            throw new DuplicatedException(DUPLICATED_SELLER);
+        }
 
-		User findUser = findById(user.getId());
+        User findUser = findById(user.getId());
 
-		findUser.updateRole(UserRoleEnum.SELLER);
-		Seller seller = Seller.from(request, user);
+        findUser.updateRole(UserRoleEnum.SELLER);
+        Seller seller = Seller.from(request, user);
 
-		return sellerService.save(seller);
-	}
+        return sellerService.save(seller);
+    }
 
 
-	private User findById(Long userId) {
-		return userRepository.findById(userId).orElseThrow(
-			() -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
-		);
-	}
+    private User findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+            () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
+        );
+    }
 
-	private void checkIfUsernameAlreadyExists(String username) {
-		if (userRepository.existsByUsername(username)) {
-			throw new DuplicatedException(DUPLICATED_USERNAME);
-		}
-	}
+    private void checkIfUsernameAlreadyExists(String username) {
+        if (userRepository.existsByUsername(username)) {
+            throw new DuplicatedException(DUPLICATED_USERNAME);
+        }
+    }
 
 }

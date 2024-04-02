@@ -21,53 +21,53 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("deleted_at IS NULL")
 public class User extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(nullable = false)
-	@Comment("사용자가 로그인할때 쓸 id명, 이메일")
-	@Email
-	private String username;
+    @Column(nullable = false)
+    @Comment("사용자가 로그인할때 쓸 id명, 이메일")
+    @Email
+    private String username;
 
-	@Column(nullable = false)
-	@Comment("사용자 실명")
-	private String realName;
+    @Column(nullable = false)
+    @Comment("사용자 실명")
+    private String realName;
 
-	@Column(nullable = false)
-	@Comment("비밀번호")
-	private String password;
-
-
-	@Column(nullable = false)
-	@Enumerated(value = EnumType.STRING)
-	@Comment("유저 권한")
-	private UserRoleEnum role = UserRoleEnum.USER;
+    @Column(nullable = false)
+    @Comment("비밀번호")
+    private String password;
 
 
-	public User(
-		UserSignupRequest request,
-		String encodedPassword
-	) {
-		this.username = request.getUsername();
-		this.realName = request.getRealName();
-		this.password = encodedPassword;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    @Comment("유저 권한")
+    private UserRoleEnum role = UserRoleEnum.USER;
 
-	}
 
-	public static User from(
-		UserSignupRequest request,
-		String encodedPassword
+    public User(
+        UserSignupRequest request,
+        String encodedPassword
+    ) {
+        this.username = request.getUsername();
+        this.realName = request.getRealName();
+        this.password = encodedPassword;
 
-	) {
-		return new User(request, encodedPassword);
-	}
+    }
 
-	public void modifyPassword(String encodedNewPassword) {
-		this.password = encodedNewPassword;
-	}
+    public static User from(
+        UserSignupRequest request,
+        String encodedPassword
 
-	public void updateRole(UserRoleEnum userRoleEnum) {
-		this.role = userRoleEnum;
-	}
+    ) {
+        return new User(request, encodedPassword);
+    }
+
+    public void modifyPassword(String encodedNewPassword) {
+        this.password = encodedNewPassword;
+    }
+
+    public void updateRole(UserRoleEnum userRoleEnum) {
+        this.role = userRoleEnum;
+    }
 }

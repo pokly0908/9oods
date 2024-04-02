@@ -10,4 +10,6 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Long
 
 	List<OrderProduct> findAllByProductOrderId(Long orderId);
 
+    List<OrderProduct> findByProductAndCreatedAtBetween(
+        Product product, LocalDateTime localDateTime, LocalDateTime localDateTime1);
 }

@@ -1,9 +1,11 @@
-package com.kuku9.goods.domain.seller.dto;
+package com.kuku9.goods.domain.seller.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-public class ProductRegistRequestDto {
+@AllArgsConstructor
+public class ProductRegistRequest {
 
     private String productName;
     private String productDescription;

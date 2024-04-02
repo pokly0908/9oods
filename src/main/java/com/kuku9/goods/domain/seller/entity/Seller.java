@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -28,6 +29,7 @@ import org.hibernate.annotations.SQLRestriction;
 })
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @SQLDelete(sql = "UPDATE seller SET deleted_at=CURRENT_TIMESTAMP where id=?")
 @SQLRestriction("deleted_at IS NULL")
 public class Seller extends BaseEntity {

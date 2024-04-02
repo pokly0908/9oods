@@ -1,9 +1,9 @@
-package com.kuku9.goods.domain.seller.dto;
+package com.kuku9.goods.domain.seller.dto.request;
 
 import lombok.Getter;
 
 @Getter
-public class ProductUpdateRequestDto {
+public class ProductUpdateRequest {
 
     private String name;
     private String description;

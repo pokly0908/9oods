@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(
             () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))

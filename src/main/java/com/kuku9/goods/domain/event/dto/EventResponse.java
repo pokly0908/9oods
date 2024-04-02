@@ -18,9 +18,9 @@ public class EventResponse {
     private String content;
     private Long limitNum;
     private LocalDate openAt;
-    private List<ProductInfo> eventProducts;
+    private List<Long> eventProducts;
 
-    public static EventResponse from(Event event, List<ProductInfo> eventProducts) {
+    public static EventResponse from(Event event, List<Long> eventProducts) {
         return new EventResponse(
             event.getId(),
             event.getTitle(),

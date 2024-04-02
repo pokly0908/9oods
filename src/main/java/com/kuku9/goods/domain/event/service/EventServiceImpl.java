@@ -79,8 +79,8 @@ public class EventServiceImpl implements EventService {
 	public EventResponse getEvent(Long eventId) {
 
 		Event event = findEvent(eventId);
-		List<ProductInfo> infos = eventQuery.getEventProductInfo(event.getId());
-		return EventResponse.from(event, infos);
+		List<Long> eventProducts = eventQuery.getEventProductInfo(event.getId());
+		return EventResponse.from(event, eventProducts);
 	}
 
 	@Transactional(readOnly = true)

@@ -25,14 +25,10 @@ public class EventQueryImpl implements EventQuery {
 			.fetch();
 	}
 
-	public List<ProductInfo> getEventProductInfo(Long eventId) {
-		return jpaQueryFactory.select(Projections.fields(ProductInfo.class,
-			QProduct.product.name,
-			QProduct.product.description,
-			QProduct.product.price))
+	public List<Long> getEventProductInfo(Long eventId) {
+		return jpaQueryFactory.select(
+			QEventProduct.eventProduct.product.id)
 			.from(QEventProduct.eventProduct)
-			.leftJoin(QProduct.product).fetchJoin()
-			.on(QEventProduct.eventProduct.product.id.eq(QProduct.product.id))
 			.where(QEventProduct.eventProduct.event.id.eq(eventId))
 			.fetch();
 	}

@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface EventQuery {
 
-    List<ProductInfo> getEventProductInfo(Long eventId);
-    List<EventTitleResponse> getEventTitles();
+    List<Long> getEventProductInfo(Long eventId);
     void deleteEventProduct(Long eventId);
 }

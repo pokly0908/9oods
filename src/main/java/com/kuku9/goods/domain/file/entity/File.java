@@ -1,17 +1,9 @@
 package com.kuku9.goods.domain.file.entity;
 
-import com.kuku9.goods.global.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
+import com.kuku9.goods.global.common.entity.*;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.*;
 
 @Entity
 @Getter
@@ -22,12 +14,12 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("deleted_at IS NULL")
 public class File extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column
-    private String url;
+	@Column
+	private String url;
 
 
 }

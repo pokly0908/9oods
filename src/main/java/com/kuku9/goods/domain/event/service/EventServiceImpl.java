@@ -45,8 +45,7 @@ public class EventServiceImpl implements EventService {
 			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
 		}
 
-		Event event = new Event(eventRequest.getTitle(), eventRequest.getContent(),
-			eventRequest.getLimitNum(), eventRequest.getOpenAt());
+		Event event = new Event(eventRequest, seller);
 		Event savedEvent = eventRepository.save(event);
 
 		eventRequest.getEventProducts().stream()
@@ -63,10 +62,12 @@ public class EventServiceImpl implements EventService {
 	public Long updateEvent(Long eventId, EventUpdateRequest eventRequest, User user) {
 
 		Event event = findEvent(eventId);
-		event.update(eventRequest.getTitle(), eventRequest.getContent(),
-			eventRequest.getLimitNum(), eventRequest.getOpenAt());
 
-		//todo: 생성자가 수정할 수 있도록 검증 처리 추가하기
+		if (sellerRepository.findByUserId(user.getId()) == null) {
+			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
+		}
+
+		event.update(eventRequest);
 
 		return event.getId();
 	}
@@ -90,7 +91,10 @@ public class EventServiceImpl implements EventService {
 
 		Event event = findEvent(eventId);
 
-		//todo: 생성자가 삭제할 수 있도록 검증 처리 추가하기
+		if (sellerRepository.findByUserId(user.getId()) == null) {
+			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
+		}
+
 		eventQuery.deleteEventProduct(eventId);
 		eventRepository.delete(event);
 
@@ -99,10 +103,12 @@ public class EventServiceImpl implements EventService {
 	@Transactional
 	public void deleteEventProduct(Long eventProductId, User user) {
 
+		if (sellerRepository.findByUserId(user.getId()) == null) {
+			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
+		}
+
 		EventProduct eventProduct = eventProductRepository.findById(eventProductId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));
-
-		//todo: 생성자가 삭제할 수 있도록 검증 처리 추가하기
 
 		eventProductRepository.delete(eventProduct);
 	}

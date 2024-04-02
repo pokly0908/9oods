@@ -1,11 +1,16 @@
 package com.kuku9.goods.domain.event.entity;
 
+import com.kuku9.goods.domain.event.dto.EventRequest;
+import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
+import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,18 +43,23 @@ public class Event extends BaseEntity {
     @Column
     private LocalDate openAt;
 
-    public Event(String title, String content, Long limitNum, LocalDate openAt) {
-        this.title = title;
-        this.content = content;
-        this.limitNum = limitNum;
-        this.openAt = openAt;
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private Seller seller;
+
+    public Event(EventRequest request, Seller seller) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.limitNum = request.getLimitNum();
+        this.openAt = request.getOpenAt();
+        this.seller = seller;
     }
 
-    public void update(String title, String content, Long limitNum, LocalDate openAt) {
-        this.title = title;
-        this.content = content;
-        this.limitNum = limitNum;
-        this.openAt = openAt;
+    public void update(EventUpdateRequest request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.limitNum = request.getLimitNum();
+        this.openAt = request.getOpenAt();
     }
 
 }

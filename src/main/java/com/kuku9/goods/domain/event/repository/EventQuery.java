@@ -9,7 +9,5 @@ public interface EventQuery {
 
     List<ProductInfo> getEventProductInfo(Long eventId);
     List<EventTitleResponse> getEventTitles();
-
     void deleteEventProduct(Long eventId);
-
 }

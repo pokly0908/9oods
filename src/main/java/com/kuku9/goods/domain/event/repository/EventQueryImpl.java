@@ -5,6 +5,7 @@ import com.kuku9.goods.domain.event.dto.ProductInfo;
 import com.kuku9.goods.domain.event.entity.QEvent;
 import com.kuku9.goods.domain.event_product.entity.QEventProduct;
 import com.kuku9.goods.domain.product.entity.QProduct;
+import com.kuku9.goods.domain.seller.entity.QSeller;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -41,4 +42,5 @@ public class EventQueryImpl implements EventQuery {
 			.where(QEventProduct.eventProduct.event.id.eq(eventId))
 			.execute();
 	}
+
 }

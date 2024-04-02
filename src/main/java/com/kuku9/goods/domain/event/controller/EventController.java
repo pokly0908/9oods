@@ -76,7 +76,8 @@ public class EventController {
 	}
 
 	@DeleteMapping("/eventProducts/{eventProductId}")
-	public ResponseEntity<Void> deleteEventProduct(@PathVariable Long eventProductId,
+	public ResponseEntity<Void> deleteEventProduct(
+		@PathVariable Long eventProductId,
 		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
 		eventService.deleteEventProduct(eventProductId, customUserDetails.getUser());

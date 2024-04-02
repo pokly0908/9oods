@@ -16,7 +16,7 @@ public enum ExceptionStatus {
     NOT_EQUAL_USER_ID(HttpStatus.BAD_REQUEST.value(), "해당 정보는 유저본인만 확인할 수 있습니다."),
     DUPLICATED_SELLER(HttpStatus.BAD_REQUEST.value(), "셀러 등록은 중복으로 할 수 없습니다."),
     NOT_FOUND_EVENT(HttpStatus.BAD_REQUEST.value(), "해당 이벤트는 존재하지 않습니다."),
-    INVALID_ADMIN_EVENT(HttpStatus.BAD_REQUEST.value(), "seller 만 이벤트 등록할 수 있습니다.");
+    INVALID_ADMIN_EVENT(HttpStatus.BAD_REQUEST.value(), "이벤트에 접근할 권한이 아닙니다.");
 
     private final Integer statusCode;
     private final String message;

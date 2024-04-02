@@ -4,22 +4,20 @@ import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
 import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.global.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.servlet.FlashMap;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "product")
+@SQLDelete(sql = "UPDATE product SET deleted_at=CURRENT_TIMESTAMP where id=?")
+@SQLRestriction("deleted_at IS NULL")
 public class Product extends BaseEntity {
 
     @Id

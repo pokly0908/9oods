@@ -21,8 +21,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(
-        @RequestBody LoginRequest request,
-        HttpServletResponse response) {
+            @RequestBody LoginRequest request,
+            HttpServletResponse response) {
         String token = authService.login(request);
         jwtUtil.accessTokenSetHeader(token, response);
 

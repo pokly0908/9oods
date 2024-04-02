@@ -7,8 +7,9 @@ import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
 import com.kuku9.goods.domain.user.dto.response.UserResponse;
 import com.kuku9.goods.domain.user.entity.User;
-import java.nio.file.AccessDeniedException;
 import org.springframework.stereotype.Service;
+
+import java.nio.file.AccessDeniedException;
 
 @Service
 public interface UserService {
@@ -42,7 +43,6 @@ public interface UserService {
      * @param userId 조회할 유저 아이디
      * @param user   유저
      * @return user 정보
-     * @throws AccessDeniedException
      */
     UserResponse getUserInfo(Long userId, User user) throws AccessDeniedException;
 

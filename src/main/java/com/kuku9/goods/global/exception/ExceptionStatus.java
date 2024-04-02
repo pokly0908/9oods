@@ -2,7 +2,6 @@ package com.kuku9.goods.global.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpStatus;
 
 @Getter

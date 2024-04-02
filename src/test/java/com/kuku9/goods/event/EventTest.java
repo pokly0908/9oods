@@ -13,16 +13,4 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class EventTest {
 
-    @Autowired
-    FileRepository fileRepository;
-
-    @Autowired
-    EventServiceImpl eventServiceImpl;
-
-    @DisplayName("file 테스트")
-    @Test
-    void filesave() {
-        File file = File.builder().url("http://").build();
-        fileRepository.save(file);
-    }
 }

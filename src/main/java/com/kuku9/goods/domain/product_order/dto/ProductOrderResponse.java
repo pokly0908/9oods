@@ -1,12 +1,11 @@
 package com.kuku9.goods.domain.product_order.dto;
 
-import com.kuku9.goods.domain.order_product.dto.OrderProductResponse;
-import com.kuku9.goods.domain.order_product.entity.OrderProduct;
 import com.kuku9.goods.domain.product.dto.ProductResponse;
 import com.kuku9.goods.domain.product_order.entity.ProductOrder;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.Getter;
 
 @Getter
 public class ProductOrderResponse {

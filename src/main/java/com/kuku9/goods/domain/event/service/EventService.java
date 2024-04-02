@@ -5,7 +5,6 @@ import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventTitleResponse;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
 import com.kuku9.goods.domain.user.entity.User;
-
 import java.util.List;
 
 public interface EventService {

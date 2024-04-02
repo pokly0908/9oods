@@ -7,9 +7,8 @@ import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
 import com.kuku9.goods.domain.user.dto.response.UserResponse;
 import com.kuku9.goods.domain.user.entity.User;
-import org.springframework.stereotype.Service;
-
 import java.nio.file.AccessDeniedException;
+import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {

@@ -6,7 +6,6 @@ import com.kuku9.goods.domain.seller.dto.SellProductStatisticsResponseDto;
 import com.kuku9.goods.domain.seller.dto.SellingProductResponseDto;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.entity.User;
-
 import java.util.List;
 
 public interface SellerService {
@@ -16,7 +15,7 @@ public interface SellerService {
     Long orderProductStatus(Long productsId, User user);
 
     Long updateProduct(
-            Long productId, ProductUpdateRequestDto requestDto, User user);
+        Long productId, ProductUpdateRequestDto requestDto, User user);
 
     List<SellingProductResponseDto> getSellingProduct(User user);
 

@@ -11,13 +11,12 @@ import com.kuku9.goods.domain.seller.dto.SellingProductResponseDto;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +62,7 @@ public class SellerServiceImpl implements SellerService {
     @Override
     @Transactional
     public Long updateProduct(
-            Long productId, ProductUpdateRequestDto requestDto, User user) {
+        Long productId, ProductUpdateRequestDto requestDto, User user) {
         Seller seller = findSeller(user);
         if (seller == null) {
             throw new IllegalArgumentException("셀러만 상품 정보를 수정할 수 있습니다. 셀러 신청하세요.");
@@ -95,15 +94,15 @@ public class SellerServiceImpl implements SellerService {
         long totalPrice = 0L;
         for (OrderProduct orderProduct : orderProductList) {
             long productTotalPrice =
-                    orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
+                orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
             totalPrice += productTotalPrice;
             responseDtoList.add(
-                    new SellingProductResponseDto(
-                            orderProduct.getProduct().getName(),
-                            orderProduct.getProduct().getPrice(),
-                            orderProduct.getQuantity(),
-                            productTotalPrice,
-                            totalPrice));
+                new SellingProductResponseDto(
+                    orderProduct.getProduct().getName(),
+                    orderProduct.getProduct().getPrice(),
+                    orderProduct.getQuantity(),
+                    productTotalPrice,
+                    totalPrice));
         }
 
         return responseDtoList;
@@ -126,7 +125,7 @@ public class SellerServiceImpl implements SellerService {
         long statisticsPrice = 0L;
         for (OrderProduct orderProduct : orderProductList) {
             long productTotalPrice =
-                    (orderProduct.getProduct().getPrice() * orderProduct.getQuantity());
+                (orderProduct.getProduct().getPrice() * orderProduct.getQuantity());
             totalPrice += productTotalPrice;
         }
         statisticsPrice = totalPrice / orderProductList.size();
@@ -145,8 +144,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public Seller save(Seller seller) {
-        Seller savedSeller = sellerRepository.save(seller);
-        return savedSeller;
+        return sellerRepository.save(seller);
     }
 
     @Override

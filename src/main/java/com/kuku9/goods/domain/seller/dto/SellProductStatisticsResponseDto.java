@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class SellProductStatisticsResponseDto {
 
-    private Long statisticsPrice;
+    private final Long statisticsPrice;
 
     public SellProductStatisticsResponseDto(long productTotalPrice) {
         this.statisticsPrice = productTotalPrice;

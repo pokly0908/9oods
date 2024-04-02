@@ -1,6 +1,13 @@
 package com.kuku9.goods.domain.event.service;
 
-import com.kuku9.goods.domain.event.dto.*;
+import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_ADMIN_EVENT;
+import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND_EVENT;
+
+import com.kuku9.goods.domain.event.dto.EventRequest;
+import com.kuku9.goods.domain.event.dto.EventResponse;
+import com.kuku9.goods.domain.event.dto.EventTitleResponse;
+import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
+import com.kuku9.goods.domain.event.dto.ProductInfo;
 import com.kuku9.goods.domain.event.entity.Event;
 import com.kuku9.goods.domain.event.repository.EventQuery;
 import com.kuku9.goods.domain.event.repository.EventRepository;
@@ -13,14 +20,10 @@ import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.exception.EventNotFoundException;
 import com.kuku9.goods.global.exception.InvalidAdminEventException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_ADMIN_EVENT;
-import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND_EVENT;
 
 @Service
 @RequiredArgsConstructor
@@ -42,15 +45,15 @@ public class EventServiceImpl implements EventService {
         }
 
         Event event = new Event(eventRequest.getTitle(), eventRequest.getContent(),
-                eventRequest.getLimitNum(), eventRequest.getOpenAt());
+            eventRequest.getLimitNum(), eventRequest.getOpenAt());
         Event savedEvent = eventRepository.save(event);
 
         eventRequest.getEventProducts().stream()
-                .map(EventProductRequest::getProductId)
-                .map(productId -> productRepository.findById(productId)
-                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
-                .map(product -> new EventProduct(savedEvent, product))
-                .forEach(eventProductRepository::save);
+            .map(EventProductRequest::getProductId)
+            .map(productId -> productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
+            .map(product -> new EventProduct(savedEvent, product))
+            .forEach(eventProductRepository::save);
 
         return savedEvent.getId();
     }
@@ -60,7 +63,7 @@ public class EventServiceImpl implements EventService {
 
         Event event = findEvent(eventId);
         event.update(eventRequest.getTitle(), eventRequest.getContent(),
-                eventRequest.getLimitNum(), eventRequest.getOpenAt());
+            eventRequest.getLimitNum(), eventRequest.getOpenAt());
 
         //todo: 생성자가 수정할 수 있도록 검증 처리 추가하기
 
@@ -96,7 +99,7 @@ public class EventServiceImpl implements EventService {
     public void deleteEventProduct(Long eventProductId, User user) {
 
         EventProduct eventProduct = eventProductRepository.findById(eventProductId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));
+            .orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));
 
         //todo: 생성자가 삭제할 수 있도록 검증 처리 추가하기
 
@@ -105,6 +108,6 @@ public class EventServiceImpl implements EventService {
 
     private Event findEvent(Long eventId) {
         return eventRepository.findById(eventId)
-                .orElseThrow(() -> new EventNotFoundException(NOT_FOUND_EVENT));
+            .orElseThrow(() -> new EventNotFoundException(NOT_FOUND_EVENT));
     }
 }

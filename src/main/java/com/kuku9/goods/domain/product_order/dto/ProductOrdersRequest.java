@@ -1,10 +1,9 @@
 package com.kuku9.goods.domain.product_order.dto;
 
 import com.kuku9.goods.domain.order_product.dto.OrderProductRequest;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @RequiredArgsConstructor

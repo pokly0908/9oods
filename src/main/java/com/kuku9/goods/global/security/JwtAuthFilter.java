@@ -6,6 +6,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,9 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
-import java.util.Objects;
-
 @Slf4j(topic = "JWT 검증 및 로그인 인증 인가")
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -31,8 +30,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
-            throws ServletException, IOException {
+        HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
+        throws ServletException, IOException {
 
         String tokenValue = jwtUtil.getJwtFromHeader(req);
 
@@ -44,7 +43,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 log.error(e.getMessage());
                 ResponseEntity<String> responseEntity = new ResponseEntity<>(e.getMessage(),
-                        HttpStatus.INTERNAL_SERVER_ERROR);
+                    HttpStatus.INTERNAL_SERVER_ERROR);
                 sendErrorResponse(res, responseEntity);
                 return;
             }
@@ -66,11 +65,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private Authentication createAuthentication(String username) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null,
-                userDetails.getAuthorities());
+            userDetails.getAuthorities());
     }
 
     private void sendErrorResponse(HttpServletResponse res, ResponseEntity<String> responseEntity)
-            throws IOException {
+        throws IOException {
         res.setStatus(responseEntity.getStatusCode().value());
         res.getWriter().write(Objects.requireNonNull(responseEntity.getBody()));
         res.getWriter().flush();

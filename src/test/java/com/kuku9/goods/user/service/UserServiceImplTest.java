@@ -1,5 +1,15 @@
 package com.kuku9.goods.user.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.service.SellerServiceImpl;
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
@@ -11,6 +21,7 @@ import com.kuku9.goods.domain.user.repository.UserRepository;
 import com.kuku9.goods.domain.user.service.UserServiceImpl;
 import com.kuku9.goods.global.exception.DuplicatedException;
 import com.kuku9.goods.global.exception.InvalidPasswordException;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,12 +30,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
@@ -48,9 +53,9 @@ public class UserServiceImplTest {
         String originalPassword = "aAa12345@@";
         String encodedPassword = passwordEncoder.encode(originalPassword);
         UserSignupRequest request = new UserSignupRequest(
-                "김철수",
-                "cheolsu44@naver.com",
-                originalPassword
+            "김철수",
+            "cheolsu44@naver.com",
+            originalPassword
         );
         User user = User.from(request, encodedPassword);
         when(passwordEncoder.encode(originalPassword)).thenReturn(encodedPassword);
@@ -69,9 +74,9 @@ public class UserServiceImplTest {
         // Given
         String originalPassword = "aAa12345@@";
         UserSignupRequest request = new UserSignupRequest(
-                "existingUser",
-                "cheolsu44@naver.com",
-                originalPassword
+            "existingUser",
+            "cheolsu44@naver.com",
+            originalPassword
         );
         when(userRepository.existsByUsername(request.getUsername())).thenReturn(true);
 
@@ -85,19 +90,19 @@ public class UserServiceImplTest {
     @DisplayName("비밀번호 변경 - 성공")
     void testModifyPassword_Success() {
         //Given
-        String originPassword ="aAa12345@@";
+        String originPassword = "aAa12345@@";
         String encodedOriginPassword = passwordEncoder.encode(originPassword);
         String newPassword = "aAa12345@!";
         User user = new User(1L,
-                "cheolsu44@naver.com",
-                "김철수",
-                encodedOriginPassword,
-                UserRoleEnum.USER
+            "cheolsu44@naver.com",
+            "김철수",
+            encodedOriginPassword,
+            UserRoleEnum.USER
         );
-       // userRepository.save(user);
+        // userRepository.save(user);
         ModifyPasswordRequest request = new ModifyPasswordRequest(
-                originPassword,
-                newPassword);
+            originPassword,
+            newPassword);
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(originPassword, user.getPassword())).thenReturn(true);
 
@@ -117,19 +122,21 @@ public class UserServiceImplTest {
         String encodedOriginPassword = passwordEncoder.encode(originPassword);
         String newPassword = "aAa12345@!";
         User user = new User(1L,
-                "cheolsu44@naver.com",
-                "김철수",
-                encodedOriginPassword,
-                UserRoleEnum.USER
+            "cheolsu44@naver.com",
+            "김철수",
+            encodedOriginPassword,
+            UserRoleEnum.USER
         );
         ModifyPasswordRequest request = new ModifyPasswordRequest(
-                "aAa12345@!!", // 잘못된 이전 비밀번호
-                newPassword);
+            "aAa12345@!!", // 잘못된 이전 비밀번호
+            newPassword);
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
-        when(passwordEncoder.matches(request.getPrePassword(), user.getPassword())).thenReturn(false); // 이전 비밀번호 검증 실패
+        when(passwordEncoder.matches(request.getPrePassword(), user.getPassword())).thenReturn(
+            false); // 이전 비밀번호 검증 실패
 
         // When/Then
-        assertThrows(InvalidPasswordException.class, () -> userService.modifyPassword(request, user));
+        assertThrows(InvalidPasswordException.class,
+            () -> userService.modifyPassword(request, user));
     }
 
     @Test
@@ -137,17 +144,17 @@ public class UserServiceImplTest {
     void testRegisterSeller_Success() {
         // Given
         RegisterSellerRequest request = new RegisterSellerRequest(
-                "brandName1",
-                "DomainName",
-                "안녕하세요.",
-                "email@example.com",
-                "1234567890"
+            "brandName1",
+            "DomainName",
+            "안녕하세요.",
+            "email@example.com",
+            "1234567890"
         );
         User user = new User(1L,
-                "cheolsu441@naver.com",
-                "김만식",
-                "encodedOriginPassword",
-                UserRoleEnum.USER
+            "cheolsu441@naver.com",
+            "김만식",
+            "encodedOriginPassword",
+            UserRoleEnum.USER
         );
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(sellerService.checkSellerExistsByUserId(user.getId())).thenReturn(false);
@@ -155,7 +162,7 @@ public class UserServiceImplTest {
         when(sellerService.isDomainNameUnique(request.getDomainName())).thenReturn(true);
         when(sellerService.isEmailUnique(request.getEmail())).thenReturn(true);
         when(sellerService.isPhoneNumberUnique(request.getPhoneNumber())).thenReturn(true);
-        Seller savedSeller = new Seller(request,user);
+        Seller savedSeller = new Seller(request, user);
         when(sellerService.save(any(Seller.class))).thenReturn(savedSeller);
 
         // When
@@ -171,10 +178,8 @@ public class UserServiceImplTest {
         assertEquals(request.getEmail(), registeredSeller.getEmail());
         assertEquals(request.getPhoneNumber(), registeredSeller.getPhoneNumber());
 
-
         verify(sellerService).save(any(Seller.class));
     }
-
 
 
 }

@@ -14,8 +14,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -24,7 +26,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "seller", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"brand_name", "domain_name", "email", "phone_number"})
+        @UniqueConstraint(columnNames = {"brand_name", "domain_name", "email", "phone_number"})
 })
 @Getter
 @NoArgsConstructor

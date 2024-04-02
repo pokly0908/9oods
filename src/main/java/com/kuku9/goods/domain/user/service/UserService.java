@@ -42,7 +42,6 @@ public interface UserService {
      * @param userId 조회할 유저 아이디
      * @param user   유저
      * @return user 정보
-     * @throws AccessDeniedException
      */
     UserResponse getUserInfo(Long userId, User user) throws AccessDeniedException;
 

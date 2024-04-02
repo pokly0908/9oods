@@ -43,13 +43,6 @@ public class GlobalExceptionHandler {
             .body(ex.getMessage());
     }
 
-    @ExceptionHandler(InvalidAdminCodeException.class)
-    public ResponseEntity<String> invalidAdminCodeException(InvalidAdminCodeException ex) {
-        log.error(ex.getMessage());
-        return ResponseEntity.status(ex.getStatusCode())
-            .body(ex.getMessage());
-    }
-
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> noSuchElementException(NoSuchElementException ex) {
         log.error(ex.getMessage());

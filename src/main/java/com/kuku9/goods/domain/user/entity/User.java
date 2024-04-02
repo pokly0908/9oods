@@ -43,37 +43,29 @@ public class User extends BaseEntity {
     @Comment("비밀번호")
     private String password;
 
-    @Column
-    @Comment("관리자 회원가입시 사용할 코드")
-    private String adminCode;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     @Comment("유저 권한")
-    private UserRoleEnum role;
+    private UserRoleEnum role = UserRoleEnum.USER;
 
 
     public User(
         UserSignupRequest request,
-        String encodedPassword,
-        UserRoleEnum role,
-        String adminCodeValue
-    ) {
+        String encodedPassword
+    ){
         this.username = request.getUsername();
         this.realName = request.getRealName();
         this.password = encodedPassword;
-        this.role = role;
-        this.adminCode = adminCodeValue;
 
     }
 
     public static User from(
         UserSignupRequest request,
-        String encodedPassword,
-        UserRoleEnum role,
-        String adminCodeValue
+        String encodedPassword
+
     ) {
-        return new User(request, encodedPassword, role, adminCodeValue);
+        return new User(request, encodedPassword);
     }
 
     public void modifyPassword(String encodedNewPassword) {

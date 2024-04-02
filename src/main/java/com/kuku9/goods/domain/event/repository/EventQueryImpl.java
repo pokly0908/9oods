@@ -1,23 +1,15 @@
 package com.kuku9.goods.domain.event.repository;
 
-import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventTitleResponse;
 import com.kuku9.goods.domain.event.dto.ProductInfo;
 import com.kuku9.goods.domain.event.entity.QEvent;
 import com.kuku9.goods.domain.event_product.entity.QEventProduct;
-import com.kuku9.goods.domain.file.entity.QFile;
 import com.kuku9.goods.domain.product.entity.QProduct;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import reactor.util.function.Tuples;
 
 @Repository
 @RequiredArgsConstructor

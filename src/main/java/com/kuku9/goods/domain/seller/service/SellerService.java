@@ -25,9 +25,9 @@ public interface SellerService {
     /**
      *  셀러 db 저장
      * @param seller
-     * @return null
+     * @return db에 저장된셀러 Seller
      */
-    Void save(Seller seller);
+    Seller save(Seller seller);
 
     /**
      *  유저가 셀러등록이 존재하는지 체크

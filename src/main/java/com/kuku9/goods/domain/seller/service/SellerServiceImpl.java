@@ -144,9 +144,9 @@ public class SellerServiceImpl implements SellerService {
         return productRepository.findByIdAndSellerId(productId, seller.getId());
     }
     @Override
-    public Void save(Seller seller) {
-        sellerRepository.save(seller);
-        return null;
+    public Seller save(Seller seller) {
+        Seller savedSeller = sellerRepository.save(seller);
+        return savedSeller;
     }
     @Override
     public Boolean checkSellerExistsByUserId(Long userId) {

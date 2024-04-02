@@ -18,6 +18,7 @@ import jakarta.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -32,6 +33,7 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE seller SET deleted_at=CURRENT_TIMESTAMP where id=?")
 @SQLRestriction("deleted_at IS NULL")
+@AllArgsConstructor
 public class Seller extends BaseEntity {
 
     @OneToMany(mappedBy = "seller")

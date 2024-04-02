@@ -1,6 +1,9 @@
 package com.kuku9.goods.user.service;
 
+import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.domain.seller.service.SellerServiceImpl;
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
+import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.domain.user.entity.UserRoleEnum;
@@ -19,8 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -35,6 +37,9 @@ public class UserServiceImplTest {
 
     @InjectMocks
     private UserServiceImpl userService;
+
+    @Mock
+    private SellerServiceImpl sellerService;
 
     @Test
     @DisplayName("회원가입 - 성공적인 회원가입")
@@ -126,5 +131,50 @@ public class UserServiceImplTest {
         // When/Then
         assertThrows(InvalidPasswordException.class, () -> userService.modifyPassword(request, user));
     }
+
+    @Test
+    @DisplayName("판매자 등록 - 성공")
+    void testRegisterSeller_Success() {
+        // Given
+        RegisterSellerRequest request = new RegisterSellerRequest(
+                "brandName1",
+                "DomainName",
+                "안녕하세요.",
+                "email@example.com",
+                "1234567890"
+        );
+        User user = new User(1L,
+                "cheolsu441@naver.com",
+                "김만식",
+                "encodedOriginPassword",
+                UserRoleEnum.USER
+        );
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(sellerService.checkSellerExistsByUserId(user.getId())).thenReturn(false);
+        when(sellerService.isBrandNameUnique(request.getBrandName())).thenReturn(true);
+        when(sellerService.isDomainNameUnique(request.getDomainName())).thenReturn(true);
+        when(sellerService.isEmailUnique(request.getEmail())).thenReturn(true);
+        when(sellerService.isPhoneNumberUnique(request.getPhoneNumber())).thenReturn(true);
+        Seller savedSeller = new Seller(request,user);
+        when(sellerService.save(any(Seller.class))).thenReturn(savedSeller);
+
+        // When
+        Seller registeredSeller = userService.registerSeller(request, user);
+        user.updateRole(UserRoleEnum.SELLER);
+
+        // Then
+        assertEquals(UserRoleEnum.SELLER, user.getRole());
+        assertNotNull(registeredSeller);
+        assertSame(savedSeller, registeredSeller);
+        assertEquals(request.getBrandName(), registeredSeller.getBrandName());
+        assertEquals(request.getDomainName(), registeredSeller.getDomainName());
+        assertEquals(request.getEmail(), registeredSeller.getEmail());
+        assertEquals(request.getPhoneNumber(), registeredSeller.getPhoneNumber());
+
+
+        verify(sellerService).save(any(Seller.class));
+    }
+
+
 
 }

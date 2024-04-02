@@ -11,7 +11,7 @@ import com.kuku9.goods.domain.seller.dto.SellingProductResponseDto;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
-import com.kuku9.goods.global.security.CustomUserDetails;
+
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -134,12 +134,43 @@ public class SellerServiceImpl implements SellerService {
         return new SellProductStatisticsResponseDto(statisticsPrice);
     }
 
+
+
     private Seller findSeller(User user) {
         return sellerRepository.findByUserId(user.getId());
     }
 
     private Product findProduct(Long productId, Seller seller) {
         return productRepository.findByIdAndSellerId(productId, seller.getId());
+    }
+    @Override
+    public Void save(Seller seller) {
+        sellerRepository.save(seller);
+        return null;
+    }
+    @Override
+    public Boolean checkSellerExistsByUserId(Long userId) {
+        return sellerRepository.existsByUserId(userId);
+    }
+
+    @Override
+    public Boolean isBrandNameUnique(String brandName) {
+        return sellerRepository.existsByBrandName(brandName);
+    }
+
+    @Override
+    public Boolean isDomainNameUnique(String domainName) {
+        return sellerRepository.existsByDomainName(domainName);
+    }
+
+    @Override
+    public Boolean isEmailUnique(String email) {
+        return sellerRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Boolean isPhoneNumberUnique(String phoneNumber) {
+        return sellerRepository.existsByPhoneNumber(phoneNumber);
     }
 
 }

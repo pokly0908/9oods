@@ -2,6 +2,7 @@ package com.kuku9.goods.domain.user.service;
 
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
+import com.kuku9.goods.domain.seller.service.SellerService;
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
 import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final SellerRepository sellerRepository;
+    private final SellerService sellerService;
 
     @Override
     @Transactional
@@ -74,32 +75,33 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Seller registerSeller(RegisterSellerRequest request, User user) {
 
-        if (sellerRepository.existsByUserId(user.getId())) {
+        if (sellerService.checkSellerExistsByUserId(user.getId())) {
             throw new DuplicatedException(DUPLICATED_SELLER);
         }
 
-        if (isBrandNameUnique(request.getBrandName())) {
+        if (sellerService.isBrandNameUnique(request.getBrandName())) {
             throw new DuplicatedException(DUPLICATED_SELLER);
         }
 
-        if (isDomainNameUnique(request.getDomainName())) {
+        if (sellerService.isDomainNameUnique(request.getDomainName())) {
             throw new DuplicatedException(DUPLICATED_SELLER);
         }
 
-        if (isEmailUnique(request.getEmail())) {
+        if (sellerService.isEmailUnique(request.getEmail())) {
             throw new DuplicatedException(DUPLICATED_SELLER);
         }
 
-        if (isPhoneNumberUnique(request.getPhoneNumber())) {
+        if (sellerService.isPhoneNumberUnique(request.getPhoneNumber())) {
             throw new DuplicatedException(DUPLICATED_SELLER);
         }
 
         user.updateRole(UserRoleEnum.SELLER);
         Seller seller = Seller.from(request, user);
-        sellerRepository.save(seller);
+        sellerService.save(seller);
 
         return seller;
     }
+
 
     private User findById(Long userId) {
         return userRepository.findById(userId).orElseThrow(
@@ -112,21 +114,5 @@ public class UserServiceImpl implements UserService {
             throw new DuplicatedException(DUPLICATED_USERNAME);
         }
     }
-
-
-    public Boolean isBrandNameUnique(String brandName) {
-        return sellerRepository.existsByBrandName(brandName);
-    }
-
-    public Boolean isDomainNameUnique(String domainName) {
-        return sellerRepository.existsByDomainName(domainName);
-    }
-
-    public Boolean isEmailUnique(String email) {
-        return sellerRepository.existsByEmail(email);
-    }
-
-    public Boolean isPhoneNumberUnique(String phoneNumber) {
-        return sellerRepository.existsByPhoneNumber(phoneNumber);
-    }
+    
 }

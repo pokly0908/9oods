@@ -1,27 +1,14 @@
 package com.kuku9.goods.domain.seller.entity;
 
-import com.kuku9.goods.domain.product.entity.Product;
-import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
-import com.kuku9.goods.domain.user.entity.User;
-import com.kuku9.goods.global.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import com.kuku9.goods.domain.product.entity.*;
+import com.kuku9.goods.domain.user.dto.request.*;
+import com.kuku9.goods.domain.user.entity.*;
+import com.kuku9.goods.global.common.entity.*;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
+import jakarta.persistence.*;
+import java.util.*;
+import lombok.*;
+import org.hibernate.annotations.*;
 
 @Entity
 @Table(name = "seller", uniqueConstraints = {
@@ -29,9 +16,9 @@ import org.hibernate.annotations.SQLRestriction;
 })
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @SQLDelete(sql = "UPDATE seller SET deleted_at=CURRENT_TIMESTAMP where id=?")
 @SQLRestriction("deleted_at IS NULL")
+@AllArgsConstructor
 public class Seller extends BaseEntity {
 
     @OneToMany(mappedBy = "seller")

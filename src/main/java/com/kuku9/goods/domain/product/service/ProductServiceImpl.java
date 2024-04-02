@@ -1,11 +1,10 @@
 package com.kuku9.goods.domain.product.service;
 
-import com.kuku9.goods.domain.product.dto.ProductResponse;
-import com.kuku9.goods.domain.product.repository.ProductRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
+import com.kuku9.goods.domain.product.dto.*;
+import com.kuku9.goods.domain.product.repository.*;
+import lombok.*;
+import org.springframework.data.domain.*;
+import org.springframework.stereotype.*;
 
 @Service
 @RequiredArgsConstructor

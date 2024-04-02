@@ -1,6 +1,6 @@
 package com.kuku9.goods.domain.seller.dto.request;
 
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 public class ProductUpdateRequest {

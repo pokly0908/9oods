@@ -1,31 +1,27 @@
 package com.kuku9.goods.seller;
 
-import com.kuku9.goods.common.TestValue;
-import com.kuku9.goods.domain.product.entity.Product;
-import com.kuku9.goods.domain.product.repository.ProductRepository;
-import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
-import com.kuku9.goods.domain.seller.entity.Seller;
-import com.kuku9.goods.domain.seller.repository.SellerRepository;
-import com.kuku9.goods.domain.seller.service.SellerServiceImpl;
-import com.kuku9.goods.domain.user.entity.User;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import com.kuku9.goods.common.*;
+import com.kuku9.goods.domain.product.entity.*;
+import com.kuku9.goods.domain.product.repository.*;
+import com.kuku9.goods.domain.seller.dto.request.*;
+import com.kuku9.goods.domain.seller.entity.*;
+import com.kuku9.goods.domain.seller.repository.*;
+import com.kuku9.goods.domain.seller.service.*;
+import com.kuku9.goods.domain.user.entity.*;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
+import org.mockito.*;
+import org.mockito.junit.jupiter.*;
 
 @ExtendWith(MockitoExtension.class)
 public class SellerServiceImplTest extends TestValue {
 
-    @InjectMocks
-    private SellerServiceImpl sellerServiceImpl;
-
     @Mock
     SellerRepository sellerRepository;
-
     @Mock
     ProductRepository productRepository;
+    @InjectMocks
+    private SellerServiceImpl sellerServiceImpl;
 
     @Nested // 중첩 클래스 정의
     class CreateProductTest {
@@ -39,8 +35,6 @@ public class SellerServiceImplTest extends TestValue {
             Seller seller = TEST_SELLER;
 
             Product product = TEST_PRODUCT;
-
-            given
 
             //when
 

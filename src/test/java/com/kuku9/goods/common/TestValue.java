@@ -1,11 +1,9 @@
 package com.kuku9.goods.common;
 
-import com.kuku9.goods.domain.product.entity.Product;
-import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
-import com.kuku9.goods.domain.seller.entity.Seller;
-import com.kuku9.goods.domain.user.entity.User;
-import com.kuku9.goods.domain.user.entity.UserRoleEnum;
-import javax.xml.transform.sax.SAXTransformerFactory;
+import com.kuku9.goods.domain.product.entity.*;
+import com.kuku9.goods.domain.seller.dto.request.*;
+import com.kuku9.goods.domain.seller.entity.*;
+import com.kuku9.goods.domain.user.entity.*;
 
 public class TestValue {
 
@@ -50,13 +48,6 @@ public class TestValue {
         TEST_PASSWORD3,
         TEST_ADMINCODE3,
         TEST_ROLE3);
-
-    public final static Long TEST_SELLER_ID1 = 1L;
-    public final static String TEST_SELLER_BRANDNAME1 = "brand1";
-    public final static String TEST_SELLER_DOMAINNAME1 = "domain1";
-    public final static String TEST_SELLER_INTRODUCE1 = "introduce1";
-    public final static String TEST_SELLER_EMAIL1 = "이메일1@이메일1.com";
-    public final static String TEST_SELLER_PHONENEMBER = "00000001";
     public final static User TEST_SELLER_USER = TEST_USER3;
     public final static Seller TEST_SELLER = new Seller(
         TEST_SELLER_ID1,
@@ -66,12 +57,6 @@ public class TestValue {
         TEST_SELLER_EMAIL1,
         TEST_SELLER_PHONENEMBER,
         TEST_SELLER_USER);
-
-    public final static Long TEST_PRODUCT_ID1 = 1L;
-    public final static String TEST_PRODUCT_NAME = "상품1";
-    public final static String TEST_PRODUCT_DESCRIPTION = "상품 설명1";
-    public final static Long TEST_PRODUCT_PRICE = 100000L;
-    public final static Boolean TEST_PRODUCT_STATE = true;
     public final static Product TEST_PRODUCT = new Product(
         TEST_PRODUCT_ID1,
         TEST_SELLER,
@@ -79,7 +64,17 @@ public class TestValue {
         TEST_PRODUCT_DESCRIPTION,
         TEST_PRODUCT_PRICE,
         true);
-
+    public final static Long TEST_SELLER_ID1 = 1L;
+    public final static String TEST_SELLER_BRANDNAME1 = "brand1";
+    public final static String TEST_SELLER_DOMAINNAME1 = "domain1";
+    public final static String TEST_SELLER_INTRODUCE1 = "introduce1";
+    public final static String TEST_SELLER_EMAIL1 = "이메일1@이메일1.com";
+    public final static String TEST_SELLER_PHONENEMBER = "00000001";
+    public final static Long TEST_PRODUCT_ID1 = 1L;
+    public final static String TEST_PRODUCT_NAME = "상품1";
+    public final static String TEST_PRODUCT_DESCRIPTION = "상품 설명1";
+    public final static Long TEST_PRODUCT_PRICE = 100000L;
+    public final static Boolean TEST_PRODUCT_STATE = true;
     public final static String TEST_REQUEST_PRODUCT_NAME = TEST_PRODUCT_NAME;
     public final static String TEST_REQUEST_PRODUCT_DESCRIPTION = TEST_PRODUCT_DESCRIPTION;
     public final static Long TEST_REQUEST_PRODUCT_PRICE = TEST_PRODUCT_PRICE;

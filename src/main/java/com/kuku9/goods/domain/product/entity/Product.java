@@ -1,24 +1,20 @@
 package com.kuku9.goods.domain.product.entity;
 
-import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
-import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.entity.Seller;
-import com.kuku9.goods.global.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.kuku9.goods.domain.seller.dto.request.*;
+import com.kuku9.goods.domain.seller.entity.*;
+import com.kuku9.goods.global.common.entity.*;
+import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.*;
 
 @Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "product")
+@SQLDelete(sql = "UPDATE product SET deleted_at=CURRENT_TIMESTAMP where id=?")
+@SQLRestriction("deleted_at IS NULL")
 public class Product extends BaseEntity {
 
     @Id

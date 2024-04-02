@@ -1,26 +1,17 @@
 package com.kuku9.goods.domain.seller.controller;
 
-import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
-import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
-import com.kuku9.goods.domain.seller.dto.response.SellingProductResponse;
-import com.kuku9.goods.domain.seller.service.SellerService;
-import com.kuku9.goods.global.security.CustomUserDetails;
-import java.net.URI;
-import java.time.LocalDate;
-import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.kuku9.goods.domain.seller.dto.request.*;
+import com.kuku9.goods.domain.seller.dto.response.*;
+import com.kuku9.goods.domain.seller.service.*;
+import com.kuku9.goods.global.security.*;
+import java.net.*;
+import java.time.*;
+import java.util.*;
+import lombok.*;
+import org.springframework.format.annotation.*;
+import org.springframework.http.*;
+import org.springframework.security.core.annotation.*;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -62,7 +53,7 @@ public class SellerController {
 
     // 셀러의 판매된 상품 정보 조회 기능
     @GetMapping("/products/selled")
-    public ResponseEntity<List<SellingProductResponse>> getSellingProduct (
+    public ResponseEntity<List<SellingProductResponse>> getSellingProduct(
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
@@ -74,9 +65,9 @@ public class SellerController {
 
     // 셀러의 판매된 상품 통계
     @GetMapping("/products/selled/statistics")
-    public ResponseEntity<SellProductStatisticsResponse> getSellProductStatistics (
+    public ResponseEntity<SellProductStatisticsResponse> getSellProductStatistics(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        SellProductStatisticsResponse responseDto = sellerService.getSellProductStatistics (
+        SellProductStatisticsResponse responseDto = sellerService.getSellProductStatistics(
             userDetails.getUser());
 
         return ResponseEntity.ok(responseDto);

@@ -1,12 +1,10 @@
 package com.kuku9.goods.domain.product.repository;
 
-import com.kuku9.goods.domain.product.entity.Product;
-import java.util.List;
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
+import com.kuku9.goods.domain.product.entity.*;
+import java.util.*;
+import lombok.*;
+import org.springframework.data.domain.*;
+import org.springframework.stereotype.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,7 +38,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public List<Product> findBySellerId (Long sellerId) {
+    public List<Product> findBySellerId(Long sellerId) {
         return productJpaRepository.findBySellerId(sellerId);
     }
 }

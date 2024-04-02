@@ -1,17 +1,9 @@
 package com.kuku9.goods.domain.product_order.entity;
 
-import com.kuku9.goods.domain.order_product.entity.OrderProduct;
-import com.kuku9.goods.domain.user.entity.User;
-import com.kuku9.goods.global.common.entity.BaseEntity;
-import java.util.ArrayList;
-import java.util.List;
+import com.kuku9.goods.domain.user.entity.*;
+import com.kuku9.goods.global.common.entity.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.*;
 
 @Getter
 @Entity

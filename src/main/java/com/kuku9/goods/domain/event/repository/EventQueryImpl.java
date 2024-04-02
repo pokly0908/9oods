@@ -1,12 +1,6 @@
 package com.kuku9.goods.domain.event.repository;
 
-import com.kuku9.goods.domain.event.dto.EventTitleResponse;
-import com.kuku9.goods.domain.event.dto.ProductInfo;
-import com.kuku9.goods.domain.event.entity.QEvent;
 import com.kuku9.goods.domain.event_product.entity.QEventProduct;
-import com.kuku9.goods.domain.product.entity.QProduct;
-import com.kuku9.goods.domain.seller.entity.QSeller;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +12,7 @@ public class EventQueryImpl implements EventQuery {
 
 	private final JPAQueryFactory jpaQueryFactory;
 
-	public List<Long> getEventProductInfo(Long eventId) {
+	public List<Long> getEventProducts(Long eventId) {
 		return jpaQueryFactory.select(
 			QEventProduct.eventProduct.product.id)
 			.from(QEventProduct.eventProduct)

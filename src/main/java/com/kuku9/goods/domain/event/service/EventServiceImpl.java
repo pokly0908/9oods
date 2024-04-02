@@ -75,7 +75,7 @@ public class EventServiceImpl implements EventService {
 	public EventResponse getEvent(Long eventId) {
 
 		Event event = findEvent(eventId);
-		List<Long> eventProducts = eventQuery.getEventProductInfo(event.getId());
+		List<Long> eventProducts = eventQuery.getEventProducts(event.getId());
 		return EventResponse.from(event, eventProducts);
 	}
 
@@ -84,7 +84,7 @@ public class EventServiceImpl implements EventService {
 
 		return eventRepository.findAll(pageable)
 			.map(event -> {
-				List<Long> eventProducts = eventQuery.getEventProductInfo(event.getId());
+				List<Long> eventProducts = eventQuery.getEventProducts(event.getId());
 				return EventResponse.from(event, eventProducts);
 			});
 	}

@@ -1,8 +1,11 @@
 package com.kuku9.goods.domain.event.service;
 
-import com.kuku9.goods.domain.event.dto.*;
-import com.kuku9.goods.domain.user.entity.*;
-import org.springframework.data.domain.*;
+import com.kuku9.goods.domain.event.dto.EventRequest;
+import com.kuku9.goods.domain.event.dto.EventResponse;
+import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
+import com.kuku9.goods.domain.user.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface EventService {
 

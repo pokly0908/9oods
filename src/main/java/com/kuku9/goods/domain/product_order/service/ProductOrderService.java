@@ -1,8 +1,9 @@
 package com.kuku9.goods.domain.product_order.service;
 
-import com.kuku9.goods.domain.product_order.dto.*;
-import com.kuku9.goods.domain.product_order.entity.*;
-import com.kuku9.goods.domain.user.entity.*;
+import com.kuku9.goods.domain.product_order.dto.ProductOrderResponse;
+import com.kuku9.goods.domain.product_order.dto.ProductOrdersRequest;
+import com.kuku9.goods.domain.product_order.entity.ProductOrder;
+import com.kuku9.goods.domain.user.entity.User;
 
 public interface ProductOrderService {
 

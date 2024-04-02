@@ -1,6 +1,6 @@
 package com.kuku9.goods.domain.event.repository;
 
-import java.util.*;
+import java.util.List;
 
 public interface EventQuery {
 

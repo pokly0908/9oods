@@ -1,9 +1,12 @@
 package com.kuku9.goods.domain.seller.service;
 
-import com.kuku9.goods.domain.seller.dto.*;
-import com.kuku9.goods.domain.seller.entity.*;
-import com.kuku9.goods.domain.user.entity.*;
-import java.util.*;
+import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
+import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
+import com.kuku9.goods.domain.seller.dto.SellProductStatisticsResponseDto;
+import com.kuku9.goods.domain.seller.dto.SellingProductResponseDto;
+import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.domain.user.entity.User;
+import java.util.List;
 
 public interface SellerService {
 

@@ -1,9 +1,11 @@
 package com.kuku9.goods.domain.event_product.entity;
 
-import com.kuku9.goods.domain.event.entity.*;
-import com.kuku9.goods.domain.product.entity.*;
+import com.kuku9.goods.domain.event.entity.Event;
+import com.kuku9.goods.domain.product.entity.Product;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity

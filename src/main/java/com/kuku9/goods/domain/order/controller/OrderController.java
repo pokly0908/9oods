@@ -1,9 +1,9 @@
-package com.kuku9.goods.domain.product_order.controller;
+package com.kuku9.goods.domain.order.controller;
 
-import com.kuku9.goods.domain.product_order.dto.ProductOrderResponse;
-import com.kuku9.goods.domain.product_order.dto.ProductOrdersRequest;
-import com.kuku9.goods.domain.product_order.entity.ProductOrder;
-import com.kuku9.goods.domain.product_order.service.ProductOrderService;
+import com.kuku9.goods.domain.order.dto.OrderResponse;
+import com.kuku9.goods.domain.order.dto.OrdersRequest;
+import com.kuku9.goods.domain.order.entity.Order;
+import com.kuku9.goods.domain.order.service.OrderService;
 import com.kuku9.goods.global.security.CustomUserDetails;
 import java.net.URI;
 import java.nio.file.AccessDeniedException;
@@ -15,33 +15,33 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/orders")
-public class ProductOrderController {
+public class OrderController {
 
-	private final ProductOrderService productOrderService;
+	private final OrderService productOrderService;
 
     @PostMapping
     public ResponseEntity<String> createOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @RequestBody ProductOrdersRequest productOrderRequest) {
-        ProductOrder productOrder = productOrderService.createOrder(userDetails.getUser(),
+        @RequestBody OrdersRequest productOrderRequest) {
+        Order order = productOrderService.createOrder(userDetails.getUser(),
             productOrderRequest);
-        return ResponseEntity.created(URI.create("/api/v1/order/" + productOrder.getId())).build();
+        return ResponseEntity.created(URI.create("/api/v1/order/" + order.getId())).build();
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<ProductOrderResponse> getOrder(
+    public ResponseEntity<OrderResponse> getOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderId)
         throws AccessDeniedException {
-        ProductOrderResponse productOrder = productOrderService.getOrder(userDetails.getUser(),
+        OrderResponse productOrder = productOrderService.getOrder(userDetails.getUser(),
             orderId);
         return ResponseEntity.ok(productOrder);
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<ProductOrderResponse> updateOrder(
+    public ResponseEntity<OrderResponse> updateOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderId)
         throws AccessDeniedException {
-        ProductOrderResponse productOrder = productOrderService.updateOrder(userDetails.getUser(),
+        OrderResponse productOrder = productOrderService.updateOrder(userDetails.getUser(),
             orderId);
         return ResponseEntity.ok(productOrder);
     }

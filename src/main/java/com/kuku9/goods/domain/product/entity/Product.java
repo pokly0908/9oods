@@ -1,12 +1,15 @@
 package com.kuku9.goods.domain.product.entity;
 
-import com.kuku9.goods.domain.seller.dto.request.*;
-import com.kuku9.goods.domain.seller.entity.*;
-import com.kuku9.goods.global.common.entity.*;
-import jakarta.persistence.Table;
+import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
+import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Getter
 @Entity

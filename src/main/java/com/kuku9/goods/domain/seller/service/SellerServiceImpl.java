@@ -1,20 +1,23 @@
 package com.kuku9.goods.domain.seller.service;
 
-import com.kuku9.goods.domain.order_product.entity.*;
-import com.kuku9.goods.domain.order_product.repository.*;
-import com.kuku9.goods.domain.product.entity.*;
-import com.kuku9.goods.domain.product.repository.*;
-import com.kuku9.goods.domain.seller.dto.request.*;
-import com.kuku9.goods.domain.seller.dto.response.*;
-import com.kuku9.goods.domain.seller.entity.*;
-import com.kuku9.goods.domain.seller.repository.*;
-import com.kuku9.goods.domain.user.entity.*;
-import java.time.*;
-import java.util.*;
-import lombok.*;
-import lombok.extern.slf4j.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import com.kuku9.goods.domain.order_product.entity.OrderProduct;
+import com.kuku9.goods.domain.order_product.repository.OrderProductRepository;
+import com.kuku9.goods.domain.product.entity.Product;
+import com.kuku9.goods.domain.product.repository.ProductRepository;
+import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
+import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
+import com.kuku9.goods.domain.seller.dto.response.SellingProductResponse;
+import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.domain.seller.repository.SellerRepository;
+import com.kuku9.goods.domain.user.entity.User;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor

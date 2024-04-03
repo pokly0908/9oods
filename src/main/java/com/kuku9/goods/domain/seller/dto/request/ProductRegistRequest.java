@@ -6,9 +6,9 @@ import lombok.*;
 @AllArgsConstructor
 public class ProductRegistRequest {
 
-    private String productName;
-    private String productDescription;
-    private Long productPrice;
-    private Long sellerId;
+	private String productName;
+	private String productDescription;
+	private Long productPrice;
+	private Long sellerId;
 
 }

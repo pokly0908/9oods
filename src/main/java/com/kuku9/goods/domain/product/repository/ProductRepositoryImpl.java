@@ -1,10 +1,12 @@
 package com.kuku9.goods.domain.product.repository;
 
-import com.kuku9.goods.domain.product.entity.*;
-import java.util.*;
-import lombok.*;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.*;
+import com.kuku9.goods.domain.product.entity.Product;
+import java.util.List;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor

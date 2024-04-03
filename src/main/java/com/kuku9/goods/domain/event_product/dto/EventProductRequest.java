@@ -5,5 +5,5 @@ import lombok.*;
 @Getter
 public class EventProductRequest {
 
-    private Long productId;
+	private Long productId;
 }

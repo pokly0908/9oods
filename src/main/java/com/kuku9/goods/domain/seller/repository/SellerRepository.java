@@ -5,15 +5,15 @@ import org.springframework.data.jpa.repository.*;
 
 public interface SellerRepository extends JpaRepository<Seller, Long> {
 
-    Seller findByUserId(Long id);
+	Seller findByUserId(Long id);
 
-    boolean existsByUserId(Long userId);
+	boolean existsByUserId(Long userId);
 
-    boolean existsByBrandName(String brandName);
+	boolean existsByBrandName(String brandName);
 
-    boolean existsByDomainName(String domainName);
+	boolean existsByDomainName(String domainName);
 
-    boolean existsByEmail(String email);
+	boolean existsByEmail(String email);
 
-    boolean existsByPhoneNumber(String phoneNumber);
+	boolean existsByPhoneNumber(String phoneNumber);
 }

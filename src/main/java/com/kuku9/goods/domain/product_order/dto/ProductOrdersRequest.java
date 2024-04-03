@@ -1,8 +1,9 @@
 package com.kuku9.goods.domain.product_order.dto;
 
-import com.kuku9.goods.domain.order_product.dto.*;
-import java.util.*;
-import lombok.*;
+import com.kuku9.goods.domain.order_product.dto.OrderProductRequest;
+import java.util.List;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor

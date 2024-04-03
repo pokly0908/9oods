@@ -3,11 +3,13 @@ package com.kuku9.goods.domain.coupon.controller;
 import com.kuku9.goods.domain.coupon.dto.CouponRequest;
 import com.kuku9.goods.domain.coupon.dto.CouponResponse;
 import com.kuku9.goods.domain.coupon.service.CouponService;
+import com.kuku9.goods.global.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

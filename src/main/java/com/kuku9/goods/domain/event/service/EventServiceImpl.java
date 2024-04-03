@@ -1,7 +1,6 @@
 package com.kuku9.goods.domain.event.service;
 
-import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_ADMIN_EVENT;
-import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND;
+import static com.kuku9.goods.global.exception.ExceptionStatus.*;
 
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.coupon.repository.CouponRepository;
@@ -14,12 +13,17 @@ import com.kuku9.goods.domain.event.repository.EventRepository;
 import com.kuku9.goods.domain.event_product.dto.EventProductRequest;
 import com.kuku9.goods.domain.event_product.entity.EventProduct;
 import com.kuku9.goods.domain.event_product.repository.EventProductRepository;
+import com.kuku9.goods.domain.issued_coupon.entity.IssuedCoupon;
+import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponRepository;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.exception.InvalidAdminEventException;
+import com.kuku9.goods.global.exception.InvalidCouponException;
 import com.kuku9.goods.global.exception.NotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,7 @@ public class EventServiceImpl implements EventService {
 	private final EventProductRepository eventProductRepository;
 	private final ProductRepository productRepository;
 	private final CouponRepository couponRepository;
+	private final IssuedCouponRepository issuedCouponRepository;
 
 	@Transactional
 	public Long createEvent(EventRequest eventRequest, User user) {
@@ -49,8 +54,7 @@ public class EventServiceImpl implements EventService {
 			.forEach(eventProductRepository::save);
 
 		if(eventRequest.getCouponId() != null) {
-			Coupon coupon = couponRepository.findById(eventRequest.getCouponId())
-				.orElseThrow(() -> new NotFoundException(NOT_FOUND));
+			Coupon coupon = findCoupon(eventRequest.getCouponId());
 
 			savedEvent.addCoupon(coupon);
 		}
@@ -113,8 +117,35 @@ public class EventServiceImpl implements EventService {
 		eventProductRepository.delete(eventProduct);
 	}
 
+	@Transactional
+	public void issueCoupon(Long eventId, Long couponId, User user, LocalDateTime now) {
+		try{
+			Event event = findEvent(eventId);
+			if(now.isBefore(event.getCreatedAt())) {
+				throw new InvalidCouponException(INVALID_COUPON);
+			}
+
+			Coupon coupon = findCoupon(couponId);
+			if (coupon.getQuantity() <= 0) {
+				throw new InvalidCouponException(INVALID_COUPON);
+			}
+			coupon.decrease();
+			IssuedCoupon issuedCoupon = new IssuedCoupon(user, coupon);
+			issuedCouponRepository.save(issuedCoupon);
+
+		} catch (DataIntegrityViolationException ex) {
+			throw new InvalidCouponException(INVALID_COUPON);
+		}
+
+	}
+
 	private Event findEvent(Long eventId) {
 		return eventRepository.findById(eventId)
+			.orElseThrow(() -> new NotFoundException(NOT_FOUND));
+	}
+
+	private Coupon findCoupon(Long couponId) {
+		return couponRepository.findById(couponId)
 			.orElseThrow(() -> new NotFoundException(NOT_FOUND));
 	}
 }

@@ -1,8 +1,14 @@
 package com.kuku9.goods.user.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.service.SellerServiceImpl;
@@ -152,10 +158,10 @@ public class UserServiceImplTest {
         );
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(sellerService.checkSellerExistsByUserId(user.getId())).thenReturn(false);
-        when(sellerService.isBrandNameUnique(request.getBrandName())).thenReturn(true);
-        when(sellerService.isDomainNameUnique(request.getDomainName())).thenReturn(true);
-        when(sellerService.isEmailUnique(request.getEmail())).thenReturn(true);
-        when(sellerService.isPhoneNumberUnique(request.getPhoneNumber())).thenReturn(true);
+        when(sellerService.checkBrandNameExist(request.getBrandName())).thenReturn(false);
+        when(sellerService.checkDomainNameExist(request.getDomainName())).thenReturn(false);
+        when(sellerService.checkEmailExist(request.getEmail())).thenReturn(false);
+        when(sellerService.checkPhoneNumberExist(request.getPhoneNumber())).thenReturn(false);
         Seller savedSeller = new Seller(request, user);
         when(sellerService.save(any(Seller.class))).thenReturn(savedSeller);
 
@@ -174,7 +180,6 @@ public class UserServiceImplTest {
 
         verify(sellerService).save(any(Seller.class));
     }
-
 
 
 }

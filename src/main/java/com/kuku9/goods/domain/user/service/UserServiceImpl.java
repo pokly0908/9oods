@@ -77,19 +77,19 @@ public class UserServiceImpl implements UserService {
             throw new DuplicatedException(DUPLICATED_SELLER);
         }
 
-        if (sellerService.isBrandNameUnique(request.getBrandName())) {
+        if (sellerService.checkBrandNameExist(request.getBrandName())) {
             throw new DuplicatedException(DUPLICATED_SELLER);
         }
 
-        if (sellerService.isDomainNameUnique(request.getDomainName())) {
+        if (sellerService.checkDomainNameExist(request.getDomainName())) {
             throw new DuplicatedException(DUPLICATED_SELLER);
         }
 
-        if (sellerService.isEmailUnique(request.getEmail())) {
+        if (sellerService.checkEmailExist(request.getEmail())) {
             throw new DuplicatedException(DUPLICATED_SELLER);
         }
 
-        if (sellerService.isPhoneNumberUnique(request.getPhoneNumber())) {
+        if (sellerService.checkPhoneNumberExist(request.getPhoneNumber())) {
             throw new DuplicatedException(DUPLICATED_SELLER);
         }
 

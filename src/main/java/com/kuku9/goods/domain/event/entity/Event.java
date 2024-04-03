@@ -3,11 +3,11 @@ package com.kuku9.goods.domain.event.entity;
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
-import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,11 +34,11 @@ public class Event extends BaseEntity {
 	private String content;
 
 	@Column
-	private LocalDate openAt;
+	private LocalDateTime openAt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "seller_id")
-	private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private User user;
 
 	@OneToOne
 	@JoinColumn(name = "coupon_id")

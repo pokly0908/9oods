@@ -10,20 +10,20 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class EventQueryImpl implements EventQuery {
 
-	private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
 
-	public List<Long> getEventProducts(Long eventId) {
-		return jpaQueryFactory.select(
-				QEventProduct.eventProduct.product.id)
-			.from(QEventProduct.eventProduct)
-			.where(QEventProduct.eventProduct.event.id.eq(eventId))
-			.fetch();
-	}
+    public List<Long> getEventProducts(Long eventId) {
+        return jpaQueryFactory.select(
+                QEventProduct.eventProduct.product.id)
+            .from(QEventProduct.eventProduct)
+            .where(QEventProduct.eventProduct.event.id.eq(eventId))
+            .fetch();
+    }
 
-	public void deleteEventProduct(Long eventId) {
-		long count = jpaQueryFactory.delete(QEventProduct.eventProduct)
-			.where(QEventProduct.eventProduct.event.id.eq(eventId))
-			.execute();
-	}
+    public void deleteEventProduct(Long eventId) {
+        long count = jpaQueryFactory.delete(QEventProduct.eventProduct)
+            .where(QEventProduct.eventProduct.event.id.eq(eventId))
+            .execute();
+    }
 
 }

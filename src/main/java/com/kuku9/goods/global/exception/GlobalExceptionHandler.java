@@ -1,6 +1,5 @@
 package com.kuku9.goods.global.exception;
 
-import java.sql.ResultSet;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -72,6 +71,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidCouponException.class)
     public ResponseEntity<String> InvalidCouponException(InvalidCouponException ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidSellerEventException.class)
+    public ResponseEntity<String> InvalidSellerEventException(InvalidSellerEventException ex) {
         log.error(ex.getMessage());
         return ResponseEntity.badRequest().body(ex.getMessage());
     }

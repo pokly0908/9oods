@@ -2,6 +2,7 @@ package com.kuku9.goods.domain.event.dto;
 
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,7 +16,7 @@ public class EventUpdateRequest {
 	private String content;
 
 	@NotNull(message = "이벤트를 등록하시려면 오픈일자를 입력하세요.")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate openAt;
+	@DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm:ss")
+	private LocalDateTime openAt;
 
 }

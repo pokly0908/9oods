@@ -46,12 +46,15 @@ public class EventServiceImpl implements EventService {
 		Event event = new Event(eventRequest, user);
 		Event savedEvent = eventRepository.save(event);
 
-		eventRequest.getEventProducts().stream()
-			.map(EventProductRequest::getProductId)
-			.map(productId -> productRepository.findById(productId)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
-			.map(product -> new EventProduct(savedEvent, product))
-			.forEach(eventProductRepository::save);
+		if(eventRequest.getEventProducts() != null) {
+			eventRequest.getEventProducts().stream()
+				.map(EventProductRequest::getProductId)
+				.map(productId -> productRepository.findById(productId)
+					.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
+				.map(product -> new EventProduct(savedEvent, product))
+				.forEach(eventProductRepository::save);
+
+		}
 
 		if(eventRequest.getCouponId() != null) {
 			Coupon coupon = findCoupon(eventRequest.getCouponId());
@@ -121,7 +124,7 @@ public class EventServiceImpl implements EventService {
 	public void issueCoupon(Long eventId, Long couponId, User user, LocalDateTime now) {
 		try{
 			Event event = findEvent(eventId);
-			if(now.isBefore(event.getCreatedAt())) {
+			if(now.isBefore(event.getOpenAt())) {
 				throw new InvalidCouponException(INVALID_COUPON);
 			}
 

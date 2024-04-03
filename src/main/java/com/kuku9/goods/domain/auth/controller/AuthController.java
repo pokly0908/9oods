@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-	private final AuthService authService;
-	private final JwtUtil jwtUtil;
+    private final AuthService authService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(
@@ -26,8 +26,8 @@ public class AuthController {
         String token = authService.login(request);
         jwtUtil.accessTokenSetHeader(token, response);
 
-		return ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();
 
-	}
+    }
 
 }

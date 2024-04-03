@@ -6,11 +6,13 @@ import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SellProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
-import com.kuku9.goods.domain.seller.dto.response.SellingProductResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
+import com.kuku9.goods.global.exception.ExceptionStatus;
+import com.kuku9.goods.global.exception.InvalidSellerEventException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,23 +34,19 @@ public class SellerServiceImpl implements SellerService {
     @Transactional
     public Long createProduct(ProductRegistRequest requestDto, User user) {
         Seller seller = findSeller(user);
-        if (seller == null) {
-            throw new IllegalArgumentException("셀러만 상품을 등록할 수 있습니다. 셀러 신청하세요.");
-        }
+
         Product product = new Product(requestDto, seller);
 
-        productRepository.save(product);
+        Product saveProduct = productRepository.save(product);
 
-        return product.getSeller().getId();
+        return saveProduct.getSeller().getId();
     }
 
     @Override
     @Transactional
     public Long orderProductStatus(Long productId, User user) {
         Seller seller = findSeller(user);
-        if (seller == null) {
-            throw new IllegalArgumentException("셀러만 상품을 등록할 수 있습니다. 셀러 신청하세요.");
-        }
+
         Product product = findProduct(productId, seller);
         if (product == null) {
             throw new IllegalArgumentException("상품이 존재하지 않습니다.");
@@ -65,9 +63,7 @@ public class SellerServiceImpl implements SellerService {
     public Long updateProduct(
         Long productId, ProductUpdateRequest requestDto, User user) {
         Seller seller = findSeller(user);
-        if (seller == null) {
-            throw new IllegalArgumentException("셀러만 상품 정보를 수정할 수 있습니다. 셀러 신청하세요.");
-        }
+
         Product product = findProduct(productId, seller);
         if (product == null) {
             throw new IllegalArgumentException("상품이 존재하지 않습니다.");
@@ -80,7 +76,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SellingProductResponse> getSellingProduct(
+    public List<SellProductResponse> getSellingProduct(
         User user, LocalDate startDate, LocalDate endDate) {
         Seller seller = findSeller(user);
 
@@ -98,13 +94,13 @@ public class SellerServiceImpl implements SellerService {
             }
         }
 
-        List<SellingProductResponse> responseDtoList = new ArrayList<>();
-        int totalPrice = 0;
+        List<SellProductResponse> responseDtoList = new ArrayList<>();
+        long totalPrice = 0L;
         for (OrderProduct orderProduct : orderProductList) {
             int productTotalPrice =
                 orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
             responseDtoList.add(
-                new SellingProductResponse(
+                new SellProductResponse(
                     orderProduct.getProduct().getName(),
                     orderProduct.getProduct().getPrice(),
                     orderProduct.getQuantity(),
@@ -140,7 +136,8 @@ public class SellerServiceImpl implements SellerService {
     }
 
     private Seller findSeller(User user) {
-        return sellerRepository.findByUserId(user.getId());
+        return sellerRepository.findByUserId(user.getId()).orElseThrow(() ->
+            new InvalidSellerEventException(ExceptionStatus.INVALID_SELLER_EVENT));
     }
 
     private Product findProduct(Long productId, Seller seller) {

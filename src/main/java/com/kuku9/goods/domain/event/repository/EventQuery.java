@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface EventQuery {
 
-	List<Long> getEventProducts(Long eventId);
+    List<Long> getEventProducts(Long eventId);
 
-	void deleteEventProduct(Long eventId);
+    void deleteEventProduct(Long eventId);
 
 }

@@ -10,21 +10,21 @@ import lombok.Getter;
 @AllArgsConstructor
 public class EventResponse {
 
-	private Long id;
-	private String title;
-	private String content;
-	private Long limitNum;
-	private LocalDate openAt;
-	private List<Long> eventProducts;
+    private Long id;
+    private String title;
+    private String content;
+    private Long limitNum;
+    private LocalDate openAt;
+    private List<Long> eventProducts;
 
-	public static EventResponse from(Event event, List<Long> eventProducts) {
-		return new EventResponse(
-			event.getId(),
-			event.getTitle(),
-			event.getContent(),
-			event.getLimitNum(),
-			event.getOpenAt(),
-			eventProducts
-		);
-	}
+    public static EventResponse from(Event event, List<Long> eventProducts) {
+        return new EventResponse(
+            event.getId(),
+            event.getTitle(),
+            event.getContent(),
+            event.getLimitNum(),
+            event.getOpenAt(),
+            eventProducts
+        );
+    }
 }

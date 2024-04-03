@@ -8,16 +8,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Getter
 public class EventUpdateRequest {
 
-	@NotNull(message = "이벤트를 등록하시려면 제목을 입력하세요.")
-	private String title;
+    @NotNull(message = "이벤트를 등록하시려면 제목을 입력하세요.")
+    private String title;
 
-	@NotNull(message = "이벤트를 등록하시려면 내용을 입력하세요.")
-	private String content;
+    @NotNull(message = "이벤트를 등록하시려면 내용을 입력하세요.")
+    private String content;
 
-	private Long limitNum;
+    private Long limitNum;
 
-	@NotNull(message = "이벤트를 등록하시려면 오픈일자를 입력하세요.")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate openAt;
+    @NotNull(message = "이벤트를 등록하시려면 오픈일자를 입력하세요.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate openAt;
 
 }

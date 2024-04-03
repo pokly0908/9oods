@@ -1,13 +1,13 @@
 package com.kuku9.goods.domain.file.repository;
 
-import com.kuku9.goods.domain.file.entity.*;
+import com.kuku9.goods.domain.file.entity.File;
 
 public interface FileRepository {
 
-	File findById(Long fileId);
+    File findById(Long fileId);
 
-	void save(File file);
+    void save(File file);
 
-	void delete(File file);
+    void delete(File file);
 
 }

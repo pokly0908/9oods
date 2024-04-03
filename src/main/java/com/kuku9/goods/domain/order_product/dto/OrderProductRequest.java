@@ -1,6 +1,7 @@
 package com.kuku9.goods.domain.order_product.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter

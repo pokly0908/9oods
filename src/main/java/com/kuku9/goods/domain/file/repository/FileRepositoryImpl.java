@@ -1,8 +1,8 @@
 package com.kuku9.goods.domain.file.repository;
 
-import com.kuku9.goods.domain.file.entity.*;
-import lombok.*;
-import org.springframework.stereotype.*;
+import com.kuku9.goods.domain.file.entity.File;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor

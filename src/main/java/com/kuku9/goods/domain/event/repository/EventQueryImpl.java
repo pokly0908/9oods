@@ -1,14 +1,15 @@
 package com.kuku9.goods.domain.event.repository;
 
-import com.kuku9.goods.domain.event.dto.*;
-import com.kuku9.goods.domain.event.entity.*;
-import com.kuku9.goods.domain.event_product.entity.*;
-import com.kuku9.goods.domain.product.entity.*;
-import com.querydsl.core.types.*;
-import com.querydsl.jpa.impl.*;
-import java.util.*;
-import lombok.*;
-import org.springframework.stereotype.*;
+import com.kuku9.goods.domain.event.dto.EventTitleResponse;
+import com.kuku9.goods.domain.event.dto.ProductInfo;
+import com.kuku9.goods.domain.event.entity.QEvent;
+import com.kuku9.goods.domain.event_product.entity.QEventProduct;
+import com.kuku9.goods.domain.product.entity.QProduct;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor

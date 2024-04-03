@@ -1,11 +1,12 @@
 package com.kuku9.goods.domain.seller.repository;
 
-import com.kuku9.goods.domain.seller.entity.*;
-import org.springframework.data.jpa.repository.*;
+import com.kuku9.goods.domain.seller.entity.Seller;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SellerRepository extends JpaRepository<Seller, Long> {
 
-    Seller findByUserId(Long id);
+    Optional<Seller> findByUserId(Long id);
 
     boolean existsByUserId(Long userId);
 

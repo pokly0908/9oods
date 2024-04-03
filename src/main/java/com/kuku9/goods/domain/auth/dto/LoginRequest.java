@@ -1,6 +1,7 @@
 package com.kuku9.goods.domain.auth.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Getter
 @AllArgsConstructor

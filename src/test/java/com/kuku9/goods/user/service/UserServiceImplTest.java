@@ -1,22 +1,29 @@
 package com.kuku9.goods.user.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.kuku9.goods.domain.seller.entity.*;
-import com.kuku9.goods.domain.seller.service.*;
-import com.kuku9.goods.domain.user.dto.request.*;
-import com.kuku9.goods.domain.user.entity.*;
-import com.kuku9.goods.domain.user.repository.*;
-import com.kuku9.goods.domain.user.service.*;
-import com.kuku9.goods.global.exception.*;
-import java.util.*;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.*;
-import org.mockito.*;
-import org.mockito.junit.jupiter.*;
-import org.springframework.security.crypto.password.*;
+import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.domain.seller.service.SellerServiceImpl;
+import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
+import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
+import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
+import com.kuku9.goods.domain.user.entity.User;
+import com.kuku9.goods.domain.user.entity.UserRoleEnum;
+import com.kuku9.goods.domain.user.repository.UserRepository;
+import com.kuku9.goods.domain.user.service.UserServiceImpl;
+import com.kuku9.goods.global.exception.DuplicatedException;
+import com.kuku9.goods.global.exception.InvalidPasswordException;
+import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {

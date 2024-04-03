@@ -1,14 +1,16 @@
 package com.kuku9.goods.domain.user.entity;
 
-import com.kuku9.goods.domain.user.dto.request.*;
-import com.kuku9.goods.global.common.entity.*;
-import jakarta.persistence.Table;
+import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
+import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
-import org.hibernate.annotations.*;
+import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
-@AllArgsConstructor
 @Entity
 @Getter
 @Table(name = "user")

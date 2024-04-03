@@ -1,6 +1,6 @@
 package com.kuku9.goods.global.exception;
 
-import lombok.*;
+import lombok.Getter;
 
 @Getter
 public abstract class ApiException extends RuntimeException {

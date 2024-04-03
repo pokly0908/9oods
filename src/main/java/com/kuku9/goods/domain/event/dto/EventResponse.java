@@ -1,9 +1,10 @@
 package com.kuku9.goods.domain.event.dto;
 
-import com.kuku9.goods.domain.event.entity.*;
-import java.time.*;
-import java.util.*;
-import lombok.*;
+import com.kuku9.goods.domain.event.entity.Event;
+import java.time.LocalDate;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Getter
 @AllArgsConstructor

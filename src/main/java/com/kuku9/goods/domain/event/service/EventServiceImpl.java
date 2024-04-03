@@ -1,22 +1,26 @@
 package com.kuku9.goods.domain.event.service;
 
-import static com.kuku9.goods.global.exception.ExceptionStatus.*;
+import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_ADMIN_EVENT;
+import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND_EVENT;
 
 import com.kuku9.goods.domain.event.dto.*;
-import com.kuku9.goods.domain.event.entity.*;
-import com.kuku9.goods.domain.event.repository.*;
-import com.kuku9.goods.domain.event_product.dto.*;
-import com.kuku9.goods.domain.event_product.entity.*;
-import com.kuku9.goods.domain.event_product.repository.*;
-import com.kuku9.goods.domain.product.repository.*;
-import com.kuku9.goods.domain.seller.entity.*;
-import com.kuku9.goods.domain.seller.repository.*;
-import com.kuku9.goods.domain.user.entity.*;
-import com.kuku9.goods.global.exception.*;
-import java.util.*;
-import lombok.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import com.kuku9.goods.domain.event.entity.Event;
+import com.kuku9.goods.domain.event.repository.EventQuery;
+import com.kuku9.goods.domain.event.repository.EventRepository;
+import com.kuku9.goods.domain.event_product.dto.EventProductRequest;
+import com.kuku9.goods.domain.event_product.entity.EventProduct;
+import com.kuku9.goods.domain.event_product.repository.EventProductRepository;
+import com.kuku9.goods.domain.product.repository.ProductRepository;
+import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.domain.seller.repository.SellerRepository;
+import com.kuku9.goods.domain.user.entity.User;
+import com.kuku9.goods.global.exception.EventNotFoundException;
+import com.kuku9.goods.global.exception.InvalidAdminEventException;
+import com.kuku9.goods.global.exception.InvalidSellerEventException;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,11 +35,8 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public Long createEvent(EventRequest eventRequest, User user) {
 
-        Seller seller = sellerRepository.findByUserId(user.getId());
-
-        if (seller == null) {
-            throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
-        }
+        Seller seller = sellerRepository.findByUserId(user.getId()).orElseThrow(() ->
+            new InvalidAdminEventException(INVALID_ADMIN_EVENT));
 
         Event event = new Event(eventRequest.getTitle(), eventRequest.getContent(),
             eventRequest.getLimitNum(), eventRequest.getOpenAt());

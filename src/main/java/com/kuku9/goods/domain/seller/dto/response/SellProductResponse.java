@@ -11,7 +11,7 @@ public class SellProductResponse {
     private final int productTotalPrice;
 
     public SellProductResponse(
-        String name, Long price, int quantity, Long productTotalPrice) {
+        String name, int price, int quantity, int productTotalPrice) {
         this.productName = name;
         this.productPrice = price;
         this.productQuantity = quantity;

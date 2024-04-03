@@ -15,38 +15,52 @@ import com.kuku9.goods.domain.user.entity.User;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
+    private final RedissonClient redissonClient;
     private final OrderRepository orderRepository;
     private final OrderProductRepository orderProductRepository;
     private final ProductRepository productRepository;
 
     @Override
     public Order createOrder(User user, OrdersRequest OrderRequest) {
-        //상품 및 재고확인
-        List<Product> products = new ArrayList<>();
-        for (int i = 0; i < OrderRequest.getProducts().size(); i++) {
-            products.add(productRepository.findById(
-                    OrderRequest.getProducts().get(i).getProductId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")));
-            if (products.get(i).getQuantity() < OrderRequest.getProducts().get(i).getQuantity()) {
-                throw new IllegalArgumentException("재고가 부족합니다.");
+        //분산락 생성
+        RLock lock = redissonClient.getLock("orderCreationLock");
+        try {
+            lock.lock();
+            //상품 및 재고확인
+            List<Product> products = new ArrayList<>();
+            for (int i = 0; i < OrderRequest.getProducts().size(); i++) {
+                products.add(productRepository.findById(
+                        OrderRequest.getProducts().get(i).getProductId())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")));
+                if (products.get(i).getQuantity() < OrderRequest.getProducts().get(i)
+                    .getQuantity()) {
+                    throw new IllegalArgumentException("재고가 부족합니다.");
+                }
             }
+            //저장
+            Order order = orderRepository.save(
+                new Order(user, OrderRequest.getAddress()));
+            for (int i = 0; i < products.size(); i++) {
+                products.get(i).updateQuantity(OrderRequest.getProducts().get(i).getQuantity());
+                orderProductRepository.save(new OrderProduct(order, products.get(i),
+                    OrderRequest.getProducts().get(i).getQuantity()));
+            }
+            return order;
         }
-        //저장
-        Order order = orderRepository.save(
-            new Order(user, OrderRequest.getAddress()));
-        for (int i = 0; i < products.size(); i++) {
-            products.get(i).updateQuantity(OrderRequest.getProducts().get(i).getQuantity());
-            orderProductRepository.save(new OrderProduct(order, products.get(i),
-                OrderRequest.getProducts().get(i).getQuantity()));
+        finally {
+            lock.unlock();
         }
-        return order;
     }
 
     @Override

@@ -22,7 +22,6 @@ public class OrderController {
     private final OrderService productOrderService;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<String> createOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody OrdersRequest productOrderRequest) {

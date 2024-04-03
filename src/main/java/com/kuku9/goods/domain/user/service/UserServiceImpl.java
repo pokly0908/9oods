@@ -16,6 +16,7 @@ import com.kuku9.goods.global.exception.InvalidPasswordException;
 import java.nio.file.AccessDeniedException;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Cacheable(value = "userCache", key = "#userId", unless = "#result == null")
     public UserResponse getUserInfo(Long userId, User user) throws AccessDeniedException {
         User findUser = findById(userId);
         if (!user.getId().equals(userId)) {

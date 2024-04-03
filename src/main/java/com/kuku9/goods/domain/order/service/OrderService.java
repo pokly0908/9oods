@@ -1,11 +1,12 @@
-package com.kuku9.goods.domain.product_order.service;
+package com.kuku9.goods.domain.order.service;
 
-import com.kuku9.goods.domain.product_order.dto.ProductOrderResponse;
-import com.kuku9.goods.domain.product_order.dto.ProductOrdersRequest;
-import com.kuku9.goods.domain.product_order.entity.ProductOrder;
+import com.kuku9.goods.domain.order.dto.OrderResponse;
+import com.kuku9.goods.domain.order.dto.OrdersRequest;
+import com.kuku9.goods.domain.order.entity.Order;
 import com.kuku9.goods.domain.user.entity.User;
+import java.nio.file.AccessDeniedException;
 
-public interface ProductOrderService {
+public interface OrderService {
 
     /**
      * 주문 생성
@@ -14,7 +15,7 @@ public interface ProductOrderService {
      * @param productOrderRequest 주문 생성 요청
      * @return 주문
      */
-    ProductOrder createOrder(User user, ProductOrdersRequest productOrderRequest);
+    Order createOrder(User user, OrdersRequest productOrderRequest);
 
     /**
      * 주문 조회
@@ -24,7 +25,7 @@ public interface ProductOrderService {
      * @return 주문
      */
 
-    ProductOrderResponse getOrder(User user, Long orderId);
+    OrderResponse getOrder(User user, Long orderId) throws AccessDeniedException;
 
     /**
      * 주문 수정
@@ -33,7 +34,7 @@ public interface ProductOrderService {
      * @param orderId 주문 아이디
      * @return 주문
      */
-    ProductOrderResponse updateOrder(User user, Long orderId);
+    OrderResponse updateOrder(User user, Long orderId) throws AccessDeniedException;
 
     /**
      * 주문 삭제
@@ -41,6 +42,5 @@ public interface ProductOrderService {
      * @param user    유저
      * @param orderId 주문 아이디
      */
-    void deleteOrder(User user, Long orderId);
-
+    void deleteOrder(User user, Long orderId) throws AccessDeniedException;
 }

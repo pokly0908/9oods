@@ -35,10 +35,13 @@ public class Product extends BaseEntity {
     private String description;
 
     @Column
-    private Long price;
+    private int price;
 
     @Column
     private Boolean status = true;
+
+    @Column
+    private int quantity;
 
     public Product(ProductRegistRequest requestDto, Seller seller) {
         this.name = requestDto.getProductName();
@@ -63,5 +66,9 @@ public class Product extends BaseEntity {
 //        if (!requestDto.getPrice().isEmpty()) {
 //            this.price = requestDto.getPrice();
 //        }
+    }
+
+    public void updateQuantity(int quantity) {
+        this.quantity -= quantity;
     }
 }

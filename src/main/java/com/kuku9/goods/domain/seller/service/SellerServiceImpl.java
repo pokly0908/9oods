@@ -97,7 +97,7 @@ public class SellerServiceImpl implements SellerService {
         List<SellProductResponse> responseDtoList = new ArrayList<>();
         long totalPrice = 0L;
         for (OrderProduct orderProduct : orderProductList) {
-            long productTotalPrice =
+            int productTotalPrice =
                 orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
             responseDtoList.add(
                 new SellProductResponse(
@@ -123,10 +123,10 @@ public class SellerServiceImpl implements SellerService {
             }
         }
 
-        long totalPrice = 0L;
-        long statisticsPrice = 0L;
+        int totalPrice = 0;
+        int statisticsPrice = 0;
         for (OrderProduct orderProduct : orderProductList) {
-            long productTotalPrice =
+            int productTotalPrice =
                 (orderProduct.getProduct().getPrice() * orderProduct.getQuantity());
             totalPrice += productTotalPrice;
         }
@@ -146,8 +146,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public Seller save(Seller seller) {
-        Seller savedSeller = sellerRepository.save(seller);
-        return savedSeller;
+        return sellerRepository.save(seller);
     }
 
     @Override

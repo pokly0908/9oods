@@ -1,7 +1,7 @@
 package com.kuku9.goods.domain.order_product.entity;
 
+import com.kuku9.goods.domain.order.entity.Order;
 import com.kuku9.goods.domain.product.entity.Product;
-import com.kuku9.goods.domain.product_order.entity.ProductOrder;
 import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,8 +19,8 @@ public class OrderProduct extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_order_id")
-    private ProductOrder productOrder;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "product_id")
@@ -29,8 +29,8 @@ public class OrderProduct extends BaseEntity {
     @Column
     private int quantity;
 
-    public OrderProduct(ProductOrder productOrder, Product product, int quantity) {
-        this.productOrder = productOrder;
+    public OrderProduct(Order order, Product product, int quantity) {
+        this.order = order;
         this.product = product;
         this.quantity = quantity;
     }

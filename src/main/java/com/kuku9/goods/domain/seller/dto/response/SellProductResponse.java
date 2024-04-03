@@ -6,9 +6,9 @@ import lombok.Getter;
 public class SellProductResponse {
 
     private final String productName;
-    private final Long productPrice;
+    private final int productPrice;
     private final int productQuantity;
-    private final Long productTotalPrice;
+    private final int productTotalPrice;
 
     public SellProductResponse(
         String name, Long price, int quantity, Long productTotalPrice) {

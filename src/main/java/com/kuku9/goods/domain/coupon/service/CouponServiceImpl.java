@@ -1,16 +1,12 @@
 package com.kuku9.goods.domain.coupon.service;
 
-import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_COUPON;
 import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND;
 
 import com.kuku9.goods.domain.coupon.dto.CouponRequest;
 import com.kuku9.goods.domain.coupon.dto.CouponResponse;
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.coupon.repository.CouponRepository;
-import com.kuku9.goods.domain.issued_coupon.entity.IssuedCoupon;
 import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponRepository;
-import com.kuku9.goods.domain.user.entity.User;
-import com.kuku9.goods.global.exception.InvalidCouponException;
 import com.kuku9.goods.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponServiceImpl implements CouponService {
 
 	private final CouponRepository couponRepository;
-	private final IssuedCouponRepository issuedCouponRepository;
 
 	@Transactional
 	public Long createCoupon(CouponRequest request) {

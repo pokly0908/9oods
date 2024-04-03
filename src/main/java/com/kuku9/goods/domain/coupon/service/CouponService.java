@@ -2,8 +2,6 @@ package com.kuku9.goods.domain.coupon.service;
 
 import com.kuku9.goods.domain.coupon.dto.CouponRequest;
 import com.kuku9.goods.domain.coupon.dto.CouponResponse;
-import com.kuku9.goods.domain.user.entity.User;
-import java.time.LocalDateTime;
 
 public interface CouponService {
 

@@ -43,7 +43,7 @@ public interface SellerService {
      * @param brandName 브랜드 이름
      * @return true, false
      */
-    Boolean isBrandNameUnique(String brandName);
+    Boolean checkBrandNameExist(String brandName);
 
     /**
      * 도메인 이름이 존재하는지 검사
@@ -51,7 +51,7 @@ public interface SellerService {
      * @param domainName 도메인 이름
      * @return true, false
      */
-    Boolean isDomainNameUnique(String domainName);
+    Boolean checkDomainNameExist(String domainName);
 
     /**
      * 셀러 이메일이 존재하는지 검사
@@ -59,7 +59,7 @@ public interface SellerService {
      * @param email 셀러 이메일
      * @return true, false
      */
-    Boolean isEmailUnique(String email);
+    Boolean checkEmailExist(String email);
 
     /**
      * 셀러 전화번호가 이미 등록되어 있는지 검사
@@ -67,6 +67,6 @@ public interface SellerService {
      * @param phoneNumber 셀러 전화번호
      * @return true, false
      */
-    Boolean isPhoneNumberUnique(String phoneNumber);
+    Boolean checkPhoneNumberExist(String phoneNumber);
 
 }

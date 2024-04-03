@@ -158,10 +158,10 @@ public class UserServiceImplTest {
         );
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(sellerService.checkSellerExistsByUserId(user.getId())).thenReturn(false);
-        when(sellerService.isBrandNameUnique(request.getBrandName())).thenReturn(true);
-        when(sellerService.isDomainNameUnique(request.getDomainName())).thenReturn(true);
-        when(sellerService.isEmailUnique(request.getEmail())).thenReturn(true);
-        when(sellerService.isPhoneNumberUnique(request.getPhoneNumber())).thenReturn(true);
+        when(sellerService.checkBrandNameExist(request.getBrandName())).thenReturn(false);
+        when(sellerService.checkDomainNameExist(request.getDomainName())).thenReturn(false);
+        when(sellerService.checkEmailExist(request.getEmail())).thenReturn(false);
+        when(sellerService.checkPhoneNumberExist(request.getPhoneNumber())).thenReturn(false);
         Seller savedSeller = new Seller(request, user);
         when(sellerService.save(any(Seller.class))).thenReturn(savedSeller);
 

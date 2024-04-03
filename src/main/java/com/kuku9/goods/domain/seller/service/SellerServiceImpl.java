@@ -153,22 +153,22 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Boolean isBrandNameUnique(String brandName) {
+    public Boolean checkBrandNameExist(String brandName) {
         return sellerRepository.existsByBrandName(brandName);
     }
 
     @Override
-    public Boolean isDomainNameUnique(String domainName) {
+    public Boolean checkDomainNameExist(String domainName) {
         return sellerRepository.existsByDomainName(domainName);
     }
 
     @Override
-    public Boolean isEmailUnique(String email) {
+    public Boolean checkEmailExist(String email) {
         return sellerRepository.existsByEmail(email);
     }
 
     @Override
-    public Boolean isPhoneNumberUnique(String phoneNumber) {
+    public Boolean checkPhoneNumberExist(String phoneNumber) {
         return sellerRepository.existsByPhoneNumber(phoneNumber);
     }
 

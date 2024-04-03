@@ -99,9 +99,9 @@ public class SellerServiceImpl implements SellerService {
         }
 
         List<SellingProductResponse> responseDtoList = new ArrayList<>();
-        long totalPrice = 0L;
+        int totalPrice = 0;
         for (OrderProduct orderProduct : orderProductList) {
-            long productTotalPrice =
+            int productTotalPrice =
                 orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
             responseDtoList.add(
                 new SellingProductResponse(
@@ -127,10 +127,10 @@ public class SellerServiceImpl implements SellerService {
             }
         }
 
-        long totalPrice = 0L;
-        long statisticsPrice = 0L;
+        int totalPrice = 0;
+        int statisticsPrice = 0;
         for (OrderProduct orderProduct : orderProductList) {
-            long productTotalPrice =
+            int productTotalPrice =
                 (orderProduct.getProduct().getPrice() * orderProduct.getQuantity());
             totalPrice += productTotalPrice;
         }

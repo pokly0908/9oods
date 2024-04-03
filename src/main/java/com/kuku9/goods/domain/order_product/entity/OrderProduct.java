@@ -14,24 +14,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderProduct extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "product_order_id")
-	private ProductOrder productOrder;
+    @ManyToOne
+    @JoinColumn(name = "product_order_id")
+    private ProductOrder productOrder;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "product_id")
-	private Product product;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-	@Column
-	private int quantity;
+    @Column
+    private int quantity;
 
-	public OrderProduct(ProductOrder productOrder, Product product, int quantity) {
-		this.productOrder = productOrder;
-		this.product = product;
-		this.quantity = quantity;
-	}
+    public OrderProduct(ProductOrder productOrder, Product product, int quantity) {
+        this.productOrder = productOrder;
+        this.product = product;
+        this.quantity = quantity;
+    }
 }

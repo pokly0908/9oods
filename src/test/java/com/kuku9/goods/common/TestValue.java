@@ -19,7 +19,14 @@ public class TestValue {
         TEST_REALNAME1,
         TEST_PASSWORD1,
         TEST_ROLE1);
-
+    public final static Seller TEST_SELLER2 = new Seller(
+        TEST_SELLER_ID2,
+        TEST_SELLER_BRANDNAME2,
+        TEST_SELLER_DOMAINNAME2,
+        TEST_SELLER_INTRODUCE2,
+        TEST_SELLER_EMAIL2,
+        TEST_SELLER_PHONENEMBER2,
+        TEST_USER1);
     public final static Long TEST_USER_ID2 = 2L;
     public final static String TEST_USERNAME2 = "이메일2@이메일2.com";
     public final static String TEST_REALNAME2 = "이름이름";
@@ -31,7 +38,6 @@ public class TestValue {
         TEST_REALNAME2,
         TEST_PASSWORD2,
         TEST_ROLE2);
-
     public final static Long TEST_USER_ID3 = 3L;
     public final static String TEST_USERNAME3 = "이메일3@이메일3.com";
     public final static String TEST_REALNAME3 = "이름이름이름";
@@ -44,13 +50,6 @@ public class TestValue {
         TEST_PASSWORD3,
         TEST_ROLE3);
     public final static User TEST_SELLER_USER = TEST_USER3;
-
-    public final static Long TEST_SELLER_ID1 = 1L;
-    public final static String TEST_SELLER_BRANDNAME1 = "brand1";
-    public final static String TEST_SELLER_DOMAINNAME1 = "domain1";
-    public final static String TEST_SELLER_INTRODUCE1 = "introduce1";
-    public final static String TEST_SELLER_EMAIL1 = "이메일1@이메일1.com";
-    public final static String TEST_SELLER_PHONENEMBER1 = "00000001";
     public final static Seller TEST_SELLER = new Seller(
         TEST_SELLER_ID1,
         TEST_SELLER_BRANDNAME1,
@@ -59,25 +58,6 @@ public class TestValue {
         TEST_SELLER_EMAIL1,
         TEST_SELLER_PHONENEMBER1,
         TEST_SELLER_USER);
-    public final static Long TEST_SELLER_ID2 = 2L;
-    public final static String TEST_SELLER_BRANDNAME2 = "brand2";
-    public final static String TEST_SELLER_DOMAINNAME2 = "domain2";
-    public final static String TEST_SELLER_INTRODUCE2 = "introduce2";
-    public final static String TEST_SELLER_EMAIL2 = "이메일2@이메일2.com";
-    public final static String TEST_SELLER_PHONENEMBER2 = "00000002";
-    public final static Seller TEST_SELLER2 = new Seller(
-        TEST_SELLER_ID2,
-        TEST_SELLER_BRANDNAME2,
-        TEST_SELLER_DOMAINNAME2,
-        TEST_SELLER_INTRODUCE2,
-        TEST_SELLER_EMAIL2,
-        TEST_SELLER_PHONENEMBER2,
-        TEST_USER1);
-    public final static Long TEST_PRODUCT_ID1 = 1L;
-    public final static String TEST_PRODUCT_NAME = "상품1";
-    public final static String TEST_PRODUCT_DESCRIPTION = "상품 설명1";
-    public final static Long TEST_PRODUCT_PRICE = 100000L;
-    public final static Boolean TEST_PRODUCT_STATE = true;
     public final static Product TEST_PRODUCT = new Product(
         TEST_PRODUCT_ID1,
         TEST_SELLER,
@@ -85,6 +65,23 @@ public class TestValue {
         TEST_PRODUCT_DESCRIPTION,
         TEST_PRODUCT_PRICE,
         true);
+    public final static Long TEST_SELLER_ID1 = 1L;
+    public final static String TEST_SELLER_BRANDNAME1 = "brand1";
+    public final static String TEST_SELLER_DOMAINNAME1 = "domain1";
+    public final static String TEST_SELLER_INTRODUCE1 = "introduce1";
+    public final static String TEST_SELLER_EMAIL1 = "이메일1@이메일1.com";
+    public final static String TEST_SELLER_PHONENEMBER1 = "00000001";
+    public final static Long TEST_SELLER_ID2 = 2L;
+    public final static String TEST_SELLER_BRANDNAME2 = "brand2";
+    public final static String TEST_SELLER_DOMAINNAME2 = "domain2";
+    public final static String TEST_SELLER_INTRODUCE2 = "introduce2";
+    public final static String TEST_SELLER_EMAIL2 = "이메일2@이메일2.com";
+    public final static String TEST_SELLER_PHONENEMBER2 = "00000002";
+    public final static Long TEST_PRODUCT_ID1 = 1L;
+    public final static String TEST_PRODUCT_NAME = "상품1";
+    public final static String TEST_PRODUCT_DESCRIPTION = "상품 설명1";
+    public final static Long TEST_PRODUCT_PRICE = 100000L;
+    public final static Boolean TEST_PRODUCT_STATE = true;
     public final static String TEST_REQUEST_PRODUCT_NAME = TEST_PRODUCT_NAME;
     public final static String TEST_REQUEST_PRODUCT_DESCRIPTION = TEST_PRODUCT_DESCRIPTION;
     public final static Long TEST_REQUEST_PRODUCT_PRICE = TEST_PRODUCT_PRICE;

@@ -13,7 +13,6 @@ import com.kuku9.goods.domain.event_product.dto.EventProductRequest;
 import com.kuku9.goods.domain.event_product.entity.EventProduct;
 import com.kuku9.goods.domain.event_product.repository.EventProductRepository;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
-import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.exception.EventNotFoundException;
@@ -29,85 +28,85 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
-	private final EventRepository eventRepository;
-	private final SellerRepository sellerRepository;
-	private final EventQuery eventQuery;
-	private final EventProductRepository eventProductRepository;
-	private final ProductRepository productRepository;
+    private final EventRepository eventRepository;
+    private final SellerRepository sellerRepository;
+    private final EventQuery eventQuery;
+    private final EventProductRepository eventProductRepository;
+    private final ProductRepository productRepository;
 
-	@Transactional
-	public Long createEvent(EventRequest eventRequest, User user) {
+    @Transactional
+    public Long createEvent(EventRequest eventRequest, User user) {
 
-		Event event = new Event(eventRequest, user);
-		Event savedEvent = eventRepository.save(event);
+        Event event = new Event(eventRequest, user);
+        Event savedEvent = eventRepository.save(event);
 
-		eventRequest.getEventProducts().stream()
-			.map(EventProductRequest::getProductId)
-			.map(productId -> productRepository.findById(productId)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
-			.map(product -> new EventProduct(savedEvent, product))
-			.forEach(eventProductRepository::save);
+        eventRequest.getEventProducts().stream()
+            .map(EventProductRequest::getProductId)
+            .map(productId -> productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
+            .map(product -> new EventProduct(savedEvent, product))
+            .forEach(eventProductRepository::save);
 
-		return savedEvent.getId();
-	}
+        return savedEvent.getId();
+    }
 
-	@Transactional
-	public Long updateEvent(Long eventId, EventUpdateRequest eventRequest, User user) {
+    @Transactional
+    public Long updateEvent(Long eventId, EventUpdateRequest eventRequest, User user) {
 
-		Event event = findEvent(eventId);
+        Event event = findEvent(eventId);
 
-		if (!event.getUser().getId().equals(user.getId())) {
-			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
-		}
+        if (!event.getUser().getId().equals(user.getId())) {
+            throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
+        }
 
-		event.update(eventRequest);
+        event.update(eventRequest);
 
-		return event.getId();
-	}
+        return event.getId();
+    }
 
-	@Transactional(readOnly = true)
-	public EventResponse getEvent(Long eventId) {
+    @Transactional(readOnly = true)
+    public EventResponse getEvent(Long eventId) {
 
-		Event event = findEvent(eventId);
-		List<Long> eventProducts = eventQuery.getEventProducts(event.getId());
-		return EventResponse.from(event, eventProducts);
-	}
+        Event event = findEvent(eventId);
+        List<Long> eventProducts = eventQuery.getEventProducts(event.getId());
+        return EventResponse.from(event, eventProducts);
+    }
 
-	@Transactional(readOnly = true)
-	public Page<EventResponse> getAllEvents(Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<EventResponse> getAllEvents(Pageable pageable) {
 
-		return eventRepository.findAll(pageable)
-			.map(event -> {
-				List<Long> eventProducts = eventQuery.getEventProducts(event.getId());
-				return EventResponse.from(event, eventProducts);
-			});
-	}
+        return eventRepository.findAll(pageable)
+            .map(event -> {
+                List<Long> eventProducts = eventQuery.getEventProducts(event.getId());
+                return EventResponse.from(event, eventProducts);
+            });
+    }
 
-	@Transactional
-	public void deleteEvent(Long eventId, User user) {
+    @Transactional
+    public void deleteEvent(Long eventId, User user) {
 
-		Event event = findEvent(eventId);
+        Event event = findEvent(eventId);
 
-		if (!event.getUser().getId().equals(user.getId())) {
-			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
-		}
+        if (!event.getUser().getId().equals(user.getId())) {
+            throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
+        }
 
-		eventQuery.deleteEventProduct(eventId);
-		eventRepository.delete(event);
+        eventQuery.deleteEventProduct(eventId);
+        eventRepository.delete(event);
 
-	}
+    }
 
-	@Transactional
-	public void deleteEventProduct(Long eventProductId, User user) {
+    @Transactional
+    public void deleteEventProduct(Long eventProductId, User user) {
 
-		EventProduct eventProduct = eventProductRepository.findById(eventProductId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));
+        EventProduct eventProduct = eventProductRepository.findById(eventProductId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));
 
-		eventProductRepository.delete(eventProduct);
-	}
+        eventProductRepository.delete(eventProduct);
+    }
 
-	private Event findEvent(Long eventId) {
-		return eventRepository.findById(eventId)
-			.orElseThrow(() -> new EventNotFoundException(NOT_FOUND_EVENT));
-	}
+    private Event findEvent(Long eventId) {
+        return eventRepository.findById(eventId)
+            .orElseThrow(() -> new EventNotFoundException(NOT_FOUND_EVENT));
+    }
 }

@@ -2,8 +2,8 @@ package com.kuku9.goods.domain.seller.service;
 
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
 import com.kuku9.goods.domain.seller.dto.response.SellProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.entity.User;
 import java.time.LocalDate;
@@ -12,16 +12,43 @@ import java.util.List;
 public interface SellerService {
 
     // todo :: Parameter 주석 설명 추가하기
+
+    /**
+     * @param requestDto 상품 정보
+     * @param user       로그인 유저
+     * @return DB에 저장될 상품
+     */
     Long createProduct(ProductRegistRequest requestDto, User user);
 
-    Long orderProductStatus(Long productsId, User user);
+    /**
+     * @param productId 상품 고유 식별자
+     * @param user      로그인 유저
+     * @return 셀러 고유 식별자
+     */
+    Long orderProductStatus(Long productId, User user);
 
+    /**
+     * @param productId  상품 고유 식별자
+     * @param requestDto 상품 수정 정보
+     * @param user       로그인 유저
+     * @return 셀러 고유 식별자
+     */
     Long updateProduct(
         Long productId, ProductUpdateRequest requestDto, User user);
 
+    /**
+     * @param user      로그인 유저
+     * @param startDate 조회할 시작 날짜
+     * @param endDate   조회할 마지막 날짜
+     * @return 판매된 상푸 정보
+     */
     List<SellProductResponse> getSellingProduct(
         User user, LocalDate startDate, LocalDate endDate);
 
+    /**
+     * @param user 로그인 유저
+     * @return 판매된 상품 총 매출액
+     */
     SellProductStatisticsResponse getSellProductStatistics(User user);
 
     /**

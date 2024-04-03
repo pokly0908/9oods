@@ -7,8 +7,6 @@ import com.kuku9.goods.domain.event.service.EventService;
 import com.kuku9.goods.global.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.List;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,67 +23,69 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/events")
 public class EventController {
 
-	private final EventService eventService;
+    private final EventService eventService;
 
-	@PostMapping
-	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
-	public ResponseEntity<String> createEvent(@Valid @RequestBody EventRequest request,
-		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_SELLER')")
+    public ResponseEntity<String> createEvent(
+        @Valid @RequestBody EventRequest request,
+        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
-		Long eventId = eventService.createEvent(request, customUserDetails.getUser());
+        Long eventId = eventService.createEvent(request, customUserDetails.getUser());
 
-		return ResponseEntity.created(URI.create("/api/v1/events/" + eventId)).build();
-	}
+        return ResponseEntity.created(URI.create("/api/v1/events/" + eventId)).build();
+    }
 
-	@PutMapping("/{eventId}")
-	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
-	public ResponseEntity<String> updateEvent(
-		@Valid @RequestBody EventUpdateRequest request,
-		@PathVariable Long eventId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    @PutMapping("/{eventId}")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER')")
+    public ResponseEntity<String> updateEvent(
+        @Valid @RequestBody EventUpdateRequest request,
+        @PathVariable Long eventId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
-		Long updatedEventId = eventService.updateEvent(eventId, request,
-			customUserDetails.getUser());
+        Long updatedEventId = eventService.updateEvent(eventId, request,
+            customUserDetails.getUser());
 
-		return ResponseEntity.created(URI.create("/api/v1/events/" + updatedEventId)).build();
-	}
+        return ResponseEntity.created(URI.create("/api/v1/events/" + updatedEventId)).build();
+    }
 
-	@GetMapping("/{eventId}")
-	public ResponseEntity<EventResponse> getEvent(@PathVariable Long eventId) {
+    @GetMapping("/{eventId}")
+    public ResponseEntity<EventResponse> getEvent(@PathVariable Long eventId) {
 
-		EventResponse eventResponse = eventService.getEvent(eventId);
+        EventResponse eventResponse = eventService.getEvent(eventId);
 
-		return ResponseEntity.ok().body(eventResponse);
-	}
+        return ResponseEntity.ok().body(eventResponse);
+    }
 
-	@GetMapping
-	public ResponseEntity<Page<EventResponse>> getAllEvents(
-		@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "20") int size) {
-		Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "createdAt"));
-		Page<EventResponse> eventResponses = eventService.getAllEvents(pageable);
+    @GetMapping
+    public ResponseEntity<Page<EventResponse>> getAllEvents(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "createdAt"));
+        Page<EventResponse> eventResponses = eventService.getAllEvents(pageable);
 
-		return ResponseEntity.ok().body(eventResponses);
-	}
+        return ResponseEntity.ok().body(eventResponses);
+    }
 
-	@DeleteMapping("/{eventId}")
-	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
-	public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId,
-		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    @DeleteMapping("/{eventId}")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER')")
+    public ResponseEntity<Void> deleteEvent(
+        @PathVariable Long eventId,
+        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
-		eventService.deleteEvent(eventId, customUserDetails.getUser());
+        eventService.deleteEvent(eventId, customUserDetails.getUser());
 
-		return ResponseEntity.ok().build();
-	}
+        return ResponseEntity.ok().build();
+    }
 
-	@DeleteMapping("/eventProducts/{eventProductId}")
-	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
-	public ResponseEntity<Void> deleteEventProduct(
-		@PathVariable Long eventProductId,
-		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    @DeleteMapping("/eventProducts/{eventProductId}")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER')")
+    public ResponseEntity<Void> deleteEventProduct(
+        @PathVariable Long eventProductId,
+        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
-		eventService.deleteEventProduct(eventProductId, customUserDetails.getUser());
+        eventService.deleteEventProduct(eventProductId, customUserDetails.getUser());
 
-		return ResponseEntity.ok().build();
-	}
+        return ResponseEntity.ok().build();
+    }
 
 }

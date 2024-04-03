@@ -15,11 +15,11 @@ public class ProductOrderResponse {
     private final String address;
     private final List<ProductResponse> products;
 
-	public ProductOrderResponse(ProductOrder productOrder, List<ProductResponse> products) {
-		this.orderId = productOrder.getId();
-		this.orderStatus = productOrder.getStatus();
-		this.orderDate = productOrder.getCreatedAt();
-		this.address = productOrder.getAddress();
-		this.products = products;
-	}
+    public ProductOrderResponse(ProductOrder productOrder, List<ProductResponse> products) {
+        this.orderId = productOrder.getId();
+        this.orderStatus = productOrder.getStatus();
+        this.orderDate = productOrder.getCreatedAt();
+        this.address = productOrder.getAddress();
+        this.products = products;
+    }
 }

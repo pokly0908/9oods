@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class EventProductRequest {
 
-	private Long productId;
+    private Long productId;
 }

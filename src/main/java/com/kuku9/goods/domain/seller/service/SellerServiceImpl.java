@@ -6,8 +6,8 @@ import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
 import com.kuku9.goods.domain.seller.dto.response.SellProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
@@ -156,22 +156,22 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Boolean isBrandNameUnique(String brandName) {
+    public Boolean checkBrandNameExist(String brandName) {
         return sellerRepository.existsByBrandName(brandName);
     }
 
     @Override
-    public Boolean isDomainNameUnique(String domainName) {
+    public Boolean checkDomainNameExist(String domainName) {
         return sellerRepository.existsByDomainName(domainName);
     }
 
     @Override
-    public Boolean isEmailUnique(String email) {
+    public Boolean checkEmailExist(String email) {
         return sellerRepository.existsByEmail(email);
     }
 
     @Override
-    public Boolean isPhoneNumberUnique(String phoneNumber) {
+    public Boolean checkPhoneNumberExist(String phoneNumber) {
         return sellerRepository.existsByPhoneNumber(phoneNumber);
     }
 

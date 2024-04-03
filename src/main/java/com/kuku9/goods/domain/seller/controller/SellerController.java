@@ -3,6 +3,7 @@ package com.kuku9.goods.domain.seller.controller;
 import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.service.SellerService;
@@ -95,6 +96,20 @@ public class SellerController {
             userDetails.getUser(), startDate, endDate);
 
         return ResponseEntity.ok(responseDto);
+    }
+
+    // 셀러의 판매된 상품 중 탑 10
+    @GetMapping("/products/sold/topten")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public ResponseEntity<List<SoldProductQuantityResponse>> getSoldProductQuantityTopTen(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+
+        List<SoldProductQuantityResponse> responses = sellerService.getSoldProductQuantityTopTen(
+            userDetails.getUser(), startDate, endDate);
+
+        return ResponseEntity.ok(responses);
     }
 
 }

@@ -1,18 +1,21 @@
 package com.kuku9.goods.domain.seller.service;
 
+import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_PRODUCT_EVENT;
+import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_SELLER_EVENT;
+
 import com.kuku9.goods.domain.order_product.repository.OrderProductRepository;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerQuery;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
-import static com.kuku9.goods.global.exception.ExceptionStatus.*;
 import com.kuku9.goods.global.exception.InvalidProductEventException;
 import com.kuku9.goods.global.exception.InvalidSellerEventException;
 import java.time.LocalDate;
@@ -81,14 +84,21 @@ public class SellerServiceImpl implements SellerService {
     @Transactional(readOnly = true)
     public List<SoldProductResponse> getSoldProduct(
         User user, LocalDate startDate, LocalDate endDate) {
-        return sellerQuery.getSoldProduct(findSeller(user),startDate, endDate);
+        return sellerQuery.getSoldProduct(findSeller(user), startDate, endDate);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public SoldProductSumPriceResponse getSoldProductSumPrice (
+    public SoldProductSumPriceResponse getSoldProductSumPrice(
         User user, LocalDate startDate, LocalDate endDate) {
         return sellerQuery.getSoldProductSumPrice(findSeller(user), startDate, endDate);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SoldProductQuantityResponse> getSoldProductQuantityTopTen(
+        User user, LocalDate startDate, LocalDate endDate) {
+        return sellerQuery.getSoldProductQuantityTopTen(findSeller(user), startDate, endDate);
     }
 
     private Seller findSeller(User user) {

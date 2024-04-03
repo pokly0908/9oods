@@ -1,5 +1,6 @@
 package com.kuku9.goods.domain.event.entity;
 
+import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
 import com.kuku9.goods.domain.seller.entity.Seller;
@@ -33,19 +34,19 @@ public class Event extends BaseEntity {
 	private String content;
 
 	@Column
-	private Long limitNum;
-
-	@Column
 	private LocalDate openAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "seller_id")
 	private User user;
 
+	@OneToOne
+	@JoinColumn(name = "coupon_id")
+	private Coupon coupon;
+
 	public Event(EventRequest request, User user) {
 		this.title = request.getTitle();
 		this.content = request.getContent();
-		this.limitNum = request.getLimitNum();
 		this.openAt = request.getOpenAt();
 		this.user = user;
 	}
@@ -53,8 +54,10 @@ public class Event extends BaseEntity {
 	public void update(EventUpdateRequest request) {
 		this.title = request.getTitle();
 		this.content = request.getContent();
-		this.limitNum = request.getLimitNum();
 		this.openAt = request.getOpenAt();
 	}
 
+	public void addCoupon(Coupon coupon) {
+		this.coupon = coupon;
+	}
 }

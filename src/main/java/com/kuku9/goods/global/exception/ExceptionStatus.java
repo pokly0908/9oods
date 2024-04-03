@@ -16,7 +16,8 @@ public enum ExceptionStatus {
     DUPLICATED_SELLER(HttpStatus.BAD_REQUEST.value(), "셀러 등록은 중복으로 할 수 없습니다."),
     NOT_FOUND_EVENT(HttpStatus.BAD_REQUEST.value(), "해당 이벤트는 존재하지 않습니다."),
     INVALID_ADMIN_EVENT(HttpStatus.BAD_REQUEST.value(), "seller 만 이벤트 등록할 수 있습니다."),
-    INVALID_SELLER_EVENT(HttpStatus.BAD_REQUEST.value(), "셀러만 상품을 등록할 수 있습니다. 셀러 신청하세요.");
+    INVALID_SELLER_EVENT(HttpStatus.BAD_REQUEST.value(), "셀러만 상품을 등록할 수 있습니다. 셀러 신청하세요."),
+    INVALID_PRODUCT_EVENT(HttpStatus.BAD_REQUEST.value(), "해당 상품은 존재하지 않습니다.");
 
 
     private final Integer statusCode;

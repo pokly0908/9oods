@@ -74,4 +74,10 @@ public class GlobalExceptionHandler {
         log.error(ex.getMessage());
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+
+    @ExceptionHandler(InvalidProductEventException.class)
+    public ResponseEntity<String> InvalidProductEventException(InvalidProductEventException ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
 }

@@ -1,6 +1,9 @@
 package com.kuku9.goods.domain.product.repository;
 
+import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_PRODUCT_EVENT;
+
 import com.kuku9.goods.domain.product.entity.Product;
+import com.kuku9.goods.global.exception.InvalidProductEventException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +23,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product findByIdAndSellerId(Long productId, Long id) {
+    public Optional<Product> findByIdAndSellerId(Long productId, Long id) {
         return productJpaRepository.findByIdAndSellerId(productId, id);
     }
 

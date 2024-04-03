@@ -1,9 +1,10 @@
 package com.kuku9.goods.domain.seller.controller;
 
+import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.dto.response.SellProductResponse;
-import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.service.SellerService;
 import com.kuku9.goods.global.security.CustomUserDetails;
 import java.net.URI;
@@ -37,10 +38,23 @@ public class SellerController {
     // 상품 판매 여부 기능
     @PatchMapping("/products/{productId}/status")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<Void> orderProductStatus(
+    public ResponseEntity<Void> updateProductStatus(
         @PathVariable Long productId,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long sellerId = sellerService.orderProductStatus(productId, userDetails.getUser());
+        Long sellerId = sellerService.updateProductStatus(productId, userDetails.getUser());
+
+        return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
+    }
+
+    // 상품 재고 수정 기능
+    @PatchMapping("/products/{productId}/quantity")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public ResponseEntity<Void> updateProductQuantity(
+        @PathVariable Long productId,
+        @RequestBody ProductQuantityRequest request,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long sellerId = sellerService.updateProductQuantity(
+            productId, request, userDetails.getUser());
 
         return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
     }
@@ -60,23 +74,25 @@ public class SellerController {
     // 셀러의 판매된 상품 정보 원하는 날짜 선택 조회 기능
     @GetMapping("/products/sold")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<List<SellProductResponse>> getSellingProduct(
+    public ResponseEntity<List<SoldProductResponse>> getSoldProduct(
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
-        List<SellProductResponse> responseDto = sellerService.getSellingProduct(
+        List<SoldProductResponse> responseDto = sellerService.getSoldProduct(
             userDetails.getUser(), startDate, endDate);
 
         return ResponseEntity.ok(responseDto);
     }
 
-    // 셀러의 판매된 상품 통계
-    @GetMapping("/products/sold/statistics")
+    // 셀러의 판매된 상품 총 판매액 조회
+    @GetMapping("/products/sold/price/statistics")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<SellProductStatisticsResponse> getSellProductStatistics(
-        @AuthenticationPrincipal CustomUserDetails userDetails) {
-        SellProductStatisticsResponse responseDto = sellerService.getSellProductStatistics(
-            userDetails.getUser());
+    public ResponseEntity<SoldProductSumPriceResponse> getSoldProductSumPrice(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+        SoldProductSumPriceResponse responseDto = sellerService.getSoldProductSumPrice(
+            userDetails.getUser(), startDate, endDate);
 
         return ResponseEntity.ok(responseDto);
     }

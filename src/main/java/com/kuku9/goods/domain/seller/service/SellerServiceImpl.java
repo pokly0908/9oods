@@ -4,13 +4,14 @@ import com.kuku9.goods.domain.order_product.entity.OrderProduct;
 import com.kuku9.goods.domain.order_product.repository.OrderProductRepository;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
-import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
-import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
-import com.kuku9.goods.domain.seller.dto.SellProductStatisticsResponseDto;
-import com.kuku9.goods.domain.seller.dto.SellingProductResponseDto;
+import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
+import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
+import com.kuku9.goods.domain.seller.dto.response.SellingProductResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional
-    public Long createProduct(ProductRegistRequestDto requestDto, User user) {
+    public Long createProduct(ProductRegistRequest requestDto, User user) {
         Seller seller = findSeller(user);
         if (seller == null) {
             throw new IllegalArgumentException("셀러만 상품을 등록할 수 있습니다. 셀러 신청하세요.");
@@ -62,7 +63,7 @@ public class SellerServiceImpl implements SellerService {
     @Override
     @Transactional
     public Long updateProduct(
-        Long productId, ProductUpdateRequestDto requestDto, User user) {
+        Long productId, ProductUpdateRequest requestDto, User user) {
         Seller seller = findSeller(user);
         if (seller == null) {
             throw new IllegalArgumentException("셀러만 상품 정보를 수정할 수 있습니다. 셀러 신청하세요.");
@@ -79,30 +80,35 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SellingProductResponseDto> getSellingProduct(User user) {
+    public List<SellingProductResponse> getSellingProduct(
+        User user, LocalDate startDate, LocalDate endDate) {
         Seller seller = findSeller(user);
 
         List<OrderProduct> orderProductList = new ArrayList<>();
         for (Product product : productRepository.findBySellerId(seller.getId())) {
-            OrderProduct orderProduct = orderProductRepository.findByProductId(product.getId());
-            if (orderProduct != null) {
-                orderProductList.add(orderProduct);
+            List<OrderProduct> orderProducts =
+                orderProductRepository.findByProductAndCreatedAtBetween(
+                    product,
+                    startDate.atStartOfDay(),
+                    endDate.plusDays(1).atStartOfDay());
+            // 변경된 부분: orderDate -> createdAt로 수정
+
+            if (orderProducts != null) {
+                orderProductList.addAll(orderProducts);
             }
         }
 
-        List<SellingProductResponseDto> responseDtoList = new ArrayList<>();
+        List<SellingProductResponse> responseDtoList = new ArrayList<>();
         long totalPrice = 0L;
         for (OrderProduct orderProduct : orderProductList) {
             long productTotalPrice =
                 orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
-            totalPrice += productTotalPrice;
             responseDtoList.add(
-                new SellingProductResponseDto(
+                new SellingProductResponse(
                     orderProduct.getProduct().getName(),
                     orderProduct.getProduct().getPrice(),
                     orderProduct.getQuantity(),
-                    productTotalPrice,
-                    totalPrice));
+                    productTotalPrice));
         }
 
         return responseDtoList;
@@ -110,7 +116,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional(readOnly = true)
-    public SellProductStatisticsResponseDto getSellProductStatistics(User user) {
+    public SellProductStatisticsResponse getSellProductStatistics(User user) {
         Seller seller = findSeller(user);
 
         List<OrderProduct> orderProductList = new ArrayList<>();
@@ -130,9 +136,8 @@ public class SellerServiceImpl implements SellerService {
         }
         statisticsPrice = totalPrice / orderProductList.size();
 
-        return new SellProductStatisticsResponseDto(statisticsPrice);
+        return new SellProductStatisticsResponse(statisticsPrice);
     }
-
 
     private Seller findSeller(User user) {
         return sellerRepository.findByUserId(user.getId());

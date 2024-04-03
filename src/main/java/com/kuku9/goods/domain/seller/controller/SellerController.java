@@ -1,14 +1,16 @@
 package com.kuku9.goods.domain.seller.controller;
 
-import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
-import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
-import com.kuku9.goods.domain.seller.dto.SellProductStatisticsResponseDto;
-import com.kuku9.goods.domain.seller.dto.SellingProductResponseDto;
+import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
+import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
+import com.kuku9.goods.domain.seller.dto.response.SellingProductResponse;
 import com.kuku9.goods.domain.seller.service.SellerService;
 import com.kuku9.goods.global.security.CustomUserDetails;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +25,7 @@ public class SellerController {
     // 상품 등록 기능
     @PostMapping("/products")
     public ResponseEntity<String> createProduct(
-        @RequestBody ProductRegistRequestDto requestDto,
+        @RequestBody ProductRegistRequest requestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long sellerId = sellerService.createProduct(requestDto, userDetails.getUser());
 
@@ -44,7 +46,7 @@ public class SellerController {
     @PatchMapping("/products/{productId}")
     public ResponseEntity<Void> updateProduct(
         @PathVariable Long productId,
-        @RequestBody ProductUpdateRequestDto requestDto,
+        @RequestBody ProductUpdateRequest requestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long sellerId = sellerService.updateProduct(productId, requestDto, userDetails.getUser());
 
@@ -53,19 +55,21 @@ public class SellerController {
 
     // 셀러의 판매된 상품 정보 조회 기능
     @GetMapping("/products/selled")
-    public ResponseEntity<List<SellingProductResponseDto>> getSellingProduct(
-        @AuthenticationPrincipal CustomUserDetails userDetails) {
-        List<SellingProductResponseDto> responseDto = sellerService.getSellingProduct(
-            userDetails.getUser());
+    public ResponseEntity<List<SellingProductResponse>> getSellingProduct(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+        List<SellingProductResponse> responseDto = sellerService.getSellingProduct(
+            userDetails.getUser(), startDate, endDate);
 
         return ResponseEntity.ok(responseDto);
     }
 
     // 셀러의 판매된 상품 통계
     @GetMapping("/products/selled/statistics")
-    public ResponseEntity<SellProductStatisticsResponseDto> getSellProductStatistics(
+    public ResponseEntity<SellProductStatisticsResponse> getSellProductStatistics(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        SellProductStatisticsResponseDto responseDto = sellerService.getSellProductStatistics(
+        SellProductStatisticsResponse responseDto = sellerService.getSellProductStatistics(
             userDetails.getUser());
 
         return ResponseEntity.ok(responseDto);

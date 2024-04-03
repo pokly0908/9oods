@@ -99,7 +99,6 @@ public class UserServiceImplTest {
             encodedOriginPassword,
             UserRoleEnum.USER
         );
-        // userRepository.save(user);
         ModifyPasswordRequest request = new ModifyPasswordRequest(
             originPassword,
             newPassword);

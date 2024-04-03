@@ -1,7 +1,7 @@
 package com.kuku9.goods.domain.product.entity;
 
-import com.kuku9.goods.domain.seller.dto.ProductRegistRequestDto;
-import com.kuku9.goods.domain.seller.dto.ProductUpdateRequestDto;
+import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
+import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -40,7 +40,7 @@ public class Product extends BaseEntity {
     @Column
     private Boolean status = true;
 
-    public Product(ProductRegistRequestDto requestDto, Seller seller) {
+    public Product(ProductRegistRequest requestDto, Seller seller) {
         this.name = requestDto.getProductName();
         this.description = requestDto.getProductDescription();
         this.price = requestDto.getProductPrice();
@@ -53,7 +53,7 @@ public class Product extends BaseEntity {
         }
     }
 
-    public void updateProduct(ProductUpdateRequestDto requestDto) {
+    public void updateProduct(ProductUpdateRequest requestDto) {
         if (!requestDto.getName().isEmpty()) {
             this.name = requestDto.getName();
         }

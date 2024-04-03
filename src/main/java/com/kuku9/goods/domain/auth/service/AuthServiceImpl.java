@@ -16,21 +16,21 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
+	private final UserService userService;
+	private final PasswordEncoder passwordEncoder;
+	private final JwtUtil jwtUtil;
 
-    @Override
-    @Transactional
-    public String login(LoginRequest request) {
-        User user = userService.findByUsername(request.getUsername());
-        validateLoginPassword(request, user);
-        return jwtUtil.createAccessToken(user.getUsername(), user.getRole());
-    }
+	@Override
+	@Transactional
+	public String login(LoginRequest request) {
+		User user = userService.findByUsername(request.getUsername());
+		validateLoginPassword(request, user);
+		return jwtUtil.createAccessToken(user.getUsername(), user.getRole());
+	}
 
-    private void validateLoginPassword(LoginRequest request, User user) {
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new InvalidPasswordException(INVALID_PASSWORD);
-        }
-    }
+	private void validateLoginPassword(LoginRequest request, User user) {
+		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+			throw new InvalidPasswordException(INVALID_PASSWORD);
+		}
+	}
 }

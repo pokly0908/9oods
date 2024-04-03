@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    public static final String INTERNAL_ERROR_500 = "서버 내부 오류가 발생했습니다. / Please Contact Admin";
+	public static final String INTERNAL_ERROR_500 = "서버 내부 오류가 발생했습니다. / Please Contact Admin";
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<String> handleAllUncaughtException(Exception ex) {
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getStatusCode())
             .body(ex.getMessage());
 
-    }
+	}
 
     @ExceptionHandler(DuplicatedException.class)
     public ResponseEntity<String> duplicatedException(DuplicatedException ex) {

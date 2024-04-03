@@ -3,7 +3,7 @@ package com.kuku9.goods.domain.seller.service;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
 import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
-import com.kuku9.goods.domain.seller.dto.response.SellingProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SellProductResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.entity.User;
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ public interface SellerService {
     Long updateProduct(
         Long productId, ProductUpdateRequest requestDto, User user);
 
-    List<SellingProductResponse> getSellingProduct(
+    List<SellProductResponse> getSellingProduct(
         User user, LocalDate startDate, LocalDate endDate);
 
     SellProductStatisticsResponse getSellProductStatistics(User user);
@@ -46,7 +46,7 @@ public interface SellerService {
      * @param brandName 브랜드 이름
      * @return true, false
      */
-    Boolean isBrandNameUnique(String brandName);
+    Boolean checkBrandNameExist(String brandName);
 
     /**
      * 도메인 이름이 존재하는지 검사
@@ -54,7 +54,7 @@ public interface SellerService {
      * @param domainName 도메인 이름
      * @return true, false
      */
-    Boolean isDomainNameUnique(String domainName);
+    Boolean checkDomainNameExist(String domainName);
 
     /**
      * 셀러 이메일이 존재하는지 검사
@@ -62,7 +62,7 @@ public interface SellerService {
      * @param email 셀러 이메일
      * @return true, false
      */
-    Boolean isEmailUnique(String email);
+    Boolean checkEmailExist(String email);
 
     /**
      * 셀러 전화번호가 이미 등록되어 있는지 검사
@@ -70,6 +70,6 @@ public interface SellerService {
      * @param phoneNumber 셀러 전화번호
      * @return true, false
      */
-    Boolean isPhoneNumberUnique(String phoneNumber);
+    Boolean checkPhoneNumberExist(String phoneNumber);
 
 }

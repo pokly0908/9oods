@@ -7,7 +7,7 @@ import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
 import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
-import com.kuku9.goods.domain.seller.dto.response.SellingProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SellProductResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
@@ -76,7 +76,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SellingProductResponse> getSellingProduct(
+    public List<SellProductResponse> getSellingProduct(
         User user, LocalDate startDate, LocalDate endDate) {
         Seller seller = findSeller(user);
 
@@ -94,13 +94,13 @@ public class SellerServiceImpl implements SellerService {
             }
         }
 
-        List<SellingProductResponse> responseDtoList = new ArrayList<>();
+        List<SellProductResponse> responseDtoList = new ArrayList<>();
         long totalPrice = 0L;
         for (OrderProduct orderProduct : orderProductList) {
             long productTotalPrice =
                 orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
             responseDtoList.add(
-                new SellingProductResponse(
+                new SellProductResponse(
                     orderProduct.getProduct().getName(),
                     orderProduct.getProduct().getPrice(),
                     orderProduct.getQuantity(),

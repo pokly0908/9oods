@@ -14,26 +14,26 @@ import lombok.NoArgsConstructor;
 @Table(name = "product_order")
 public class ProductOrder extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    private User user;
+	@ManyToOne
+	private User user;
 
-    @Column
-    private String status;
+	@Column
+	private String status;
 
-    @Column
-    private String address;
+	@Column
+	private String address;
 
-    public ProductOrder(User user, String address) {
-        this.user = user;
-        this.status = "결제완료";
-        this.address = address;
-    }
+	public ProductOrder(User user, String address) {
+		this.user = user;
+		this.status = "결제완료";
+		this.address = address;
+	}
 
-    public void updateStatus(String status) {
-        this.status = status;
-    }
+	public void updateStatus(String status) {
+		this.status = status;
+	}
 }

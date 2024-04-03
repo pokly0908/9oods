@@ -15,21 +15,21 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableRedisRepositories
 public class RedisConfig {
 
-    @Value("${spring.data.redis.host}")
-    private String redisHost;
+	@Value("${spring.data.redis.host}")
+	private String redisHost;
 
-    @Value("${spring.data.redis.port}")
-    private int redisPort;
+	@Value("${spring.data.redis.port}")
+	private int redisPort;
 
-    @Bean
-    public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
-    }
+	@Bean
+	public RedisConnectionFactory redisConnectionFactory() {
+		return new LettuceConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
+	}
 
-    @Bean
-    public RedisTemplate<String, String> redisTemplate() {
-        StringRedisTemplate redisTemplate = new StringRedisTemplate();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
-        return redisTemplate;
-    }
+	@Bean
+	public RedisTemplate<String, String> redisTemplate() {
+		StringRedisTemplate redisTemplate = new StringRedisTemplate();
+		redisTemplate.setConnectionFactory(redisConnectionFactory());
+		return redisTemplate;
+	}
 }

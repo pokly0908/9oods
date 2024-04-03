@@ -11,6 +11,7 @@ import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+
 @Entity
 @Getter
 @Table(name = "user")

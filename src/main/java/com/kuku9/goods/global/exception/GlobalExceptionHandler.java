@@ -57,8 +57,8 @@ public class GlobalExceptionHandler {
             .body(ex.getMessage());
     }
 
-    @ExceptionHandler(EventNotFoundException.class)
-    public ResponseEntity<String> EventNotFoundException(EventNotFoundException ex) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> EventNotFoundException(NotFoundException ex) {
         log.error(ex.getMessage());
         return ResponseEntity.badRequest().body(ex.getMessage());
     }

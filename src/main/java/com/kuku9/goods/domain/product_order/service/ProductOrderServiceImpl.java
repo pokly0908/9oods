@@ -1,5 +1,7 @@
 package com.kuku9.goods.domain.product_order.service;
 
+import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_EQUAL_USER_ID;
+
 import com.kuku9.goods.domain.order_product.entity.OrderProduct;
 import com.kuku9.goods.domain.order_product.repository.OrderProductRepository;
 import com.kuku9.goods.domain.product.dto.ProductResponse;
@@ -10,7 +12,7 @@ import com.kuku9.goods.domain.product_order.dto.ProductOrdersRequest;
 import com.kuku9.goods.domain.product_order.entity.ProductOrder;
 import com.kuku9.goods.domain.product_order.repository.ProductOrderRepository;
 import com.kuku9.goods.domain.user.entity.User;
-import com.kuku9.goods.domain.user.repository.UserRepository;
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
 	private final ProductOrderRepository productOrderRepository;
 	private final OrderProductRepository orderProductRepository;
-	private final UserRepository userRepository;
 	private final ProductRepository productRepository;
 
     @Override
@@ -33,6 +34,10 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             Product product = productRepository.findById(
                     productOrderRequest.getProducts().get(i).getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+            if(product.getQuantity() < productOrderRequest.getProducts().get(i).getQuantity()){
+                throw new IllegalArgumentException("재고가 부족합니다.");
+            }
+            product.updateQuantity(productOrderRequest.getProducts().get(i).getQuantity());
             orderProductRepository.save(new OrderProduct(productOrder, product,
                 productOrderRequest.getProducts().get(i).getQuantity()));
         }
@@ -40,33 +45,33 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     }
 
     @Override
-    public ProductOrderResponse getOrder(User user, Long orderId) {
+    public ProductOrderResponse getOrder(User user, Long orderId) throws AccessDeniedException {
         ProductOrder productOrder = productOrderRepository.findById(orderId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
         if (!productOrder.getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("해당 주문에 접근할 수 없습니다.");
+            throw new AccessDeniedException(String.valueOf(NOT_EQUAL_USER_ID));
         }
         return getProductOrderResponse(orderId, productOrder);
     }
 
     @Override
     //결제 수정권은 누가 가지고 있나요?
-    public ProductOrderResponse updateOrder(User user, Long orderId) {
+    public ProductOrderResponse updateOrder(User user, Long orderId) throws AccessDeniedException {
         ProductOrder productOrder = productOrderRepository.findById(orderId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
         if (!productOrder.getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("해당 주문에 접근할 수 없습니다.");
+            throw new AccessDeniedException(String.valueOf(NOT_EQUAL_USER_ID));
         }
         productOrder.updateStatus("결제 취소");
         return getProductOrderResponse(orderId, productOrder);
     }
 
     @Override
-    public void deleteOrder(User user, Long orderId) {
+    public void deleteOrder(User user, Long orderId) throws AccessDeniedException {
         ProductOrder productOrder = productOrderRepository.findById(orderId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
         if (!productOrder.getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("해당 주문에 접근할 수 없습니다.");
+            throw new AccessDeniedException(String.valueOf(NOT_EQUAL_USER_ID));
         }
         productOrderRepository.delete(productOrder);
     }

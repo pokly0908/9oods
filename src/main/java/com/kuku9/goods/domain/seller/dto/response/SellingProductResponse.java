@@ -6,12 +6,12 @@ import lombok.*;
 public class SellingProductResponse {
 
     private final String productName;
-    private final Long productPrice;
+    private final int productPrice;
     private final int productQuantity;
-    private final Long productTotalPrice;
+    private final int productTotalPrice;
 
     public SellingProductResponse(
-        String name, Long price, int quantity, Long productTotalPrice) {
+        String name, int price, int quantity, int productTotalPrice) {
         this.productName = name;
         this.productPrice = price;
         this.productQuantity = quantity;

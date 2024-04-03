@@ -27,21 +27,24 @@ public class OrderServiceImpl implements OrderService {
 	private final ProductRepository productRepository;
 
     @Override
-    public Order createOrder(User user, OrdersRequest productOrderRequest) {
-        Order order = orderRepository.save(
-            new Order(user, productOrderRequest.getAddress()));
-        for (int i = 0; i < productOrderRequest.getProducts().size(); i++) {
-            //N+1 문제?_?
-            Product product = productRepository.findById(
-                    productOrderRequest.getProducts().get(i).getProductId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
-            if(product.getQuantity() < productOrderRequest.getProducts().get(i).getQuantity()){
-                orderRepository.delete(order);
+    public Order createOrder(User user, OrdersRequest OrderRequest) {
+        //상품 및 재고확인
+        List<Product> products = new ArrayList<>();
+        for (int i = 0; i < OrderRequest.getProducts().size(); i++) {
+			products.add(productRepository.findById(
+                    OrderRequest.getProducts().get(i).getProductId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")));
+            if (products.get(i).getQuantity() < OrderRequest.getProducts().get(i).getQuantity()) {
                 throw new IllegalArgumentException("재고가 부족합니다.");
             }
-            product.updateQuantity(productOrderRequest.getProducts().get(i).getQuantity());
-            orderProductRepository.save(new OrderProduct(order, product,
-                productOrderRequest.getProducts().get(i).getQuantity()));
+        }
+        //저장
+        Order order = orderRepository.save(
+            new Order(user, OrderRequest.getAddress()));
+        for(int i = 0; i < products.size(); i++){
+            products.get(i).updateQuantity(OrderRequest.getProducts().get(i).getQuantity());
+            orderProductRepository.save(new OrderProduct(order, products.get(i),
+                OrderRequest.getProducts().get(i).getQuantity()));
         }
         return order;
     }

@@ -137,7 +137,9 @@ public class EventServiceImpl implements EventService {
 			boolean isLocked = lock.tryLock(10, 60, TimeUnit.SECONDS);
 			if(isLocked) {
 				try {
-					if(issuedCouponRepository.existsByCouponIdAndUserId(couponId, user.getId())) {
+					boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
+						couponId, user.getId());
+					if (isDuplicatedIssuance) {
 						throw new InvalidCouponException(INVALID_COUPON);
 					}
 					Event event = findEvent(eventId);

@@ -71,8 +71,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    //결제 수정권은 누가 가지고 있나요?
     public OrderResponse updateOrder(User user, Long orderId) throws AccessDeniedException {
+        //주문 상품 되돌려놓기
         Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
         if (!order.getUser().getId().equals(user.getId())) {

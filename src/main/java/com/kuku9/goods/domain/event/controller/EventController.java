@@ -76,7 +76,7 @@ public class EventController {
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping("/eventProducts/{eventProductId}")
+	@DeleteMapping("/event-products/{eventProductId}")
 	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
 	public ResponseEntity<Void> deleteEventProduct(
 		@PathVariable Long eventProductId,

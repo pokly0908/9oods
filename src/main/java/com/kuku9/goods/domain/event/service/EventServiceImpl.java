@@ -22,7 +22,10 @@ import com.kuku9.goods.global.exception.InvalidCouponException;
 import com.kuku9.goods.global.exception.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +42,10 @@ public class EventServiceImpl implements EventService {
 	private final ProductRepository productRepository;
 	private final CouponRepository couponRepository;
 	private final IssuedCouponRepository issuedCouponRepository;
+	private final RedissonClient redissonClient;
+
+	private static final String LOCK_KEY = "couponLock";
+
 
 	@Transactional
 	public Long createEvent(EventRequest eventRequest, User user) {
@@ -120,26 +127,34 @@ public class EventServiceImpl implements EventService {
 		eventProductRepository.delete(eventProduct);
 	}
 
-	@Transactional
 	public void issueCoupon(Long eventId, Long couponId, User user, LocalDateTime now) {
-		try{
-			Event event = findEvent(eventId);
-			if(now.isBefore(event.getOpenAt())) {
-				throw new InvalidCouponException(INVALID_COUPON);
-			}
+		RLock lock = redissonClient.getFairLock(LOCK_KEY);
+		try {
+			boolean isLocked = lock.tryLock(10, 60, TimeUnit.SECONDS);
+			if(isLocked) {
+				try {
+					if(issuedCouponRepository.existsByCouponIdAndUserId(couponId, user.getId())) {
+						throw new InvalidCouponException(INVALID_COUPON);
+					}
+					Event event = findEvent(eventId);
+					if(now.isBefore(event.getOpenAt())) {
+						throw new InvalidCouponException(INVALID_COUPON);
+					}
 
-			Coupon coupon = findCoupon(couponId);
-			if (coupon.getQuantity() <= 0) {
-				throw new InvalidCouponException(INVALID_COUPON);
+					Coupon coupon = findCoupon(couponId);
+					if (coupon.getQuantity() <= 0) {
+						throw new InvalidCouponException(INVALID_COUPON);
+					}
+					coupon.decrease();
+					IssuedCoupon issuedCoupon = new IssuedCoupon(user, coupon);
+					issuedCouponRepository.save(issuedCoupon);
+				} finally {
+					lock.unlock();
+				}
 			}
-			coupon.decrease();
-			IssuedCoupon issuedCoupon = new IssuedCoupon(user, coupon);
-			issuedCouponRepository.save(issuedCoupon);
-
-		} catch (DataIntegrityViolationException ex) {
-			throw new InvalidCouponException(INVALID_COUPON);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 		}
-
 	}
 
 	private Event findEvent(Long eventId) {

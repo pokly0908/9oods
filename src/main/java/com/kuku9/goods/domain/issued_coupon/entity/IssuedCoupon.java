@@ -16,21 +16,21 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("deleted_at IS NULL")
 public class IssuedCoupon extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "coupon_id")
-	private Coupon coupon;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon;
 
-	public IssuedCoupon(User user, Coupon coupon) {
-		this.user = user;
-		this.coupon = coupon;
-	}
+    public IssuedCoupon(User user, Coupon coupon) {
+        this.user = user;
+        this.coupon = coupon;
+    }
 
 }

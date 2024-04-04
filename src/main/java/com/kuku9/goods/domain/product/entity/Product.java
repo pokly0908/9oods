@@ -1,5 +1,6 @@
 package com.kuku9.goods.domain.product.entity;
 
+import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
 import com.kuku9.goods.domain.seller.entity.Seller;
@@ -48,6 +49,7 @@ public class Product extends BaseEntity {
         this.description = requestDto.getProductDescription();
         this.price = requestDto.getProductPrice();
         this.seller = seller;
+        this.quantity = requestDto.getProductQuantity();
     }
 
     public void updateOrderStatus(Boolean status) {
@@ -70,5 +72,9 @@ public class Product extends BaseEntity {
 
     public void updateQuantity(int quantity) {
         this.quantity -= quantity;
+    }
+
+    public void updateQuantitySeller(ProductQuantityRequest request) {
+        this.quantity = request.getQuantity();
     }
 }

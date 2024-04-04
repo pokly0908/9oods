@@ -6,7 +6,6 @@ import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,41 +22,41 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("deleted_at IS NULL")
 public class Event extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column
-	private String title;
+    @Column
+    private String title;
 
-	@Column
-	private String content;
+    @Column
+    private String content;
 
-	@Column
-	private LocalDateTime openAt;
+    @Column
+    private LocalDateTime openAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
     private User user;
 
-	@OneToOne
-	@JoinColumn(name = "coupon_id")
-	private Coupon coupon;
+    @OneToOne
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon;
 
-	public Event(EventRequest request, User user) {
-		this.title = request.getTitle();
-		this.content = request.getContent();
-		this.openAt = request.getOpenAt();
-		this.user = user;
-	}
+    public Event(EventRequest request, User user) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.openAt = request.getOpenAt();
+        this.user = user;
+    }
 
-	public void update(EventUpdateRequest request) {
-		this.title = request.getTitle();
-		this.content = request.getContent();
-		this.openAt = request.getOpenAt();
-	}
+    public void update(EventUpdateRequest request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.openAt = request.getOpenAt();
+    }
 
-	public void addCoupon(Coupon coupon) {
-		this.coupon = coupon;
-	}
+    public void addCoupon(Coupon coupon) {
+        this.coupon = coupon;
+    }
 }

@@ -9,15 +9,15 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CouponResponse {
 
-	private Long couponId;
-	private LocalDateTime expirationDate;
-	private int quantity;
+    private Long couponId;
+    private LocalDateTime expirationDate;
+    private int quantity;
 
-	public static CouponResponse from(Coupon coupon) {
-		return new CouponResponse(
-			coupon.getId(),
-			coupon.getExpirationDate(),
-			coupon.getQuantity()
-		);
-	}
+    public static CouponResponse from(Coupon coupon) {
+        return new CouponResponse(
+            coupon.getId(),
+            coupon.getExpirationDate(),
+            coupon.getQuantity()
+        );
+    }
 }

@@ -3,6 +3,7 @@ package com.kuku9.goods.domain.seller.controller;
 import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SearchTestResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -120,6 +121,18 @@ public class SellerController {
             userDetails.getUser(), startDate, endDate);
 
         return ResponseEntity.ok(responses);
+    }
+
+    // 상품 검색 기능
+    // todo :: api에 검색을 했을 때 도메인 / 브랜드명 / 상품 이렇게 나와야 할텐데
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_SELLER')")
+    public ResponseEntity<List<SearchTestResponse>> searchTest(
+        @RequestParam(value = "productName", required = false) String productName) {
+        List<SearchTestResponse> responseList =
+            sellerService.searchTest(productName);
+
+        return ResponseEntity.ok(responseList);
     }
 
 }

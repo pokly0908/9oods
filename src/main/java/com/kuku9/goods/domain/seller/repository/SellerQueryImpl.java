@@ -2,6 +2,7 @@ package com.kuku9.goods.domain.seller.repository;
 
 import com.kuku9.goods.domain.order_product.entity.QOrderProduct;
 import com.kuku9.goods.domain.product.entity.QProduct;
+import com.kuku9.goods.domain.seller.dto.response.SearchTestResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -104,6 +105,21 @@ public class SellerQueryImpl implements SellerQuery {
             .orderBy(qOrderProduct.quantity.desc())
             .limit(10)
             .fetch();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SearchTestResponse> searchTest(String productName) {
+        QSeller qSeller = QSeller.seller;
+        QProduct qProduct = QProduct.product;
+
+        return jpaQueryFactory
+            .select(Projections.constructor(SearchTestResponse.class,
+                qProduct.name))
+            .from(qProduct)
+            .where(qProduct.name.like("%" + productName + "%"))
+            .fetch();
+
     }
 
 }

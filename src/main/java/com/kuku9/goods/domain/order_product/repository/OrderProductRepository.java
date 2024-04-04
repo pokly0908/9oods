@@ -7,11 +7,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderProductRepository extends JpaRepository<OrderProduct, Long> {
-
-    OrderProduct findByProductId(Long id);
-
     List<OrderProduct> findAllByOrderId(Long orderId);
 
-    List<OrderProduct> findByProductAndCreatedAtBetween(
-        Product product, LocalDateTime localDateTime, LocalDateTime localDateTime1);
 }

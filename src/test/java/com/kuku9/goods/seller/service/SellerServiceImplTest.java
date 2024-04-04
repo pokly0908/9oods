@@ -48,7 +48,7 @@ public class SellerServiceImplTest extends TestValue {
             // 입력으로 상품에 대한 정보 입력받기 위해 Request 생성
             ProductRegistRequest request = TEST_PRODUCT_REGIST_REQUEST;
             Seller seller = TEST_SELLER;
-            User user = TEST_USER1;
+            User user = TEST_USER2;
             Product product = TEST_PRODUCT;
 
             given(sellerRepository.findByUserId(anyLong())).willReturn(Optional.of(seller));
@@ -68,7 +68,6 @@ public class SellerServiceImplTest extends TestValue {
             // given
             ProductRegistRequest request = TEST_PRODUCT_REGIST_REQUEST;
             User user = TEST_USER1;
-            // todo :: 권한이 없는 user로 시도해도 성공하는 이유...?
 
             given(sellerRepository.findByUserId(anyLong())).willThrow(
                 InvalidSellerEventException.class);

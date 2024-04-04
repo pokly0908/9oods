@@ -1,7 +1,7 @@
 package com.kuku9.goods.domain.coupon.dto;
 
 import com.kuku9.goods.domain.coupon.entity.Coupon;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,7 +10,7 @@ import lombok.Getter;
 public class CouponResponse {
 
     private Long couponId;
-    private LocalDateTime expirationDate;
+    private LocalDate expirationDate;
     private int quantity;
 
     public static CouponResponse from(Coupon coupon) {

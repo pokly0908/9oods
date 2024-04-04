@@ -2,8 +2,8 @@ package com.kuku9.goods.domain.issued_coupon.entity;
 
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.user.entity.User;
-import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("deleted_at IS NULL")
-public class IssuedCoupon extends BaseEntity {
+public class IssuedCoupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,9 @@ public class IssuedCoupon extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
     private Coupon coupon;
+
+    @Column
+    private LocalDate deletedAt;
 
     public IssuedCoupon(User user, Coupon coupon) {
         this.user = user;

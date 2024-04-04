@@ -23,6 +23,8 @@ import com.kuku9.goods.global.exception.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,6 +68,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Transactional
+    @CacheEvict(value = "eventCache", key = "#eventId")
     public Long updateEvent(Long eventId, EventUpdateRequest eventRequest, User user) {
 
         Event event = findEvent(eventId);
@@ -79,7 +82,8 @@ public class EventServiceImpl implements EventService {
         return event.getId();
     }
 
-    @Transactional(readOnly = true)
+
+    @Cacheable(value = "eventCache", key = "#eventId", unless = "#result == null")
     public EventResponse getEvent(Long eventId) {
 
         Event event = findEvent(eventId);

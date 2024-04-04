@@ -18,7 +18,7 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
-        return ResponseEntity.status(200).body(productService.getProduct(productId));
+        return ResponseEntity.ok(productService.getProduct(productId));
     }
 
     @GetMapping
@@ -26,7 +26,7 @@ public class ProductController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(200).body(productService.getAllProduct(pageable).getContent());
+        return ResponseEntity.ok(productService.getAllProduct(pageable).getContent());
     }
 
     @GetMapping("/seller/{sellerId}")
@@ -35,8 +35,7 @@ public class ProductController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(200)
-            .body(productService.getSellerProduct(sellerId, pageable).getContent());
+        return ResponseEntity.ok(productService.getSellerProduct(sellerId, pageable).getContent());
     }
 
 }

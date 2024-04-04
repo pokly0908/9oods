@@ -1,6 +1,7 @@
-package com.kuku9.goods.seller;
+package com.kuku9.goods.seller.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -12,6 +13,7 @@ import com.kuku9.goods.common.TestValue;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
+import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.seller.service.SellerServiceImpl;
@@ -46,7 +48,7 @@ public class SellerServiceImplTest extends TestValue {
             // 입력으로 상품에 대한 정보 입력받기 위해 Request 생성
             ProductRegistRequest request = TEST_PRODUCT_REGIST_REQUEST;
             Seller seller = TEST_SELLER;
-            User user = TEST_SELLER_USER;
+            User user = TEST_USER1;
             Product product = TEST_PRODUCT;
 
             given(sellerRepository.findByUserId(anyLong())).willReturn(Optional.of(seller));
@@ -66,6 +68,47 @@ public class SellerServiceImplTest extends TestValue {
             // given
             ProductRegistRequest request = TEST_PRODUCT_REGIST_REQUEST;
             User user = TEST_USER1;
+            // todo :: 권한이 없는 user로 시도해도 성공하는 이유...?
+
+            given(sellerRepository.findByUserId(anyLong())).willThrow(
+                InvalidSellerEventException.class);
+
+            // when & then
+            assertThrows(InvalidSellerEventException.class, () -> {
+                sellerServiceImpl.createProduct(request, user);
+            });
+        }
+    }
+
+    @Nested
+    class updateProductStatusTest {
+
+        @Test
+        @DisplayName("상품 판매 여부 성공 - 셀러권한")
+        void productStatusUpdateSuccess() {
+            // given
+            Product product = TEST_PRODUCT;
+            Seller seller = TEST_SELLER;
+            User user = TEST_USER1;
+
+            given(sellerRepository.findByUserId(anyLong())).willReturn(Optional.of(seller));
+            given(productRepository.findByIdAndSellerId(anyLong(), anyLong())).willReturn(
+                Optional.of(product));
+            product.updateOrderStatus(product.getStatus());
+
+            // when
+            Long sellerId = sellerServiceImpl.updateProductStatus(product.getId(), user);
+
+            //then
+            assertEquals(sellerId, product.getSeller().getId());
+        }
+
+        @Test
+        @DisplayName("상품 판매 여부 실패 - 일반유저")
+        void productStatusUpdateUnSuccess() {
+            // given
+            ProductRegistRequest request = TEST_PRODUCT_REGIST_REQUEST;
+            User user = TEST_USER2;
 
             given(sellerRepository.findByUserId(anyLong())).willThrow(
                 InvalidSellerEventException.class);

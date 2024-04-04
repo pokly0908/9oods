@@ -15,11 +15,9 @@ import com.kuku9.goods.domain.user.entity.User;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -57,8 +55,7 @@ public class OrderServiceImpl implements OrderService {
                     OrderRequest.getProducts().get(i).getQuantity()));
             }
             return order;
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
     }

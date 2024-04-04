@@ -10,7 +10,7 @@ public interface ProductRepository {
 
     Product save(Product product);
 
-    Product findByIdAndSellerId(Long productId, Long id);
+    Optional<Product> findByIdAndSellerId(Long productId, Long id);
 
     Optional<Product> findById(Long productId);
 

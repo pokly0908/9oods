@@ -26,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,85 +49,87 @@ public class EventServiceImpl implements EventService {
 	private static final String LOCK_KEY = "couponLock";
 
 
-	@Transactional
-	public Long createEvent(EventRequest eventRequest, User user) {
+    @Transactional
+    public Long createEvent(EventRequest eventRequest, User user) {
 
-		Event event = new Event(eventRequest, user);
-		Event savedEvent = eventRepository.save(event);
+        Event event = new Event(eventRequest, user);
+        Event savedEvent = eventRepository.save(event);
 
-		if(eventRequest.getEventProducts() != null) {
-			eventRequest.getEventProducts().stream()
-				.map(EventProductRequest::getProductId)
-				.map(productId -> productRepository.findById(productId)
-					.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
-				.map(product -> new EventProduct(savedEvent, product))
-				.forEach(eventProductRepository::save);
+        if (eventRequest.getEventProducts() != null) {
+            eventRequest.getEventProducts().stream()
+                .map(EventProductRequest::getProductId)
+                .map(productId -> productRepository.findById(productId)
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
+                .map(product -> new EventProduct(savedEvent, product))
+                .forEach(eventProductRepository::save);
 
-		}
+        }
 
-		if(eventRequest.getCouponId() != null) {
-			Coupon coupon = findCoupon(eventRequest.getCouponId());
+        if (eventRequest.getCouponId() != null) {
+            Coupon coupon = findCoupon(eventRequest.getCouponId());
 
-			savedEvent.addCoupon(coupon);
-		}
+            savedEvent.addCoupon(coupon);
+        }
 
-		return savedEvent.getId();
-	}
+        return savedEvent.getId();
+    }
 
-	@Transactional
-	public Long updateEvent(Long eventId, EventUpdateRequest eventRequest, User user) {
+    @Transactional
+    @CacheEvict(value = "eventCache", key = "#eventId")
+    public Long updateEvent(Long eventId, EventUpdateRequest eventRequest, User user) {
 
-		Event event = findEvent(eventId);
+        Event event = findEvent(eventId);
 
-		if (!event.getUser().getId().equals(user.getId())) {
-			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
-		}
+        if (!event.getUser().getId().equals(user.getId())) {
+            throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
+        }
 
-		event.update(eventRequest);
+        event.update(eventRequest);
 
-		return event.getId();
-	}
+        return event.getId();
+    }
 
-	@Transactional(readOnly = true)
-	public EventResponse getEvent(Long eventId) {
 
-		Event event = findEvent(eventId);
-		List<Long> eventProducts = eventQuery.getEventProducts(event.getId());
-		return EventResponse.from(event, eventProducts);
-	}
+    @Cacheable(value = "eventCache", key = "#eventId", unless = "#result == null")
+    public EventResponse getEvent(Long eventId) {
 
-	@Transactional(readOnly = true)
-	public Page<EventResponse> getAllEvents(Pageable pageable) {
+        Event event = findEvent(eventId);
+        List<Long> eventProducts = eventQuery.getEventProducts(event.getId());
+        return EventResponse.from(event, eventProducts);
+    }
 
-		return eventRepository.findAll(pageable)
-			.map(event -> {
-				List<Long> eventProducts = eventQuery.getEventProducts(event.getId());
-				return EventResponse.from(event, eventProducts);
-			});
-	}
+    @Transactional(readOnly = true)
+    public Page<EventResponse> getAllEvents(Pageable pageable) {
 
-	@Transactional
-	public void deleteEvent(Long eventId, User user) {
+        return eventRepository.findAll(pageable)
+            .map(event -> {
+                List<Long> eventProducts = eventQuery.getEventProducts(event.getId());
+                return EventResponse.from(event, eventProducts);
+            });
+    }
 
-		Event event = findEvent(eventId);
+    @Transactional
+    public void deleteEvent(Long eventId, User user) {
 
-		if (!event.getUser().getId().equals(user.getId())) {
-			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
-		}
+        Event event = findEvent(eventId);
 
-		eventQuery.deleteEventProduct(eventId);
-		eventRepository.delete(event);
+        if (!event.getUser().getId().equals(user.getId())) {
+            throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
+        }
 
-	}
+        eventQuery.deleteEventProduct(eventId);
+        eventRepository.delete(event);
 
-	@Transactional
-	public void deleteEventProduct(Long eventProductId, User user) {
+    }
 
-		EventProduct eventProduct = eventProductRepository.findById(eventProductId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));
+    @Transactional
+    public void deleteEventProduct(Long eventProductId, User user) {
 
-		eventProductRepository.delete(eventProduct);
-	}
+        EventProduct eventProduct = eventProductRepository.findById(eventProductId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));
+
+        eventProductRepository.delete(eventProduct);
+    }
 
 	public void issueCoupon(Long eventId, Long couponId, User user, LocalDateTime now) {
 		RLock lock = redissonClient.getFairLock(LOCK_KEY);
@@ -157,13 +161,13 @@ public class EventServiceImpl implements EventService {
 		}
 	}
 
-	private Event findEvent(Long eventId) {
-		return eventRepository.findById(eventId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND));
-	}
+    private Event findEvent(Long eventId) {
+        return eventRepository.findById(eventId)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND));
+    }
 
-	private Coupon findCoupon(Long couponId) {
-		return couponRepository.findById(couponId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND));
-	}
+    private Coupon findCoupon(Long couponId) {
+        return couponRepository.findById(couponId)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND));
+    }
 }

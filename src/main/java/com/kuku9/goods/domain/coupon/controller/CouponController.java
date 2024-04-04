@@ -15,26 +15,26 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/coupons")
 public class CouponController {
 
-	private final CouponService couponService;
+    private final CouponService couponService;
 
-	@PostMapping
-	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
-	public ResponseEntity<String> createCoupon(@Valid @RequestBody CouponRequest request) {
-		Long couponId = couponService.createCoupon(request);
+    @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_SELLER')")
+    public ResponseEntity<String> createCoupon(@Valid @RequestBody CouponRequest request) {
+        Long couponId = couponService.createCoupon(request);
 
-		return ResponseEntity.created(URI.create("/api/v1/events/" + couponId)).build();
-	}
+        return ResponseEntity.created(URI.create("/api/v1/events/" + couponId)).build();
+    }
 
-	@GetMapping("/{couponId}")
-	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
-	public ResponseEntity<CouponResponse> getCoupon(@PathVariable Long couponId) {
-		return ResponseEntity.ok().body(couponService.getCoupon(couponId));
-	}
+    @GetMapping("/{couponId}")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER')")
+    public ResponseEntity<CouponResponse> getCoupon(@PathVariable Long couponId) {
+        return ResponseEntity.ok().body(couponService.getCoupon(couponId));
+    }
 
-	@DeleteMapping("/{couponId}")
-	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
-	public ResponseEntity<Void> deleteCoupon(@PathVariable Long couponId) {
-		couponService.deleteCoupon(couponId);
-		return ResponseEntity.ok().build();
-	}
+    @DeleteMapping("/{couponId}")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER')")
+    public ResponseEntity<Void> deleteCoupon(@PathVariable Long couponId) {
+        couponService.deleteCoupon(couponId);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -1,23 +1,28 @@
 package com.kuku9.goods.domain.seller.service;
 
-import com.kuku9.goods.domain.order_product.entity.OrderProduct;
-import com.kuku9.goods.domain.order_product.repository.OrderProductRepository;
+import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_PRODUCT_EVENT;
+import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_SELLER_EVENT;
+
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
+import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.dto.response.SellProductResponse;
-import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.domain.seller.repository.SellerQuery;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
-import com.kuku9.goods.global.exception.ExceptionStatus;
+import com.kuku9.goods.global.exception.InvalidProductEventException;
 import com.kuku9.goods.global.exception.InvalidSellerEventException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +33,7 @@ public class SellerServiceImpl implements SellerService {
 
     private final SellerRepository sellerRepository;
     private final ProductRepository productRepository;
-    private final OrderProductRepository orderProductRepository;
+    private final SellerQuery sellerQuery;
 
     @Override
     @Transactional
@@ -44,30 +49,31 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional
-    public Long orderProductStatus(Long productId, User user) {
+    public Long updateProductStatus(Long productId, User user) {
         Seller seller = findSeller(user);
 
         Product product = findProduct(productId, seller);
-        if (product == null) {
-            throw new IllegalArgumentException("상품이 존재하지 않습니다.");
-        }
 
         product.updateOrderStatus(product.getStatus());
 
         return product.getSeller().getId();
-        // todo :: 카트 기능 구현 시 카트에 담겨져 있는 상품들 상태를 바꾸게 변경
+    }
+
+    @Override
+    @Transactional
+    public Long updateProductQuantity(Long productId, ProductQuantityRequest request, User user) {
+        Product product = findProduct(productId, findSeller(user));
+
+        product.updateQuantitySeller(request);
+
+        return product.getSeller().getId();
     }
 
     @Override
     @Transactional
     public Long updateProduct(
         Long productId, ProductUpdateRequest requestDto, User user) {
-        Seller seller = findSeller(user);
-
-        Product product = findProduct(productId, seller);
-        if (product == null) {
-            throw new IllegalArgumentException("상품이 존재하지 않습니다.");
-        }
+        Product product = findProduct(productId, findSeller(user));
 
         product.updateProduct(requestDto);
 
@@ -76,72 +82,33 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SellProductResponse> getSellingProduct(
-        User user, LocalDate startDate, LocalDate endDate) {
-        Seller seller = findSeller(user);
-
-        List<OrderProduct> orderProductList = new ArrayList<>();
-        for (Product product : productRepository.findBySellerId(seller.getId())) {
-            List<OrderProduct> orderProducts =
-                orderProductRepository.findByProductAndCreatedAtBetween(
-                    product,
-                    startDate.atStartOfDay(),
-                    endDate.plusDays(1).atStartOfDay());
-            // 변경된 부분: orderDate -> createdAt로 수정
-
-            if (orderProducts != null) {
-                orderProductList.addAll(orderProducts);
-            }
-        }
-
-        List<SellProductResponse> responseDtoList = new ArrayList<>();
-        long totalPrice = 0L;
-        for (OrderProduct orderProduct : orderProductList) {
-            int productTotalPrice =
-                orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
-            responseDtoList.add(
-                new SellProductResponse(
-                    orderProduct.getProduct().getName(),
-                    orderProduct.getProduct().getPrice(),
-                    orderProduct.getQuantity(),
-                    productTotalPrice));
-        }
-
-        return responseDtoList;
+    public Page<SoldProductResponse> getSoldProduct(
+        User user, Pageable pageable, LocalDate startDate, LocalDate endDate) {
+        return sellerQuery.getSoldProduct(findSeller(user), pageable, startDate, endDate);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public SellProductStatisticsResponse getSellProductStatistics(User user) {
-        Seller seller = findSeller(user);
+    public SoldProductSumPriceResponse getSoldProductSumPrice(
+        User user, LocalDate startDate, LocalDate endDate) {
+        return sellerQuery.getSoldProductSumPrice(findSeller(user), startDate, endDate);
+    }
 
-        List<OrderProduct> orderProductList = new ArrayList<>();
-        for (Product product : productRepository.findBySellerId(seller.getId())) {
-            OrderProduct orderProduct = orderProductRepository.findByProductId(product.getId());
-            if (orderProduct != null) {
-                orderProductList.add(orderProduct);
-            }
-        }
-
-        int totalPrice = 0;
-        int statisticsPrice = 0;
-        for (OrderProduct orderProduct : orderProductList) {
-            int productTotalPrice =
-                (orderProduct.getProduct().getPrice() * orderProduct.getQuantity());
-            totalPrice += productTotalPrice;
-        }
-        statisticsPrice = totalPrice / orderProductList.size();
-
-        return new SellProductStatisticsResponse(statisticsPrice);
+    @Override
+    @Transactional(readOnly = true)
+    public List<SoldProductQuantityResponse> getSoldProductQuantityTopTen(
+        User user, LocalDate startDate, LocalDate endDate) {
+        return sellerQuery.getSoldProductQuantityTopTen(findSeller(user), startDate, endDate);
     }
 
     private Seller findSeller(User user) {
         return sellerRepository.findByUserId(user.getId()).orElseThrow(() ->
-            new InvalidSellerEventException(ExceptionStatus.INVALID_SELLER_EVENT));
+            new InvalidSellerEventException(INVALID_SELLER_EVENT));
     }
 
     private Product findProduct(Long productId, Seller seller) {
-        return productRepository.findByIdAndSellerId(productId, seller.getId());
+        return productRepository.findByIdAndSellerId(productId, seller.getId()).orElseThrow(() ->
+            new InvalidProductEventException(INVALID_PRODUCT_EVENT));
     }
 
     @Override

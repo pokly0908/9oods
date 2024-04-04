@@ -1,17 +1,19 @@
 package com.kuku9.goods.domain.seller.service;
 
+import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.dto.response.SellProductResponse;
-import com.kuku9.goods.domain.seller.dto.response.SellProductStatisticsResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.entity.User;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface SellerService {
-
-    // todo :: Parameter 주석 설명 추가하기
 
     /**
      * @param requestDto 상품 정보
@@ -25,7 +27,14 @@ public interface SellerService {
      * @param user      로그인 유저
      * @return 셀러 고유 식별자
      */
-    Long orderProductStatus(Long productId, User user);
+    Long updateProductStatus(Long productId, User user);
+
+    /**
+     * @param productId 상품 고유 식별자
+     * @param user      로그인 유저
+     * @return 셀러 고유 식별자
+     */
+    Long updateProductQuantity(Long productId, ProductQuantityRequest request, User user);
 
     /**
      * @param productId  상품 고유 식별자
@@ -38,18 +47,31 @@ public interface SellerService {
 
     /**
      * @param user      로그인 유저
+     * @param pageable 조회 시 부하를 감소하기 위한 페이지
      * @param startDate 조회할 시작 날짜
      * @param endDate   조회할 마지막 날짜
      * @return 판매된 상푸 정보
      */
-    List<SellProductResponse> getSellingProduct(
+    Page<SoldProductResponse> getSoldProduct(
+        User user, Pageable pageable, LocalDate startDate, LocalDate endDate);
+
+    /**
+     * @param user      로그인 유저
+     * @param startDate 조회할 시작 날짜
+     * @param endDate   조회할 마지막 날짜
+     * @return 판매 총 금액
+     */
+    SoldProductSumPriceResponse getSoldProductSumPrice(
         User user, LocalDate startDate, LocalDate endDate);
 
     /**
-     * @param user 로그인 유저
-     * @return 판매된 상품 총 매출액
+     * @param user      로그인 유저
+     * @param startDate 조회할 시작 날짜
+     * @param endDate   조회할 마지막 날짜
+     * @return 판매된 상품 수량 상위 10개
      */
-    SellProductStatisticsResponse getSellProductStatistics(User user);
+    List<SoldProductQuantityResponse> getSoldProductQuantityTopTen(
+        User user, LocalDate startDate, LocalDate endDate);
 
     /**
      * 셀러 db 저장

@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class Scheduler {
 
-	private final IssuedCouponQuery issuedCouponQuery;
+    private final IssuedCouponQuery issuedCouponQuery;
 
-	@Scheduled(cron = "0 0 1 * * *") // 매일 새벽 1시
-	public void updateIssuedCoupon() throws InterruptedException {
-		log.info("발행 쿠폰 만료 처리 실행");
-		issuedCouponQuery.deleteExpiredCoupon();
-	}
+    @Scheduled(cron = "0 0 1 * * *") // 매일 새벽 1시
+    public void updateIssuedCoupon() throws InterruptedException {
+        log.info("발행 쿠폰 만료 처리 실행");
+        issuedCouponQuery.deleteExpiredCoupon();
+    }
 }

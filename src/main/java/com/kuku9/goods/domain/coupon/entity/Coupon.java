@@ -2,7 +2,7 @@ package com.kuku9.goods.domain.coupon.entity;
 
 import com.kuku9.goods.domain.coupon.dto.CouponRequest;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class Coupon {
     private Long id;
 
     @Column
-    private LocalDateTime expirationDate;
+    private LocalDate expirationDate;
 
     @Column
     private int quantity;

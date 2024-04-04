@@ -74,7 +74,8 @@ public class TestValue {
         TEST_PRODUCT_DESCRIPTION,
         TEST_PRODUCT_PRICE,
         true,
-        TEST_PRODUCT_QUANTITY);
+        TEST_PRODUCT_QUANTITY
+    );
     public final static String TEST_REQUEST_PRODUCT_NAME = TEST_PRODUCT_NAME;
     public final static String TEST_REQUEST_PRODUCT_DESCRIPTION = TEST_PRODUCT_DESCRIPTION;
     public final static int TEST_REQUEST_PRODUCT_PRICE = TEST_PRODUCT_PRICE;

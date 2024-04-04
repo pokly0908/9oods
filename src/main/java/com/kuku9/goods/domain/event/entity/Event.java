@@ -1,5 +1,9 @@
 package com.kuku9.goods.domain.event.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
@@ -18,6 +22,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "event")
 @SQLDelete(sql = "UPDATE event SET deleted_at=CURRENT_TIMESTAMP where id=?")
 @SQLRestriction("deleted_at IS NULL")
 public class Event extends BaseEntity {
@@ -33,10 +38,12 @@ public class Event extends BaseEntity {
     private String content;
 
     @Column
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime openAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToOne

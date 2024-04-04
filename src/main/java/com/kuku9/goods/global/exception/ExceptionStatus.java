@@ -17,7 +17,8 @@ public enum ExceptionStatus {
     NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "존재하지 않습니다."),
     INVALID_ADMIN_EVENT(HttpStatus.BAD_REQUEST.value(), "이벤트에 접근할 권한이 아닙니다."),
     INVALID_COUPON(HttpStatus.BAD_REQUEST.value(), "현재 쿠폰에 접근할 수 없습니다."),
-    INVALID_SELLER_EVENT(HttpStatus.BAD_REQUEST.value(), "셀러만 상품을 등록할 수 있습니다. 셀러 신청하세요.");
+    INVALID_SELLER_EVENT(HttpStatus.BAD_REQUEST.value(), "셀러만 상품을 등록할 수 있습니다. 셀러 신청하세요."),
+    INVALID_PRODUCT_EVENT(HttpStatus.BAD_REQUEST.value(), "해당 상품은 존재하지 않습니다.");
 
     private final Integer statusCode;
     private final String message;

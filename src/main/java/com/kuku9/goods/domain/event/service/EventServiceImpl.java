@@ -82,8 +82,7 @@ public class EventServiceImpl implements EventService {
         return event.getId();
     }
 
-    //@Transactional(readOnly = true)
-    @Override
+
     @Cacheable(value = "eventCache", key = "#eventId", unless = "#result == null")
     public EventResponse getEvent(Long eventId) {
 

@@ -72,11 +72,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse updateOrder(User user, Long orderId) throws AccessDeniedException {
-        //주문 상품 되돌려놓기
         Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
-        if (!order.getUser().getId().equals(user.getId())) {
+        if (!order.getUser().getId().equals(user.getId()) || order.getStatus().equals("결제 취소")) {
             throw new AccessDeniedException(String.valueOf(NOT_EQUAL_USER_ID));
+        }
+        List<OrderProduct> orderProducts = orderProductRepository.findAllByOrderId(orderId);
+        for (OrderProduct orderProduct : orderProducts) {
+            orderProduct.getProduct().updateQuantity(-orderProduct.getQuantity());
         }
         order.updateStatus("결제 취소");
         return getProductOrderResponse(orderId, order);

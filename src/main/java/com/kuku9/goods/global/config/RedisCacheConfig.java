@@ -23,7 +23,8 @@ public class RedisCacheConfig {
             .transactionAware()
             .cacheWriter(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
             .withCacheConfiguration("sellerCache", sellerCacheConfig())
-            .withCacheConfiguration("userCache",UserCacheConfig())
+            .withCacheConfiguration("userCache", userCacheConfig())
+            .withCacheConfiguration("eventCache", eventCacheConfig())
             .cacheDefaults(defaultCacheConfig())
             .build();
     }
@@ -34,7 +35,8 @@ public class RedisCacheConfig {
      */
     @Bean
     protected RedisSerializationContext.SerializationPair<String> keySerialization() {
-        return RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer());
+        return RedisSerializationContext.SerializationPair.fromSerializer(
+            new StringRedisSerializer());
     }
 
     /**
@@ -42,7 +44,8 @@ public class RedisCacheConfig {
      */
     @Bean
     protected RedisSerializationContext.SerializationPair<Object> valueSerialization() {
-        return RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer());
+        return RedisSerializationContext.SerializationPair.fromSerializer(
+            new GenericJackson2JsonRedisSerializer());
     }
 
 
@@ -65,7 +68,17 @@ public class RedisCacheConfig {
     }
 
     @Bean
-    protected RedisCacheConfiguration UserCacheConfig() {
+    protected RedisCacheConfiguration userCacheConfig() {
+
+        return RedisCacheConfiguration.defaultCacheConfig()
+            .entryTtl(Duration.ofMinutes(60))
+            .serializeKeysWith(keySerialization())
+            .serializeValuesWith(valueSerialization())
+            .disableCachingNullValues();
+    }
+
+    @Bean
+    protected RedisCacheConfiguration eventCacheConfig() {
 
         return RedisCacheConfiguration.defaultCacheConfig()
             .entryTtl(Duration.ofMinutes(60))

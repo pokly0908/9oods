@@ -13,6 +13,8 @@ public class TestValue {
     public final static String TEST_REALNAME1 = "이름";
     public final static String TEST_PASSWORD1 = "!password1";
     public final static UserRoleEnum TEST_ROLE1 = UserRoleEnum.USER;
+
+    public final static int TEST_PRODUCT_QUANTITY = 1000;
     public final static User TEST_USER1 = new User(
         TEST_USER_ID1,
         TEST_USERNAME1,
@@ -73,23 +75,26 @@ public class TestValue {
     public final static Long TEST_PRODUCT_ID1 = 1L;
     public final static String TEST_PRODUCT_NAME = "상품1";
     public final static String TEST_PRODUCT_DESCRIPTION = "상품 설명1";
-    public final static Long TEST_PRODUCT_PRICE = 100000L;
+    public final static int TEST_PRODUCT_PRICE = 100000;
     public final static Product TEST_PRODUCT = new Product(
         TEST_PRODUCT_ID1,
         TEST_SELLER,
         TEST_PRODUCT_NAME,
         TEST_PRODUCT_DESCRIPTION,
         TEST_PRODUCT_PRICE,
-        true);
+        true,
+        TEST_PRODUCT_QUANTITY
+    );
     public final static Boolean TEST_PRODUCT_STATE = true;
     public final static String TEST_REQUEST_PRODUCT_NAME = TEST_PRODUCT_NAME;
     public final static String TEST_REQUEST_PRODUCT_DESCRIPTION = TEST_PRODUCT_DESCRIPTION;
-    public final static Long TEST_REQUEST_PRODUCT_PRICE = TEST_PRODUCT_PRICE;
+    public final static int TEST_REQUEST_PRODUCT_PRICE = TEST_PRODUCT_PRICE;
     public final static Long TEST_SELLER_ID = TEST_SELLER_ID1;
     public final static ProductRegistRequest TEST_PRODUCT_REGIST_REQUEST =
         new ProductRegistRequest(
             TEST_REQUEST_PRODUCT_NAME,
             TEST_REQUEST_PRODUCT_DESCRIPTION,
             TEST_REQUEST_PRODUCT_PRICE,
+            TEST_PRODUCT_QUANTITY,
             TEST_SELLER_ID);
 }

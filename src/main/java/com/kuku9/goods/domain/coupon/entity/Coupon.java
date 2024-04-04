@@ -1,9 +1,8 @@
 package com.kuku9.goods.domain.coupon.entity;
 
 import com.kuku9.goods.domain.coupon.dto.CouponRequest;
-import com.kuku9.goods.domain.event.entity.Event;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,22 +13,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Coupon {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column
-	private LocalDateTime expirationDate;
+    @Column
+    private LocalDate expirationDate;
 
-	@Column
-	private int quantity;
+    @Column
+    private int quantity;
 
-	public Coupon(CouponRequest request) {
-		this.expirationDate = request.getExpirationDate();
-		this.quantity = request.getQuantity();
-	}
+    public Coupon(CouponRequest request) {
+        this.expirationDate = request.getExpirationDate();
+        this.quantity = request.getQuantity();
+    }
 
-	public void decrease() {
-		this.quantity -= 1;
-	}
+    public void decrease() {
+        this.quantity -= 1;
+    }
 }

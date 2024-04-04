@@ -10,6 +10,7 @@ public class ProductRegistRequest {
     private String productName;
     private String productDescription;
     private int productPrice;
+    private int quantity;
     private Long sellerId;
 
 }

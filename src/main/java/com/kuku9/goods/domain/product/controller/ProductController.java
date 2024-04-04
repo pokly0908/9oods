@@ -19,7 +19,7 @@ public class ProductController {
     // 낱개조회
     @GetMapping("/sellers/{domainName}/products/{productId}")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId, @PathVariable String domainName) {
-        return ResponseEntity.status(200).body(productService.getProduct(productId, domainName));
+        return ResponseEntity.ok().body(productService.getProduct(productId, domainName));
     }
 
     //전체 조회
@@ -28,7 +28,7 @@ public class ProductController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(200).body(productService.getAllProduct(pageable).getContent());
+        return ResponseEntity.ok().body(productService.getAllProduct(pageable).getContent());
     }
 
     //셀러 별 조회
@@ -38,7 +38,7 @@ public class ProductController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(200)
+        return ResponseEntity.ok()
             .body(productService.getSellerProduct(domainName, pageable).getContent());
     }
 

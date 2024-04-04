@@ -2,6 +2,7 @@ package com.kuku9.goods.domain.event.dto;
 
 import com.kuku9.goods.domain.event.entity.Event;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +14,8 @@ public class EventResponse {
 	private Long id;
 	private String title;
 	private String content;
-	private Long limitNum;
-	private LocalDate openAt;
+	private LocalDateTime openAt;
+	private Long couponId;
 	private List<Long> eventProducts;
 
 	public static EventResponse from(Event event, List<Long> eventProducts) {
@@ -22,8 +23,8 @@ public class EventResponse {
 			event.getId(),
 			event.getTitle(),
 			event.getContent(),
-			event.getLimitNum(),
 			event.getOpenAt(),
+			event.getCoupon().getId(),
 			eventProducts
 		);
 	}

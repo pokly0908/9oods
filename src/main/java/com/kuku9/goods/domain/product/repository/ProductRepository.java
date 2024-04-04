@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductRepository {
 
-    void save(Product product);
+    Product save(Product product);
 
     Product findByIdAndSellerId(Long productId, Long id);
 

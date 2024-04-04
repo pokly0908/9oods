@@ -4,6 +4,7 @@ import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
 import com.kuku9.goods.domain.user.entity.User;
+import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -58,4 +59,14 @@ public interface EventService {
 	 * @param user           유저
 	 */
 	void deleteEventProduct(Long eventProductId, User user);
+
+	/**
+	 * 선착순 쿠폰 발행
+	 *
+	 * @param eventId  이벤트 ID
+	 * @param couponId 쿠폰 ID
+	 * @param user     유저
+	 * @param now      현재 시점
+	 */
+	void issueCoupon(Long eventId, Long couponId, User user, LocalDateTime now);
 }

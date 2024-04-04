@@ -1,6 +1,6 @@
 package com.kuku9.goods.domain.seller.dto.response;
 
-import lombok.*;
+import lombok.Getter;
 
 @Getter
 public class SellProductStatisticsResponse {

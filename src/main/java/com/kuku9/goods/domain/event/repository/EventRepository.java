@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-	Page<Event> findAll(Pageable pageable);
+    Page<Event> findAll(Pageable pageable);
 }

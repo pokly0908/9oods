@@ -7,8 +7,7 @@ import com.kuku9.goods.domain.event.service.EventService;
 import com.kuku9.goods.global.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.List;
-import java.net.URI;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -84,6 +83,18 @@ public class EventController {
 		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
 		eventService.deleteEventProduct(eventProductId, customUserDetails.getUser());
+
+		return ResponseEntity.ok().build();
+	}
+
+	@PatchMapping("/{eventId}/coupons/{couponId}/issued-coupons")
+	@PreAuthorize("hasAnyRole('ROLE_USER')")
+	public ResponseEntity<Void> issueCoupon(
+		@PathVariable Long eventId, @PathVariable Long couponId,
+		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+
+		eventService.issueCoupon(eventId, couponId, customUserDetails.getUser(),
+			LocalDateTime.now());
 
 		return ResponseEntity.ok().build();
 	}

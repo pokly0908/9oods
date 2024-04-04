@@ -49,6 +49,7 @@ public class Product extends BaseEntity {
         this.description = requestDto.getProductDescription();
         this.price = requestDto.getProductPrice();
         this.seller = seller;
+        this.quantity = requestDto.getProductQuantity();
     }
 
     public void updateOrderStatus(Boolean status) {

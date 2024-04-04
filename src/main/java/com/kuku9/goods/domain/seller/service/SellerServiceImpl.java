@@ -3,7 +3,6 @@ package com.kuku9.goods.domain.seller.service;
 import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_PRODUCT_EVENT;
 import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_SELLER_EVENT;
 
-import com.kuku9.goods.domain.order_product.repository.OrderProductRepository;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
@@ -22,6 +21,8 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,6 @@ public class SellerServiceImpl implements SellerService {
 
     private final SellerRepository sellerRepository;
     private final ProductRepository productRepository;
-    private final OrderProductRepository orderProductRepository;
     private final SellerQuery sellerQuery;
 
     @Override
@@ -82,9 +82,9 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SoldProductResponse> getSoldProduct(
-        User user, LocalDate startDate, LocalDate endDate) {
-        return sellerQuery.getSoldProduct(findSeller(user), startDate, endDate);
+    public Page<SoldProductResponse> getSoldProduct(
+        User user, Pageable pageable, LocalDate startDate, LocalDate endDate) {
+        return sellerQuery.getSoldProduct(findSeller(user), pageable, startDate, endDate);
     }
 
     @Override

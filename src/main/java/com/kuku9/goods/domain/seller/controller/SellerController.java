@@ -12,6 +12,10 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/sellers")
 public class SellerController {
+    // todo :: 나중에 request 부분 @Valid 추가하기
 
     private final SellerService sellerService;
 
@@ -75,18 +80,23 @@ public class SellerController {
     // 셀러의 판매된 상품 정보 원하는 날짜 선택 조회 기능
     @GetMapping("/products/sold")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<List<SoldProductResponse>> getSoldProduct(
+    public ResponseEntity<Page<SoldProductResponse>> getSoldProduct(
         @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
-        List<SoldProductResponse> responseDto = sellerService.getSoldProduct(
-            userDetails.getUser(), startDate, endDate);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        Page<SoldProductResponse> responseDto = sellerService.getSoldProduct(
+            userDetails.getUser(), pageable, startDate, endDate);
 
         return ResponseEntity.ok(responseDto);
     }
 
     // 셀러의 판매된 상품 총 판매액 조회
-    @GetMapping("/products/sold/price/statistics")
+    @GetMapping("/products/sold/price")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<SoldProductSumPriceResponse> getSoldProductSumPrice(
         @AuthenticationPrincipal CustomUserDetails userDetails,

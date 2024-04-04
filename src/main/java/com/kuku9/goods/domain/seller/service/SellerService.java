@@ -10,6 +10,8 @@ import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.entity.User;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface SellerService {
 
@@ -45,12 +47,13 @@ public interface SellerService {
 
     /**
      * @param user      로그인 유저
+     * @param pageable 조회 시 부하를 감소하기 위한 페이지
      * @param startDate 조회할 시작 날짜
      * @param endDate   조회할 마지막 날짜
      * @return 판매된 상푸 정보
      */
-    List<SoldProductResponse> getSoldProduct(
-        User user, LocalDate startDate, LocalDate endDate);
+    Page<SoldProductResponse> getSoldProduct(
+        User user, Pageable pageable, LocalDate startDate, LocalDate endDate);
 
     /**
      * @param user      로그인 유저

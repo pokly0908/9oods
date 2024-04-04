@@ -76,11 +76,11 @@ public class EventController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/eventProducts/{eventProductId}")
-    @PreAuthorize("hasAnyRole('ROLE_SELLER')")
-    public ResponseEntity<Void> deleteEventProduct(
-        @PathVariable Long eventProductId,
-        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+	@DeleteMapping("/event-products/{eventProductId}")
+	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
+	public ResponseEntity<Void> deleteEventProduct(
+		@PathVariable Long eventProductId,
+		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         eventService.deleteEventProduct(eventProductId, customUserDetails.getUser());
 

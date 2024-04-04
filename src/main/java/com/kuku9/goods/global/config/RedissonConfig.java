@@ -16,12 +16,17 @@ public class RedissonConfig {
     @Value("${spring.data.redis.port}")
     private int port;
 
-    @Bean
-    public RedissonClient redissonClient() {
-        Config config = new Config();
-        config.useSingleServer().setAddress(REDISSON_HOST_PREFIX + host + ":" + port);
+	@Value("${spring.data.redis.password}")
+	private String password;
 
-        return Redisson.create(config);
-    }
+	@Bean
+	public RedissonClient redissonClient(){
+		Config config = new Config();
+		config.useSingleServer()
+			.setAddress(REDISSON_HOST_PREFIX + host + ":" + port)
+			.setPassword(password);
+
+		return Redisson.create(config);
+	}
 
 }

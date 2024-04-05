@@ -48,6 +48,16 @@ dependencies {
 
 }
 
+task copyPrivate(type: Copy) {
+    copy {
+        from './9oods-private/private'
+        include "*.yml"
+        into 'src/main/resources'
+    }
+}
+
+
+
 tasks.named('test') {
     useJUnitPlatform()
 }

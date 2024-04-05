@@ -8,7 +8,6 @@ import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.dto.response.SearchTestResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -106,11 +105,6 @@ public class SellerServiceImpl implements SellerService {
     private Product findProduct(Long productId, Seller seller) {
         return productRepository.findByIdAndSellerId(productId, seller.getId()).orElseThrow(() ->
             new InvalidProductEventException(INVALID_PRODUCT_EVENT));
-    }
-
-    @Override
-    public List<SearchTestResponse> searchTest(String productName) {
-        return sellerQuery.searchTest(productName);
     }
 
     @Override

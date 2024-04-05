@@ -3,7 +3,6 @@ package com.kuku9.goods.domain.seller.service;
 import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.dto.response.SearchTestResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -73,13 +72,6 @@ public interface SellerService {
      */
     List<SoldProductQuantityResponse> getSoldProductQuantityTopTen(
         User user, LocalDate startDate, LocalDate endDate);
-
-    /**
-     * 
-     * @param productName 검색할 상품명
-     * @return 검색어와 일치하는 모든 데이터 조회
-     */
-    List<SearchTestResponse> searchTest(String productName);
 
     /**
      * 셀러 db 저장

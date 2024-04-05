@@ -2,20 +2,17 @@ package com.kuku9.goods.domain.seller.repository;
 
 import com.kuku9.goods.domain.order_product.entity.QOrderProduct;
 import com.kuku9.goods.domain.product.entity.QProduct;
-import com.kuku9.goods.domain.seller.dto.response.SearchTestResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.QSeller;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Literal;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -63,7 +60,6 @@ public class SellerQueryImpl implements SellerQuery {
             .fetchCount();
 
         return new PageImpl<>(responseList, pageable, totalCount);
-
     }
 
     @Override
@@ -105,21 +101,6 @@ public class SellerQueryImpl implements SellerQuery {
             .orderBy(qOrderProduct.quantity.desc())
             .limit(10)
             .fetch();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<SearchTestResponse> searchTest(String productName) {
-        QSeller qSeller = QSeller.seller;
-        QProduct qProduct = QProduct.product;
-
-        return jpaQueryFactory
-            .select(Projections.constructor(SearchTestResponse.class,
-                qProduct.name))
-            .from(qProduct)
-            .where(qProduct.name.like("%" + productName + "%"))
-            .fetch();
-
     }
 
 }

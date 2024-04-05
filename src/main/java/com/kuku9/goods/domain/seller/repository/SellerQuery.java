@@ -1,6 +1,5 @@
 package com.kuku9.goods.domain.seller.repository;
 
-import com.kuku9.goods.domain.seller.dto.response.SearchTestResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -42,10 +41,4 @@ public interface SellerQuery {
     List<SoldProductQuantityResponse> getSoldProductQuantityTopTen(
         Seller seller, LocalDate startDate, LocalDate endDate);
 
-    /**
-     * 
-     * @param productName 검색할 상품명
-     * @return 검색어와 일치하는 모든 데이터 조회
-     */
-    List<SearchTestResponse> searchTest(String productName);
 }

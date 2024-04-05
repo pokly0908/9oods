@@ -10,7 +10,7 @@ public interface ProductService {
      * 상품 조회
      *
      * @param productId 상품 아이디
-     * @param domainName 브랜드 이름
+     * @param domainName 도메인 이름
      * @return 상품
      */
     ProductResponse getProduct(Long productId, String domainName);
@@ -26,7 +26,7 @@ public interface ProductService {
     /**
      * 셀러 상품 조회
      *
-     * @param domainName 브랜드 이름
+     * @param domainName 도메인 이름
      * @param pageable 페이징 정보
      * @return 셀러 상품
      */

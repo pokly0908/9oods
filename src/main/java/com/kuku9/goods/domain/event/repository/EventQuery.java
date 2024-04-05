@@ -1,10 +1,11 @@
 package com.kuku9.goods.domain.event.repository;
 
+import com.kuku9.goods.domain.event_product.entity.EventProduct;
 import java.util.List;
 
 public interface EventQuery {
 
-    List<Long> getEventProducts(Long eventId);
+    List<EventProduct> getEventProducts(List<Long> eventIds);
 
     void deleteEventProduct(Long eventId);
 

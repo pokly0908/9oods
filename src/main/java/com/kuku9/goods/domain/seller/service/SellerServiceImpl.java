@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "productCache", key = "#productId")
     public Long updateProductStatus(Long productId, User user) {
         Product product = findProduct(productId, findSeller(user));
 
@@ -67,6 +69,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "productCache", key = "#productId")
     public Long updateProduct(
         Long productId, ProductUpdateRequest requestDto, User user) {
         Product product = findProduct(productId, findSeller(user));

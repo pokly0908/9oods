@@ -41,13 +41,12 @@ public class UserController {
         return ResponseEntity.created(URI.create("/api/v1/auth/login")).build();
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/me")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_SELLER')")
     public ResponseEntity<UserResponse> getUserInfo(
-        @PathVariable Long userId,
         @AuthenticationPrincipal CustomUserDetails userDetails
     ) throws AccessDeniedException {
-        UserResponse userResponse = userService.getUserInfo(userId, userDetails.getUser());
+        UserResponse userResponse = userService.getUserInfo(userDetails.getUser());
 
         return ResponseEntity.ok(userResponse);
     }

@@ -28,8 +28,6 @@ public class RedisCacheConfig {
             .cacheDefaults(defaultCacheConfig())
             .build();
     }
-
-
     /**
      * Key 직렬화 설정
      */
@@ -47,7 +45,6 @@ public class RedisCacheConfig {
         return RedisSerializationContext.SerializationPair.fromSerializer(
             new GenericJackson2JsonRedisSerializer());
     }
-
 
     @Bean
     protected RedisCacheConfiguration defaultCacheConfig() {

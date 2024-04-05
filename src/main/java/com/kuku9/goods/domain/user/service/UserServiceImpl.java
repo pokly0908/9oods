@@ -16,6 +16,7 @@ import com.kuku9.goods.global.exception.InvalidPasswordException;
 import java.nio.file.AccessDeniedException;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,10 @@ public class UserServiceImpl implements UserService {
             throw new InvalidPasswordException(INVALID_PASSWORD);
         }
 
+        if(passwordEncoder.matches(request.getNewPassword(),findUser.getPassword())){
+            throw new InvalidPasswordException(SAME_PASSWORD_NOW_AND_NEW);
+        }
+
         findUser.modifyPassword(passwordEncoder.encode(request.getNewPassword()));
 
     }
@@ -72,6 +77,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "userCache", key = "#user.id")
     public Seller registerSeller(RegisterSellerRequest request, User user) {
 
         if (sellerService.checkSellerExistsByUserId(user.getId())) {

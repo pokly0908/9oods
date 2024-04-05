@@ -38,7 +38,6 @@ public class OrderController {
         return ResponseEntity.ok(productOrder);
     }
 
-    @Transactional
     @PutMapping("/{orderId}")
     public ResponseEntity<OrderResponse> updateOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderId)

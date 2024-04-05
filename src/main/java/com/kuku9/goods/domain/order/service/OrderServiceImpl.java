@@ -12,6 +12,7 @@ import com.kuku9.goods.domain.product.dto.ProductResponse;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.user.entity.User;
+import jakarta.transaction.Transactional;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderResponse updateOrder(User user, Long orderId) throws AccessDeniedException {
         Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));

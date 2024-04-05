@@ -11,31 +11,35 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/v1")
 public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/{productId}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
-        return ResponseEntity.ok(productService.getProduct(productId));
+    // 낱개조회
+    @GetMapping("/sellers/{domainName}/products/{productId}")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId, @PathVariable String domainName) {
+        return ResponseEntity.ok().body(productService.getProduct(productId, domainName));
     }
 
-    @GetMapping
+    //전체 조회
+    @GetMapping("/products")
     public ResponseEntity<List<ProductResponse>> getAllProduct(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(productService.getAllProduct(pageable).getContent());
+        return ResponseEntity.ok().body(productService.getAllProduct(pageable).getContent());
     }
 
-    @GetMapping("/seller/{sellerId}")
+    //셀러 별 조회
+    @GetMapping("/sellers/{domainName}/products")
     public ResponseEntity<List<ProductResponse>> getSellerProduct(
-        @PathVariable Long sellerId,
+        @PathVariable String domainName,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(productService.getSellerProduct(sellerId, pageable).getContent());
+        return ResponseEntity.ok()
+            .body(productService.getSellerProduct(domainName, pageable).getContent());
     }
 
 }

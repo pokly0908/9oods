@@ -22,14 +22,12 @@ public class RedisCacheConfig {
         return RedisCacheManager.builder()
             .transactionAware()
             .cacheWriter(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
-            .withCacheConfiguration("sellerCache", sellerCacheConfig())
+            .withCacheConfiguration("productCache", productCacheConfig())
             .withCacheConfiguration("userCache", userCacheConfig())
             .withCacheConfiguration("eventCache", eventCacheConfig())
             .cacheDefaults(defaultCacheConfig())
             .build();
     }
-
-
     /**
      * Key 직렬화 설정
      */
@@ -48,7 +46,6 @@ public class RedisCacheConfig {
             new GenericJackson2JsonRedisSerializer());
     }
 
-
     @Bean
     protected RedisCacheConfiguration defaultCacheConfig() {
         return RedisCacheConfiguration.defaultCacheConfig()
@@ -59,9 +56,9 @@ public class RedisCacheConfig {
     }
 
     @Bean
-    protected RedisCacheConfiguration sellerCacheConfig() {
+    protected RedisCacheConfiguration productCacheConfig() {
         return RedisCacheConfiguration.defaultCacheConfig()
-            .entryTtl(Duration.ofMinutes(10))
+            .entryTtl(Duration.ofMinutes(60))
             .serializeKeysWith(keySerialization())
             .serializeValuesWith(valueSerialization())
             .disableCachingNullValues();

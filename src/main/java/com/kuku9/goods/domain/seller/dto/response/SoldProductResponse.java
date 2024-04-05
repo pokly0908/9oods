@@ -1,6 +1,5 @@
 package com.kuku9.goods.domain.seller.dto.response;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

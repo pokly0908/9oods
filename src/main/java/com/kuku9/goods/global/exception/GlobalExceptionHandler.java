@@ -2,6 +2,7 @@ package com.kuku9.goods.global.exception;
 
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -35,6 +36,7 @@ public class GlobalExceptionHandler {
             .body(ex.getMessage());
 
     }
+
 
     @ExceptionHandler(DuplicatedException.class)
     public ResponseEntity<String> duplicatedException(DuplicatedException ex) {

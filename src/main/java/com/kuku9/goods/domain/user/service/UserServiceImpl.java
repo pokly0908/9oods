@@ -16,6 +16,7 @@ import com.kuku9.goods.global.exception.InvalidPasswordException;
 import java.nio.file.AccessDeniedException;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,22 +57,25 @@ public class UserServiceImpl implements UserService {
             throw new InvalidPasswordException(INVALID_PASSWORD);
         }
 
+        if(passwordEncoder.matches(request.getNewPassword(),findUser.getPassword())){
+            throw new InvalidPasswordException(SAME_PASSWORD_NOW_AND_NEW);
+        }
+
         findUser.modifyPassword(passwordEncoder.encode(request.getNewPassword()));
 
     }
 
     @Override
-    @Cacheable(value = "userCache", key = "#userId", unless = "#result == null")
-    public UserResponse getUserInfo(Long userId, User user) throws AccessDeniedException {
-        User findUser = findById(userId);
-        if (!user.getId().equals(userId)) {
-            throw new AccessDeniedException(String.valueOf(NOT_EQUAL_USER_ID));
-        }
+    @Cacheable(value = "userCache", key = "#user.id", unless = "#result == null")
+    public UserResponse getUserInfo(User user) throws AccessDeniedException {
+        User findUser = findById(user.getId());
+
         return UserResponse.from(findUser);
     }
 
     @Override
     @Transactional
+    @CacheEvict(value = "userCache", key = "#user.id")
     public Seller registerSeller(RegisterSellerRequest request, User user) {
 
         if (sellerService.checkSellerExistsByUserId(user.getId())) {

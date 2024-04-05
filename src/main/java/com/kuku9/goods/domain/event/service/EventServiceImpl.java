@@ -4,6 +4,7 @@ import static com.kuku9.goods.global.exception.ExceptionStatus.*;
 
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.coupon.repository.CouponRepository;
+import com.kuku9.goods.domain.coupon.springevent.CouponEvent;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
@@ -27,16 +28,19 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
@@ -48,6 +52,7 @@ public class EventServiceImpl implements EventService {
 	private final CouponRepository couponRepository;
 	private final IssuedCouponRepository issuedCouponRepository;
 	private final RedissonClient redissonClient;
+	private final ApplicationEventPublisher publisher;
 
 	private static final String LOCK_KEY = "couponLock";
 
@@ -160,12 +165,18 @@ public class EventServiceImpl implements EventService {
 					}
 
 					Coupon coupon = findCoupon(couponId);
+
 					if (coupon.getQuantity() <= 0) {
 						throw new InvalidCouponException(INVALID_COUPON);
 					}
 					coupon.decrease();
 					IssuedCoupon issuedCoupon = new IssuedCoupon(user, coupon);
 					issuedCouponRepository.save(issuedCoupon);
+					log.info(
+						String.format("쿠폰 발행 처리 [쿠폰 ID : %s]", issuedCoupon.getCoupon().getId()));
+					publisher.publishEvent(
+						new CouponEvent(issuedCoupon.getCoupon().getId(),
+							issuedCoupon.getUser().getId()));
 				} finally {
 					lock.unlock();
 				}

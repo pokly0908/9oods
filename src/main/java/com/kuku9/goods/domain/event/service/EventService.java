@@ -59,14 +59,4 @@ public interface EventService {
      * @param user           유저
      */
     void deleteEventProduct(Long eventProductId, User user);
-
-    /**
-     * 선착순 쿠폰 발행
-     *
-     * @param eventId  이벤트 ID
-     * @param couponId 쿠폰 ID
-     * @param user     유저
-     * @param now      현재 시점
-     */
-    void issueCoupon(Long eventId, Long couponId, User user, LocalDateTime now);
 }

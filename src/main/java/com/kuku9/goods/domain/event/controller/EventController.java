@@ -88,18 +88,4 @@ public class EventController {
 
         return ResponseEntity.ok().build();
     }
-
-    @PatchMapping("/{eventId}/coupons/{couponId}/issued-coupons")
-    @PreAuthorize("hasAnyRole('ROLE_USER')")
-    public ResponseEntity<Void> issueCoupon(
-        @PathVariable Long eventId, @PathVariable Long couponId,
-        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-
-        eventService.issueCoupon(eventId, couponId, customUserDetails.getUser(),
-            LocalDateTime.now());
-
-        log.info(String.format("쿠폰이 발행되었습니다."));
-        return ResponseEntity.ok().build();
-    }
-
 }

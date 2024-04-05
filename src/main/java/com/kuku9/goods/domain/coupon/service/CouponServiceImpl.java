@@ -1,21 +1,42 @@
 package com.kuku9.goods.domain.coupon.service;
 
+import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_COUPON;
 import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND;
 
 import com.kuku9.goods.domain.coupon.dto.CouponRequest;
 import com.kuku9.goods.domain.coupon.dto.CouponResponse;
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.coupon.repository.CouponRepository;
+import com.kuku9.goods.domain.coupon.springevent.CouponEvent;
+import com.kuku9.goods.domain.event.entity.Event;
+import com.kuku9.goods.domain.event.repository.EventQuery;
+import com.kuku9.goods.domain.issued_coupon.entity.IssuedCoupon;
+import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponRepository;
+import com.kuku9.goods.domain.user.entity.User;
+import com.kuku9.goods.global.exception.InvalidCouponException;
 import com.kuku9.goods.global.exception.NotFoundException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CouponServiceImpl implements CouponService {
 
     private final CouponRepository couponRepository;
+    private final EventQuery eventQuery;
+    private final IssuedCouponRepository issuedCouponRepository;
+    private final RedissonClient redissonClient;
+    private final ApplicationEventPublisher publisher;
+    private static final String LOCK_KEY = "couponLock";
 
     @Transactional
     public Long createCoupon(CouponRequest request) {
@@ -38,5 +59,44 @@ public class CouponServiceImpl implements CouponService {
     private Coupon findCoupon(Long couponId) {
         return couponRepository.findById(couponId)
             .orElseThrow(() -> new NotFoundException(NOT_FOUND));
+    }
+
+    public void issueCoupon(Long couponId, User user, LocalDateTime now) {
+        RLock lock = redissonClient.getFairLock(LOCK_KEY);
+        try {
+            boolean isLocked = lock.tryLock(10, 60, TimeUnit.SECONDS);
+            if (isLocked) {
+                try {
+                    boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
+                        couponId, user.getId());
+                    if (isDuplicatedIssuance) {
+                        throw new InvalidCouponException(INVALID_COUPON);
+                    }
+
+                    LocalDateTime openAt = eventQuery.getOpenDate(couponId);
+                    if (now.isBefore(openAt)) {
+                        throw new InvalidCouponException(INVALID_COUPON);
+                    }
+
+                    Coupon coupon = findCoupon(couponId);
+
+                    if (coupon.getQuantity() <= 0) {
+                        throw new InvalidCouponException(INVALID_COUPON);
+                    }
+                    coupon.decrease();
+                    IssuedCoupon issuedCoupon = new IssuedCoupon(user, coupon);
+                    issuedCouponRepository.save(issuedCoupon);
+                    log.info(
+                        String.format("쿠폰 발행 처리 [쿠폰 ID : %s]", issuedCoupon.getCoupon().getId()));
+                    publisher.publishEvent(
+                        new CouponEvent(issuedCoupon.getCoupon().getId(),
+                            issuedCoupon.getUser().getId()));
+                } finally {
+                    lock.unlock();
+                }
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

@@ -50,12 +50,6 @@ public class EventServiceImpl implements EventService {
 	private final EventProductRepository eventProductRepository;
 	private final ProductRepository productRepository;
 	private final CouponRepository couponRepository;
-	private final IssuedCouponRepository issuedCouponRepository;
-	private final RedissonClient redissonClient;
-	private final ApplicationEventPublisher publisher;
-
-	private static final String LOCK_KEY = "couponLock";
-
 
 	@Transactional
 	public Long createEvent(EventRequest eventRequest, User user) {
@@ -146,44 +140,6 @@ public class EventServiceImpl implements EventService {
 			.orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));
 
 		eventProductRepository.delete(eventProduct);
-	}
-
-	public void issueCoupon(Long eventId, Long couponId, User user, LocalDateTime now) {
-		RLock lock = redissonClient.getFairLock(LOCK_KEY);
-		try {
-			boolean isLocked = lock.tryLock(10, 60, TimeUnit.SECONDS);
-			if (isLocked) {
-				try {
-					boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
-						couponId, user.getId());
-					if (isDuplicatedIssuance) {
-						throw new InvalidCouponException(INVALID_COUPON);
-					}
-					Event event = findEvent(eventId);
-					if (now.isBefore(event.getOpenAt())) {
-						throw new InvalidCouponException(INVALID_COUPON);
-					}
-
-					Coupon coupon = findCoupon(couponId);
-
-					if (coupon.getQuantity() <= 0) {
-						throw new InvalidCouponException(INVALID_COUPON);
-					}
-					coupon.decrease();
-					IssuedCoupon issuedCoupon = new IssuedCoupon(user, coupon);
-					issuedCouponRepository.save(issuedCoupon);
-					log.info(
-						String.format("쿠폰 발행 처리 [쿠폰 ID : %s]", issuedCoupon.getCoupon().getId()));
-					publisher.publishEvent(
-						new CouponEvent(issuedCoupon.getCoupon().getId(),
-							issuedCoupon.getUser().getId()));
-				} finally {
-					lock.unlock();
-				}
-			}
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
 	}
 
 	private Event findEvent(Long eventId) {

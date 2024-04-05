@@ -49,6 +49,9 @@ class OrderServiceImplTest {
 	@Mock
 	private OrderRepository orderRepository;
 
+	@Mock
+	private OrderProductRepository orderProductRepository;
+
 	@InjectMocks
 	private OrderServiceImpl orderService;
 
@@ -70,8 +73,7 @@ class OrderServiceImplTest {
 		RLock mockLock = mock(RLock.class);
 		given(redissonClient.getLock(anyString())).willReturn(mockLock);
 		given(productRepository.findById(anyLong())).willReturn(Optional.of(testProduct));
-		given(orderRepository.save(any())).willReturn(
-			new Order(testUser, testOrdersRequest.getAddress()));
+		given(orderRepository.save(any())).willReturn(new Order(testUser, testOrdersRequest.getAddress()));
 
 		// When
 		Order createdOrder = orderService.createOrder(testUser, testOrdersRequest);
@@ -81,7 +83,6 @@ class OrderServiceImplTest {
 		assertThat(createdOrder.getUser()).isEqualTo(testUser);
 		assertThat(createdOrder.getAddress()).isEqualTo(testOrdersRequest.getAddress());
 	}
-
 	@Test
 	@DisplayName("createOrder_Failure")
 	public void createOrder_Failure() {

@@ -11,7 +11,8 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByIdAndSellerId(Long productId, Long id);
 
-    Page<Product> findBySellerId(Long sellerId, Pageable pageable);
+    Page<Product> findBySellerId_DomainName(String domainName, Pageable pageable);
 
     List<Product> findBySellerId(Long sellerId);
+
 }

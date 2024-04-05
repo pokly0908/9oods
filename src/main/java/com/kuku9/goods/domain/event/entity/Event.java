@@ -7,10 +7,13 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
+import com.kuku9.goods.domain.event_product.entity.EventProduct;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +49,7 @@ public class Event extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
     private Coupon coupon;
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.kuku9.goods.domain.event.entity.Event;
+import com.kuku9.goods.domain.event_product.dto.EventProductResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -27,9 +28,9 @@ public class EventResponse {
     private LocalDateTime openAt;
 
     private Long couponId;
-    private List<Long> eventProducts;
+    private List<EventProductResponse> eventProducts;
 
-    public static EventResponse from(Event event, List<Long> eventProducts) {
+    public static EventResponse from(Event event, List<EventProductResponse> eventProducts) {
         return new EventResponse(
             event.getId(),
             event.getTitle(),

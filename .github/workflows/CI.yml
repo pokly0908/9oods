@@ -27,7 +27,7 @@ jobs:
       - name: java setup
         uses: actions/setup-java@v2
         with:
-          distribution: 'openjdk' # See 'Supported distributions' for available options
+          distribution: 'adopt' # See 'Supported distributions' for available options
           java-version: '17'
 
       - name: make executable gradlew

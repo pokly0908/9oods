@@ -66,12 +66,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value = "userCache", key = "#userId", unless = "#result == null")
-    public UserResponse getUserInfo(Long userId, User user) throws AccessDeniedException {
-        User findUser = findById(userId);
-        if (!user.getId().equals(userId)) {
-            throw new AccessDeniedException(String.valueOf(NOT_EQUAL_USER_ID));
-        }
+    @Cacheable(value = "userCache", key = "#user.id", unless = "#result == null")
+    public UserResponse getUserInfo(User user) throws AccessDeniedException {
+        User findUser = findById(user.getId());
+
         return UserResponse.from(findUser);
     }
 

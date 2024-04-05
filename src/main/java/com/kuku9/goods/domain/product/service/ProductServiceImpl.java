@@ -4,6 +4,7 @@ import com.kuku9.goods.domain.product.dto.ProductResponse;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
+    @Cacheable(value = "productCache", key = "#productId", unless = "#result == null")
     public ProductResponse getProduct(Long productId, String domainName) {
         Product product = productRepository.findById(productId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));

@@ -1,6 +1,9 @@
 package com.kuku9.goods.domain.product.repository;
 
+import static com.kuku9.goods.domain.product.entity.QProduct.product;
+
 import com.kuku9.goods.domain.product.entity.Product;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Repository;
 public class ProductRepositoryImpl implements ProductRepository {
 
     private final ProductJpaRepository productJpaRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public Product save(Product product) {
@@ -26,7 +30,10 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Optional<Product> findById(Long productId) {
-        return productJpaRepository.findById(productId);
+        return Optional.ofNullable(jpaQueryFactory
+            .selectFrom(product)
+            .where(product.id.eq(productId))
+            .fetchOne());
     }
 
     @Override
@@ -34,10 +41,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         return productJpaRepository.findAll(pageable);
     }
 
-    @Override
-    public Page<Product> findBySellerId(Long sellerId, Pageable pageable) {
-        return productJpaRepository.findBySellerId(sellerId, pageable);
-    }
+	@Override
+	public Page<Product> findBySellerId_DomainName(String domainName, Pageable pageable) {
+        return productJpaRepository.findBySellerId_DomainName(domainName, pageable);
+	}
 
     @Override
     public List<Product> findBySellerId(Long sellerId) {

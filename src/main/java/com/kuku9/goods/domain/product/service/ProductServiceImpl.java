@@ -1,6 +1,7 @@
 package com.kuku9.goods.domain.product.service;
 
 import com.kuku9.goods.domain.product.dto.ProductResponse;
+import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,8 +15,13 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public ProductResponse getProduct(Long productId) {
-        return new ProductResponse(productRepository.findById(productId).orElseThrow());
+    public ProductResponse getProduct(Long productId, String domainName) {
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+        if(!product.getSeller().getDomainName().equals(domainName)) {
+            throw new IllegalArgumentException("잘못된 정보입니다.");
+        }
+        return new ProductResponse(product);
     }
 
     @Override
@@ -24,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponse> getSellerProduct(Long sellerId, Pageable pageable) {
-        return productRepository.findBySellerId(sellerId, pageable).map(ProductResponse::new);
+    public Page<ProductResponse> getSellerProduct(String domainName, Pageable pageable) {
+        return productRepository.findBySellerId_DomainName(domainName, pageable).map(ProductResponse::new);
     }
 }

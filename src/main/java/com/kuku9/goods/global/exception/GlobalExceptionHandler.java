@@ -25,22 +25,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApiException.class)
     protected ResponseEntity<String> handleApiException(ApiException ex) {
         log.error(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(INTERNAL_ERROR_500);
-    }
-
-    @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<String> invalidPasswordException(InvalidPasswordException ex) {
-        log.error(ex.getMessage());
-        return ResponseEntity.status(ex.getStatusCode())
-            .body(ex.getMessage());
-
-    }
-
-
-    @ExceptionHandler(DuplicatedException.class)
-    public ResponseEntity<String> duplicatedException(DuplicatedException ex) {
-        log.error(ex.getMessage());
         return ResponseEntity.status(ex.getStatusCode())
             .body(ex.getMessage());
     }
@@ -59,33 +43,4 @@ public class GlobalExceptionHandler {
             .body(ex.getMessage());
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> EventNotFoundException(NotFoundException ex) {
-        log.error(ex.getMessage());
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-
-    @ExceptionHandler(InvalidAdminEventException.class)
-    public ResponseEntity<String> InvalidAdminEventException(InvalidAdminEventException ex) {
-        log.error(ex.getMessage());
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-
-    @ExceptionHandler(InvalidCouponException.class)
-    public ResponseEntity<String> InvalidCouponException(InvalidCouponException ex) {
-        log.error(ex.getMessage());
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-
-    @ExceptionHandler(InvalidSellerEventException.class)
-    public ResponseEntity<String> InvalidSellerEventException(InvalidSellerEventException ex) {
-        log.error(ex.getMessage());
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-
-    @ExceptionHandler(InvalidProductEventException.class)
-    public ResponseEntity<String> InvalidProductEventException(InvalidProductEventException ex) {
-        log.error(ex.getMessage());
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
 }

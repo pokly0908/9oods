@@ -11,6 +11,7 @@ import java.util.Base64;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -31,8 +32,14 @@ public class JwtUtil {
     private final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 60분
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
-    @Value("${jwt.secret.key}")// Base64 Encode 한 SecretKey
+
     private String secretKey;
+
+    @Autowired
+    public JwtUtil(@Value("${jwt.secret.key}") String secretKey) {
+        this.secretKey = secretKey;
+    }
+
     private Key key;
 
     @PostConstruct

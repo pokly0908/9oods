@@ -45,11 +45,8 @@ jobs:
              fi
   
             # 이미지 다시 가져오기
-            docker pull "${IMAGE_NAME}:${TAG}"
-            echo "새 이미지를 가져왔습니다."
-            
-            echo "Docker 이미지를 가져오는 중입니다."
             docker pull ${{ secrets.DOCKER_REPO }}
+            echo "새 이미지를 가져왔습니다."
             
             # Spring Boot 컨테이너가 실행 중인지 확인
             RUNNING=$(docker inspect --format="{{.State.Running}}" server-9oods 2>/dev/null)

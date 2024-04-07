@@ -32,12 +32,22 @@ jobs:
           docker push ${{ secrets.DOCKER_REPO }}
 
       - name: Deploy
-        uses: appleboy/ssh-action@master
+        uses: apple boy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
+            if docker inspect "${{ secrets.DOCKER_REPO }}:latest" &>/dev/null; then
+             # 이미지 삭제
+            docker rmi "${{ secrets.DOCKER_REPO }}:latest"
+            echo "이전 이미지를 삭제했습니다."
+             fi
+  
+            # 이미지 다시 가져오기
+            docker pull "${IMAGE_NAME}:${TAG}"
+            echo "새 이미지를 가져왔습니다."
+            
             echo "Docker 이미지를 가져오는 중입니다."
             docker pull ${{ secrets.DOCKER_REPO }}
             

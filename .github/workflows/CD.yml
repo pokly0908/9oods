@@ -18,6 +18,8 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
+          token: ${{ secrets.ACTION_TOKEN }}
+          submodules: true
 
       - name: Build with Gradle
         run: |

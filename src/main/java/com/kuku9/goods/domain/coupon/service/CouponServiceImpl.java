@@ -8,7 +8,7 @@ import com.kuku9.goods.domain.coupon.dto.CouponResponse;
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.coupon.repository.CouponQuery;
 import com.kuku9.goods.domain.coupon.repository.CouponRepository;
-import com.kuku9.goods.domain.coupon.springevent.CouponEvent;
+import com.kuku9.goods.global.event.CouponEvent;
 import com.kuku9.goods.domain.event.repository.EventQuery;
 import com.kuku9.goods.domain.issued_coupon.entity.IssuedCoupon;
 import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponRepository;
@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,6 +85,7 @@ public class CouponServiceImpl implements CouponService {
 						throw new InvalidCouponException(INVALID_COUPON);
 					}
 					coupon.decrease();
+					couponRepository.save(coupon);
 					IssuedCoupon issuedCoupon = new IssuedCoupon(user, coupon);
 					issuedCouponRepository.save(issuedCoupon);
 					log.info(
@@ -103,26 +103,39 @@ public class CouponServiceImpl implements CouponService {
 	}
 
 	public void issueCoupon(User user) {
-		List<Coupon> suCouponIds = couponQuery.findByCategory("su");
-		for (Coupon coupon : suCouponIds) {
-			boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
-				coupon.getId(), user.getId());
-			if (isDuplicatedIssuance) {
-				throw new InvalidCouponException(INVALID_COUPON);
+		RLock lock = redissonClient.getFairLock(LOCK_KEY);
+		try {
+			boolean isLocked = lock.tryLock(10, 60, TimeUnit.SECONDS);
+			if (isLocked) {
+				try {
+					List<Coupon> suCouponIds = couponQuery.findByCategory("su");
+					for (Coupon coupon : suCouponIds) {
+						boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
+							coupon.getId(), user.getId());
+						if (isDuplicatedIssuance) {
+							throw new InvalidCouponException(INVALID_COUPON);
+						}
+						if (coupon.getQuantity() <= 0) {
+							log.info(
+								String.format("회원가입 쿠폰 수량 부족 [쿠폰 ID : %s | 유저 ID : %s]",
+									coupon.getId(), user.getId())
+							);
+						} else {
+							coupon.decrease();
+							couponRepository.save(coupon);
+							IssuedCoupon issuedCoupon = new IssuedCoupon(user, coupon);
+							issuedCouponRepository.save(issuedCoupon);
+							log.info(
+								String.format("회원가입 쿠폰 발급 처리 [쿠폰 ID : %s]",
+									issuedCoupon.getCoupon().getId()));
+						}
+					}
+				} finally {
+					lock.unlock();
+				}
 			}
-			if (coupon.getQuantity() <= 0) {
-				log.info(
-					String.format("회원가입 쿠폰 수량 부족 [쿠폰 ID : %s | 유저 ID : %s]",
-						coupon.getId(), user.getId())
-				);
-			} else {
-				coupon.decrease();
-				IssuedCoupon issuedCoupon = new IssuedCoupon(user, coupon);
-				issuedCouponRepository.save(issuedCoupon);
-				log.info(
-					String.format("회원가입 쿠폰 발급 처리 [쿠폰 ID : %s]",
-						issuedCoupon.getCoupon().getId()));
-			}
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 		}
 	}
 }

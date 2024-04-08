@@ -1,4 +1,4 @@
-package com.kuku9.goods.domain.coupon.springevent;
+package com.kuku9.goods.global.event;
 
 import lombok.Getter;
 

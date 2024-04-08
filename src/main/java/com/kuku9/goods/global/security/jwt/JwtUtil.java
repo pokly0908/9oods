@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,6 @@ import org.springframework.util.StringUtils;
 
 @Slf4j(topic = "JwtUtil")
 @Component
-@RequiredArgsConstructor
 public class JwtUtil {
 
     // Header KEY 값
@@ -28,8 +26,10 @@ public class JwtUtil {
     // 토큰 만료시간
     private final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 60분
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-    @Value("${jwt.secret.key}") // Base64 Encode 한 SecretKey
+
+    @Value("${jwt.secret.key}")// Base64 Encode 한 SecretKey
     private String secretKey;
+
     private Key key;
 
     @PostConstruct

@@ -13,14 +13,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ACTION_TOKEN }}
+          submodules: true
+      
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'adopt'
-          token: ${{ secrets.ACTION_TOKEN }}
-          submodules: true
-
+          
       - name: Build with Gradle
         run: |
           chmod +x ./gradlew

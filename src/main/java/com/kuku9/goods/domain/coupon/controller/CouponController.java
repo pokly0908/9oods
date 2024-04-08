@@ -49,7 +49,7 @@ public class CouponController {
         @PathVariable Long couponId,
         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
-        couponService.issueCoupon(couponId, customUserDetails.getUser(),
+        couponService.issueCouponFromEvent(couponId, customUserDetails.getUser(),
             LocalDateTime.now());
 
         log.info("쿠폰이 발행되었습니다.");

@@ -31,12 +31,18 @@ public interface CouponService {
     void deleteCoupon(Long couponId);
 
     /**
-     * 선착순 쿠폰 발행
+     * 선착순 쿠폰 발급 - 이벤트를 통해서 발급
      *
      * @param couponId 쿠폰 ID
      * @param user     유저
      * @param now      현재 시점
      */
-    void issueCoupon(Long couponId, User user, LocalDateTime now);
+    void issueCouponFromEvent(Long couponId, User user, LocalDateTime now);
 
+    /**
+     * 쿠폰 발급 - 회원가입하면 발급
+     *
+     * @param user     유저
+     */
+    void issueCoupon(User user);
 }

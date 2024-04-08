@@ -1,5 +1,9 @@
 package com.kuku9.goods.common;
 
+import com.kuku9.goods.domain.coupon.entity.Coupon;
+import com.kuku9.goods.domain.event.entity.Event;
+import com.kuku9.goods.domain.event_product.dto.EventProductRequest;
+import com.kuku9.goods.domain.event_product.entity.EventProduct;
 import com.kuku9.goods.domain.order.dto.OrdersRequest;
 import com.kuku9.goods.domain.order.entity.Order;
 import com.kuku9.goods.domain.order_product.dto.OrderProductRequest;
@@ -9,6 +13,8 @@ import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.domain.user.entity.UserRoleEnum;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TestValue {
@@ -115,5 +121,46 @@ public class TestValue {
 		TEST_PRODUCT,
 		1
 	);
+	public final static Long TEST_COUPON_ID = 1L;
+	public final static LocalDate TEST_COUPON_EXPIRATIONDATE = LocalDate.of(2024, 4, 15);
+	public final static int TEST_COUPON_QUANTITY = 50;
+	public final static String TEST_COUPON_CATEGORY = "ds";
+	public final static Coupon TEST_COUPON = new Coupon(
+		TEST_COUPON_ID,
+		TEST_COUPON_EXPIRATIONDATE,
+		TEST_COUPON_QUANTITY,
+		TEST_COUPON_CATEGORY
+	);
+	public final static Long TEST_SIGNUP_COUPON_ID = 2L;
+	public final static LocalDate TEST_SIGNUP_COUPON_EXPIRATIONDATE = LocalDate.of(2024, 4, 15);
+	public final static int TEST_SIGNUP_COUPON_QUANTITY = 50;
+	public final static String TEST_SIGNUP_COUPON_CATEGORY = "su";
+	public final static Coupon TEST_SIGNUP_COUPON = new Coupon(
+		TEST_SIGNUP_COUPON_ID,
+		TEST_SIGNUP_COUPON_EXPIRATIONDATE,
+		TEST_SIGNUP_COUPON_QUANTITY,
+		TEST_SIGNUP_COUPON_CATEGORY
+	);
+	public final static Long TEST_EVENT_ID = 1L;
+	public final static String TEST_EVENT_TITLE = "제목";
+	public final static String TEST_EVENT_CONTENT = "내용";
+	public final static LocalDateTime TEST_EVENT_OPEN = LocalDateTime.now();
+	public final static List<EventProductRequest> TEST_EVENT_EVENTPRODUCTS = List.of(
+		new EventProductRequest(1L)
+	);
+	public final static Event TEST_EVENT = new Event(
+		TEST_EVENT_ID,
+		TEST_EVENT_TITLE,
+		TEST_EVENT_CONTENT,
+		TEST_EVENT_OPEN,
+		TEST_USER1,
+		TEST_COUPON
+	);
+	public final static EventProduct TEST_EVENTPRODUCT = new EventProduct(
+		1L,
+		TEST_EVENT,
+		TEST_PRODUCT
+	);
+
 }
 

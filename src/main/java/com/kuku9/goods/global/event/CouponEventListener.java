@@ -18,8 +18,8 @@ public class CouponEventListener {
 	@Async
 	@EventListener
 	public void sendPush(CouponEvent couponEvent) throws InterruptedException {
-		Thread.sleep(2000);
-		log.info(String.format("푸시 알림 발송 [쿠폰 ID: %s | 유저 ID: %s]", couponEvent.getCouponId(),
+		Thread.sleep(1000);
+		log.info(String.format("[쿠폰 ID: %s | 유저 ID: %s]", couponEvent.getCouponId(),
 			couponEvent.getUserId()));
 	}
 

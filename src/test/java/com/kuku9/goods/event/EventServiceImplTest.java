@@ -11,6 +11,7 @@ import com.kuku9.goods.domain.coupon.repository.CouponRepository;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
 import com.kuku9.goods.domain.event.entity.Event;
+import com.kuku9.goods.domain.event.repository.EventQuery;
 import com.kuku9.goods.domain.event.repository.EventRepository;
 import com.kuku9.goods.domain.event.service.EventServiceImpl;
 import com.kuku9.goods.domain.event_product.dto.EventProductRequest;
@@ -42,6 +43,8 @@ public class EventServiceImplTest extends TestValue {
 	private ProductRepository productRepository;
 	@Mock
 	private CouponRepository couponRepository;
+	@Mock
+	private EventQuery eventQuery;
 	@InjectMocks
 	private EventServiceImpl eventService;
 

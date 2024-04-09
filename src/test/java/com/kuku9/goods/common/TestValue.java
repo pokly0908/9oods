@@ -111,7 +111,8 @@ public class TestValue {
 		TEST_ORDER_PRODUCT_REQUEST);
 	public final static OrdersRequest TEST_ORDERS_REQUEST = new OrdersRequest(
 		TEST_ORDER_PRODUCT_REQUEST_LIST,
-		TEST_ADDRESS
+		TEST_ADDRESS,
+		1L
 	);
 	public final static Order TEST_ORDER = new Order(
 		TEST_USER1,

@@ -110,21 +110,16 @@ public class CouponServiceImplTest extends TestValue {
 		Coupon coupon = TEST_COUPON;
 		IssuedCoupon issuedCoupon = TEST_ISSUED_COUPON;
 		User user = TEST_USER2;
-		given(redissonClient.getFairLock(anyString())).willReturn(lock);
-		given(lock.tryLock(10, 60, TimeUnit.SECONDS)).willReturn(true);
 		given(issuedCouponRepository.existsByCouponIdAndUserId(any(), any())).willReturn(false);
 		given(eventQuery.getOpenDate(any())).willReturn(
 			LocalDateTime.of(2024, 4, 7, 12, 30));
 		given(couponRepository.findById(any())).willReturn(Optional.of(coupon));
 		given(couponRepository.save(any())).willReturn(coupon);
-		given(issuedCouponRepository.save(any())).willReturn(issuedCoupon);
 
 		// when
 		couponService.issueCouponFromEvent(coupon.getId(), user, LocalDateTime.now());
 
 		// then
-		verify(lock).unlock();
-		verify(publisher).publishEvent(any(CouponEvent.class));
 		assertEquals(49, coupon.getQuantity());
 	}
 
@@ -135,8 +130,6 @@ public class CouponServiceImplTest extends TestValue {
 		Coupon coupon = TEST_COUPON;
 		IssuedCoupon issuedCoupon = TEST_ISSUED_COUPON;
 		User user = TEST_USER2;
-		given(redissonClient.getFairLock(anyString())).willReturn(lock);
-		given(lock.tryLock(10, 60, TimeUnit.SECONDS)).willReturn(true);
 		given(issuedCouponRepository.existsByCouponIdAndUserId(any(), any())).willReturn(true);
 
 
@@ -153,12 +146,9 @@ public class CouponServiceImplTest extends TestValue {
 		Coupon coupon = TEST_SIGNUP_COUPON;
 		IssuedCoupon issuedCoupon = TEST_ISSUED_COUPON2;
 		User user = TEST_USER2;
-		given(redissonClient.getFairLock(anyString())).willReturn(lock);
-		given(lock.tryLock(10, 60, TimeUnit.SECONDS)).willReturn(true);
 		given(couponQuery.findByCategory(any())).willReturn(List.of(coupon));
 		given(issuedCouponRepository.existsByCouponIdAndUserId(any(), any())).willReturn(false);
 		given(couponRepository.save(any())).willReturn(coupon);
-		given(issuedCouponRepository.save(any())).willReturn(issuedCoupon);
 
 		// when
 		couponService.issueCoupon(user);
@@ -173,8 +163,6 @@ public class CouponServiceImplTest extends TestValue {
 		Coupon coupon = TEST_SIGNUP_COUPON;
 		IssuedCoupon issuedCoupon = TEST_ISSUED_COUPON2;
 		User user = TEST_USER2;
-		given(redissonClient.getFairLock(anyString())).willReturn(lock);
-		given(lock.tryLock(10, 60, TimeUnit.SECONDS)).willReturn(true);
 		given(couponQuery.findByCategory(any())).willReturn(List.of(coupon));
 		given(issuedCouponRepository.existsByCouponIdAndUserId(any(), any())).willReturn(true);
 

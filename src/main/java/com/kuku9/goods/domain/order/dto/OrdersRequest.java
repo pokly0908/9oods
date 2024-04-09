@@ -11,10 +11,12 @@ public class OrdersRequest {
 
     private List<OrderProductRequest> products;
     private String address;
+    private Long issuedCouponId;
 
-    public OrdersRequest(List<OrderProductRequest> products, String address) {
+    public OrdersRequest(List<OrderProductRequest> products, String address, Long issuedCouponId) {
         this.products = products;
         this.address = address;
+        this.issuedCouponId = issuedCouponId;
 
     }
 }

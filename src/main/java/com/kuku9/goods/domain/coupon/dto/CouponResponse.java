@@ -12,12 +12,13 @@ public class CouponResponse {
     private Long couponId;
     private LocalDate expirationDate;
     private int quantity;
-
+    private String category;
     public static CouponResponse from(Coupon coupon) {
         return new CouponResponse(
             coupon.getId(),
             coupon.getExpirationDate(),
-            coupon.getQuantity()
+            coupon.getQuantity(),
+            coupon.getCategory()
         );
     }
 }

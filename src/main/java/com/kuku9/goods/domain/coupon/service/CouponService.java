@@ -45,4 +45,11 @@ public interface CouponService {
      * @param user     유저
      */
     void issueCoupon(User user);
+
+    /**
+     * 쿠폰 사용
+     *
+     * @param issuedCouponId
+     */
+    void useCoupon(Long issuedCouponId);
 }

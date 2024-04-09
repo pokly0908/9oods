@@ -4,4 +4,6 @@ public interface IssuedCouponQuery {
 
     void deleteExpiredCoupon();
 
+    void deleteCoupon(Long issuedCouponId);
+
 }

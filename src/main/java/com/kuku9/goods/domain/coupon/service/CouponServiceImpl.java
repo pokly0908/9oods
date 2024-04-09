@@ -8,11 +8,12 @@ import com.kuku9.goods.domain.coupon.dto.CouponResponse;
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.coupon.repository.CouponQuery;
 import com.kuku9.goods.domain.coupon.repository.CouponRepository;
-import com.kuku9.goods.global.event.CouponEvent;
 import com.kuku9.goods.domain.event.repository.EventQuery;
 import com.kuku9.goods.domain.issued_coupon.entity.IssuedCoupon;
+import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponQuery;
 import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponRepository;
 import com.kuku9.goods.domain.user.entity.User;
+import com.kuku9.goods.global.event.CouponEvent;
 import com.kuku9.goods.global.exception.InvalidCouponException;
 import com.kuku9.goods.global.exception.NotFoundException;
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CouponServiceImpl implements CouponService {
 
+	private final IssuedCouponQuery issuedCouponQuery;
 	private final CouponRepository couponRepository;
 	private final EventQuery eventQuery;
 	private final IssuedCouponRepository issuedCouponRepository;
@@ -137,5 +139,11 @@ public class CouponServiceImpl implements CouponService {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
+	}
+
+	@Transactional
+	public void useCoupon(Long issuedCouponId) {
+
+		issuedCouponQuery.deleteCoupon(issuedCouponId);
 	}
 }

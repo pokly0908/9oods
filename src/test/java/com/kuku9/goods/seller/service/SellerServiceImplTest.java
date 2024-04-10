@@ -13,7 +13,6 @@ import com.kuku9.goods.common.TestValue;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
-import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.seller.service.SellerServiceImpl;
@@ -116,6 +115,16 @@ public class SellerServiceImplTest extends TestValue {
             assertThrows(InvalidSellerEventException.class, () -> {
                 sellerServiceImpl.createProduct(request, user);
             });
+        }
+    }
+
+    @Nested
+    class productQuantityUpdate {
+
+        @Test
+        @DisplayName("상품 수량 수정 - 셀러권한")
+        void productQuantityUpdate() {
+
         }
     }
 

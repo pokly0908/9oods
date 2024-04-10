@@ -11,6 +11,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 import com.kuku9.goods.common.TestValue;
+import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponRepository;
 import com.kuku9.goods.domain.order.dto.OrdersRequest;
 import com.kuku9.goods.domain.order.entity.Order;
 import com.kuku9.goods.domain.order.repository.OrderRepository;
@@ -36,6 +37,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.context.ApplicationEventPublisher;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {
@@ -51,6 +53,12 @@ class OrderServiceImplTest {
 
 	@Mock
 	private OrderProductRepository orderProductRepository;
+
+	@Mock
+	private IssuedCouponRepository issuedCouponRepository;
+
+	@Mock
+	private ApplicationEventPublisher publisher;
 
 	@InjectMocks
 	private OrderServiceImpl orderService;
@@ -74,6 +82,7 @@ class OrderServiceImplTest {
 		given(redissonClient.getLock(anyString())).willReturn(mockLock);
 		given(productRepository.findById(anyLong())).willReturn(Optional.of(testProduct));
 		given(orderRepository.save(any())).willReturn(new Order(testUser, testOrdersRequest.getAddress()));
+		given(issuedCouponRepository.findById(any())).willReturn(Optional.of(TEST_ISSUED_COUPON));
 
 		// When
 		Order createdOrder = orderService.createOrder(testUser, testOrdersRequest);
@@ -91,6 +100,7 @@ class OrderServiceImplTest {
 		given(redissonClient.getLock(anyString())).willReturn(mockLock);
 		given(productRepository.findById(anyLong())).willReturn(Optional.of(testProduct));
 		given(orderRepository.save(any())).willThrow(IllegalArgumentException.class);
+		given(issuedCouponRepository.findById(any())).willReturn(Optional.of(TEST_ISSUED_COUPON));
 
 		// When and Then
 		assertThrows(IllegalArgumentException.class, () -> {

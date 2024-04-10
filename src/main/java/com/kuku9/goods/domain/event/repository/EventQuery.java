@@ -1,6 +1,8 @@
 package com.kuku9.goods.domain.event.repository;
 
 import com.kuku9.goods.domain.event_product.entity.EventProduct;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EventQuery {
@@ -9,4 +11,5 @@ public interface EventQuery {
 
     void deleteEventProduct(Long eventId);
 
+    LocalDateTime getOpenDate(Long couponId);
 }

@@ -2,6 +2,7 @@ package com.kuku9.goods.domain.user.service;
 
 import static com.kuku9.goods.global.exception.ExceptionStatus.*;
 
+import com.kuku9.goods.domain.coupon.service.CouponService;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.service.SellerService;
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
@@ -11,13 +12,18 @@ import com.kuku9.goods.domain.user.dto.response.UserResponse;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.domain.user.entity.UserRoleEnum;
 import com.kuku9.goods.domain.user.repository.UserRepository;
+import com.kuku9.goods.global.event.SignupEvent;
 import com.kuku9.goods.global.exception.DuplicatedException;
 import com.kuku9.goods.global.exception.InvalidPasswordException;
 import java.nio.file.AccessDeniedException;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final SellerService sellerService;
+    private final ApplicationEventPublisher publisher;
+
 
     @Override
     @Transactional
@@ -37,8 +45,8 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
         User user = User.from(request, encodedPassword);
-        userRepository.save(user);
-
+        User savedUser = userRepository.save(user);
+        publisher.publishEvent(new SignupEvent(savedUser));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.kuku9.goods.domain.issued_coupon.repository;
 
+import com.kuku9.goods.domain.issued_coupon.entity.IssuedCoupon;
 import com.kuku9.goods.domain.issued_coupon.entity.QIssuedCoupon;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
@@ -18,11 +19,22 @@ public class IssuedCouponQueryImpl implements IssuedCouponQuery {
         QIssuedCoupon qIssuedCoupon = QIssuedCoupon.issuedCoupon;
         LocalDate now = LocalDate.now();
 
-        //long count =
+
         jpaQueryFactory
             .update(qIssuedCoupon)
             .set(qIssuedCoupon.deletedAt, now)
             .where(qIssuedCoupon.coupon.expirationDate.before(now))
+            .execute();
+    }
+
+    public void deleteCoupon(Long issuedCouponId) {
+        QIssuedCoupon qIssuedCoupon = QIssuedCoupon.issuedCoupon;
+        LocalDate now = LocalDate.now();
+
+        jpaQueryFactory
+            .update(qIssuedCoupon)
+            .set(qIssuedCoupon.deletedAt, now)
+            .where(qIssuedCoupon.id.eq(issuedCouponId))
             .execute();
     }
 

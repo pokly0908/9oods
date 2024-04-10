@@ -2,6 +2,8 @@ package com.kuku9.goods.domain.coupon.service;
 
 import com.kuku9.goods.domain.coupon.dto.CouponRequest;
 import com.kuku9.goods.domain.coupon.dto.CouponResponse;
+import com.kuku9.goods.domain.user.entity.User;
+import java.time.LocalDateTime;
 
 public interface CouponService {
 
@@ -28,4 +30,26 @@ public interface CouponService {
      */
     void deleteCoupon(Long couponId);
 
+    /**
+     * 선착순 쿠폰 발급 - 이벤트를 통해서 발급
+     *
+     * @param couponId 쿠폰 ID
+     * @param user     유저
+     * @param now      현재 시점
+     */
+    void issueCouponFromEvent(Long couponId, User user, LocalDateTime now);
+
+    /**
+     * 쿠폰 발급 - 회원가입하면 발급
+     *
+     * @param user     유저
+     */
+    void issueCoupon(User user);
+
+    /**
+     * 쿠폰 사용
+     *
+     * @param issuedCouponId
+     */
+    void useCoupon(Long issuedCouponId);
 }

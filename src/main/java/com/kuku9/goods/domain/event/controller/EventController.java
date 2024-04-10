@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/events")
@@ -86,17 +88,4 @@ public class EventController {
 
         return ResponseEntity.ok().build();
     }
-
-    @PatchMapping("/{eventId}/coupons/{couponId}/issued-coupons")
-    @PreAuthorize("hasAnyRole('ROLE_USER')")
-    public ResponseEntity<Void> issueCoupon(
-        @PathVariable Long eventId, @PathVariable Long couponId,
-        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-
-        eventService.issueCoupon(eventId, couponId, customUserDetails.getUser(),
-            LocalDateTime.now());
-
-        return ResponseEntity.ok().build();
-    }
-
 }

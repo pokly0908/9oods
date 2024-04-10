@@ -23,9 +23,13 @@ public class Coupon {
     @Column
     private int quantity;
 
+    @Column
+    private String category;
+
     public Coupon(CouponRequest request) {
         this.expirationDate = request.getExpirationDate();
         this.quantity = request.getQuantity();
+        this.category = request.getCategory();
     }
 
     public void decrease() {

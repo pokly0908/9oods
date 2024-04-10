@@ -27,6 +27,9 @@ public class Order extends BaseEntity {
     @Column
     private String address;
 
+    @Column
+    private int totalPrice;
+
     public Order(User user, String address) {
         this.user = user;
         this.status = "결제완료";
@@ -35,5 +38,12 @@ public class Order extends BaseEntity {
 
     public void updateStatus(String status) {
         this.status = status;
+    }
+
+    public void addTotalPrice(int totalPrice) {
+        this.totalPrice += totalPrice;
+    }
+    public void discount(int discount) {
+        this.totalPrice -= discount;
     }
 }

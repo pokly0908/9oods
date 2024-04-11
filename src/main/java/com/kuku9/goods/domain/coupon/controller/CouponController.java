@@ -31,7 +31,7 @@ public class CouponController {
 	}
 
 	@GetMapping("/{couponId}")
-	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
+	@PreAuthorize("hasAnyRole('ROLE_USER')")
 	public ResponseEntity<CouponResponse> getCoupon(@PathVariable Long couponId) {
 		return ResponseEntity.ok().body(couponService.getCoupon(couponId));
 	}

@@ -10,6 +10,11 @@ public @interface DistributedLock {
 	/**
 	 * 락의 이름
 	 */
+	String lockName();
+
+	/**
+	 * 락의 key
+	 */
 	String key();
 
 	/**

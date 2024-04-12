@@ -91,7 +91,7 @@ public class CouponServiceImpl implements CouponService {
 	@DistributedLock(
 		lockName = "lock",
 		key = "#suCoupon",
-		waitTime = 10,
+		waitTime = 30,
 		leaseTime = 60)
 	public void issueCoupon(User user) {
 		List<Coupon> suCouponIds = couponQuery.findByCategory("su");

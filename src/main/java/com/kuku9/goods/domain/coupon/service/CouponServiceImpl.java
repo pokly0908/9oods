@@ -62,7 +62,7 @@ public class CouponServiceImpl implements CouponService {
 	@DistributedLock(
 		lockName = "dsCouponLock",
 		key = "#couponId",
-		waitTime = 10,
+		waitTime = 40,
 		leaseTime = 60)
 	public void issueCouponFromEvent(Long couponId, User user,
 		LocalDateTime now) {
@@ -91,7 +91,7 @@ public class CouponServiceImpl implements CouponService {
 	@DistributedLock(
 		lockName = "lock",
 		key = "#suCoupon",
-		waitTime = 30,
+		waitTime = 40,
 		leaseTime = 60)
 	public void issueCoupon(User user) {
 		List<Coupon> suCouponIds = couponQuery.findByCategory("su");

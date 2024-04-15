@@ -9,7 +9,6 @@ import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.coupon.repository.CouponQuery;
 import com.kuku9.goods.domain.coupon.repository.CouponRepository;
 import com.kuku9.goods.domain.event.repository.EventQuery;
-import com.kuku9.goods.domain.issued_coupon.entity.IssuedCoupon;
 import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponQuery;
 import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponRepository;
 import com.kuku9.goods.domain.user.entity.User;
@@ -19,10 +18,8 @@ import com.kuku9.goods.global.exception.InvalidCouponException;
 import com.kuku9.goods.global.exception.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,90 +32,91 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CouponServiceImpl implements CouponService {
 
-	private final IssuedCouponQuery issuedCouponQuery;
-	private final CouponRepository couponRepository;
-	private final EventQuery eventQuery;
-	private final IssuedCouponRepository issuedCouponRepository;
-	private final RedissonClient redissonClient;
-	private final ApplicationEventPublisher publisher;
-	private final CouponQuery couponQuery;
-	private static final String LOCK_KEY = "couponLock";
-	private static final Logger logger = LoggerFactory.getLogger(CouponServiceImpl.class);
+    private static final String LOCK_KEY = "couponLock";
+    private static final Logger logger = LoggerFactory.getLogger(CouponServiceImpl.class);
+    private final IssuedCouponQuery issuedCouponQuery;
+    private final CouponRepository couponRepository;
+    private final EventQuery eventQuery;
+    private final IssuedCouponRepository issuedCouponRepository;
+    private final RedissonClient redissonClient;
+    private final ApplicationEventPublisher publisher;
+    private final CouponQuery couponQuery;
 
-	@Transactional
-	public Long createCoupon(CouponRequest request) {
-		Coupon coupon = new Coupon(request);
-		Coupon savedCoupon = couponRepository.save(coupon);
-		return savedCoupon.getId();
-	}
+    @Transactional
+    public Long createCoupon(CouponRequest request) {
+        Coupon coupon = new Coupon(request);
+        Coupon savedCoupon = couponRepository.save(coupon);
+        return savedCoupon.getId();
+    }
 
-	@Transactional(readOnly = true)
-	public CouponResponse getCoupon(Long couponId) {
-		Coupon coupon = findCoupon(couponId);
-		return CouponResponse.from(coupon);
-	}
+    @Transactional(readOnly = true)
+    public CouponResponse getCoupon(Long couponId) {
+        Coupon coupon = findCoupon(couponId);
+        return CouponResponse.from(coupon);
+    }
 
-	@Transactional
-	public void deleteCoupon(Long couponId) {
-		couponRepository.delete(findCoupon(couponId));
-	}
+    @Transactional
+    public void deleteCoupon(Long couponId) {
+        couponRepository.delete(findCoupon(couponId));
+    }
 
-	private Coupon findCoupon(Long couponId) {
-		return couponRepository.findById(couponId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND));
-	}
+    private Coupon findCoupon(Long couponId) {
+        return couponRepository.findById(couponId)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND));
+    }
 
-	@DistributedLock(key = "#dscouponLock", waitTime = 10, leaseTime = 60)
-	public void issueCouponFromEvent(Long couponId, User user,
-		LocalDateTime now) {
-		boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
-			couponId, user.getId());
-		if (isDuplicatedIssuance) {
-			throw new InvalidCouponException(INVALID_COUPON);
-		}
+    @DistributedLock(key = "#dscouponLock", waitTime = 10, leaseTime = 60)
+    public void issueCouponFromEvent(
+        Long couponId, User user,
+        LocalDateTime now) {
+        boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
+            couponId, user.getId());
+        if (isDuplicatedIssuance) {
+            throw new InvalidCouponException(INVALID_COUPON);
+        }
 
-		LocalDateTime openAt = eventQuery.getOpenDate(couponId);
-		if (now.isBefore(openAt)) {
-			throw new InvalidCouponException(INVALID_COUPON);
-		}
+        LocalDateTime openAt = eventQuery.getOpenDate(couponId);
+        if (now.isBefore(openAt)) {
+            throw new InvalidCouponException(INVALID_COUPON);
+        }
 
-		Coupon coupon = findCoupon(couponId);
-		if(coupon.getQuantity() <= 0) {
-			throw new InvalidCouponException(INVALID_COUPON);
-		}
-		coupon.decrease();
-		couponRepository.save(coupon);
+        Coupon coupon = findCoupon(couponId);
+        if (coupon.getQuantity() <= 0) {
+            throw new InvalidCouponException(INVALID_COUPON);
+        }
+        coupon.decrease();
+        couponRepository.save(coupon);
 
-		publisher.publishEvent(new IssueEvent(coupon, user));
-		log.info("쿠폰 재고: {}", coupon.getQuantity());
-	}
+        publisher.publishEvent(new IssueEvent(coupon, user));
+        log.info("쿠폰 재고: {}", coupon.getQuantity());
+    }
 
-	@DistributedLock(key = "#sucouponLock", waitTime = 10, leaseTime = 60)
-	public void issueCoupon(User user) {
-		List<Coupon> suCouponIds = couponQuery.findByCategory("su");
-		for (Coupon coupon : suCouponIds) {
-			boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
-				coupon.getId(), user.getId());
-			if (isDuplicatedIssuance) {
-				throw new InvalidCouponException(INVALID_COUPON);
-			}
-			if (coupon.getQuantity() <= 0) {
-				log.info(
-					String.format("회원가입 쿠폰 수량 부족 [쿠폰 ID : %s | 유저 ID : %s]",
-						coupon.getId(), user.getId())
-				);
-			} else {
-				coupon.decrease();
-				couponRepository.save(coupon);
+    @DistributedLock(key = "#sucouponLock", waitTime = 10, leaseTime = 60)
+    public void issueCoupon(User user) {
+        List<Coupon> suCouponIds = couponQuery.findByCategory("su");
+        for (Coupon coupon : suCouponIds) {
+            boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
+                coupon.getId(), user.getId());
+            if (isDuplicatedIssuance) {
+                throw new InvalidCouponException(INVALID_COUPON);
+            }
+            if (coupon.getQuantity() <= 0) {
+                log.info(
+                    String.format("회원가입 쿠폰 수량 부족 [쿠폰 ID : %s | 유저 ID : %s]",
+                        coupon.getId(), user.getId())
+                );
+            } else {
+                coupon.decrease();
+                couponRepository.save(coupon);
 
-				publisher.publishEvent(new IssueEvent(coupon, user));
-			}
-		}
-	}
+                publisher.publishEvent(new IssueEvent(coupon, user));
+            }
+        }
+    }
 
-	@Transactional
-	public void useCoupon(Long issuedCouponId) {
+    @Transactional
+    public void useCoupon(Long issuedCouponId) {
 
-		issuedCouponQuery.deleteCoupon(issuedCouponId);
-	}
+        issuedCouponQuery.deleteCoupon(issuedCouponId);
+    }
 }

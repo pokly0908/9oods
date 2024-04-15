@@ -14,19 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class IssueCouponServiceImpl implements IssueCouponService{
+public class IssueCouponServiceImpl implements IssueCouponService {
 
-	private final IssuedCouponRepository issuedCouponRepository;
-	private final ApplicationEventPublisher publisher;
+    private final IssuedCouponRepository issuedCouponRepository;
+    private final ApplicationEventPublisher publisher;
 
-	@Transactional
-	public void issueCoupon(Coupon coupon, User user) {
-		IssuedCoupon issuedCoupon = new IssuedCoupon(user, coupon);
-		issuedCouponRepository.save(issuedCoupon);
-		log.info(
-			String.format("쿠폰 발급 처리 [쿠폰 ID : %s]", issuedCoupon.getCoupon().getId()));
-		publisher.publishEvent(
-			new CouponEvent(issuedCoupon.getCoupon().getId(),
-				issuedCoupon.getUser().getId()));
-	}
+    @Transactional
+    public void issueCoupon(Coupon coupon, User user) {
+        IssuedCoupon issuedCoupon = new IssuedCoupon(user, coupon);
+        issuedCouponRepository.save(issuedCoupon);
+        log.info(
+            String.format("쿠폰 발급 처리 [쿠폰 ID : %s]", issuedCoupon.getCoupon().getId()));
+        publisher.publishEvent(
+            new CouponEvent(issuedCoupon.getCoupon().getId(),
+                issuedCoupon.getUser().getId()));
+    }
 }

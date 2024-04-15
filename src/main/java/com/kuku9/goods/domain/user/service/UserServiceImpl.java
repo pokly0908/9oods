@@ -2,7 +2,8 @@ package com.kuku9.goods.domain.user.service;
 
 import static com.kuku9.goods.global.exception.ExceptionStatus.*;
 
-import com.kuku9.goods.domain.coupon.service.CouponService;
+import com.kuku9.goods.domain.search.document.SellerDocument;
+import com.kuku9.goods.domain.search.repository.SellerSearchRepository;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.service.SellerService;
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
@@ -17,10 +18,7 @@ import com.kuku9.goods.global.exception.DuplicatedException;
 import com.kuku9.goods.global.exception.InvalidPasswordException;
 import java.nio.file.AccessDeniedException;
 import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
@@ -36,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final SellerService sellerService;
     private final ApplicationEventPublisher publisher;
+    private final SellerSearchRepository sellerSearchRepository;
 
 
     @Override
@@ -65,7 +64,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidPasswordException(INVALID_PASSWORD);
         }
 
-        if(passwordEncoder.matches(request.getNewPassword(),findUser.getPassword())){
+        if (passwordEncoder.matches(request.getNewPassword(), findUser.getPassword())) {
             throw new InvalidPasswordException(SAME_PASSWORD_NOW_AND_NEW);
         }
 
@@ -110,6 +109,12 @@ public class UserServiceImpl implements UserService {
 
         findUser.updateRole(UserRoleEnum.SELLER);
         Seller seller = Seller.from(request, user);
+
+        SellerDocument sellerDocument = new SellerDocument(
+            findUser.getId(), request.getBrandName(), request.getIntroduce()
+        );
+
+        sellerSearchRepository.save(sellerDocument);
 
         return sellerService.save(seller);
     }

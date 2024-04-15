@@ -7,7 +7,6 @@ import com.kuku9.goods.domain.event.service.EventService;
 import com.kuku9.goods.global.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,7 +29,8 @@ public class EventController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_SELLER')")
-    public ResponseEntity<String> createEvent(@Valid @RequestBody EventRequest request,
+    public ResponseEntity<String> createEvent(
+        @Valid @RequestBody EventRequest request,
         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         Long eventId = eventService.createEvent(request, customUserDetails.getUser());
@@ -70,7 +70,8 @@ public class EventController {
 
     @DeleteMapping("/{eventId}")
     @PreAuthorize("hasAnyRole('ROLE_SELLER')")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId,
+    public ResponseEntity<Void> deleteEvent(
+        @PathVariable Long eventId,
         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         eventService.deleteEvent(eventId, customUserDetails.getUser());
@@ -78,11 +79,11 @@ public class EventController {
         return ResponseEntity.ok().build();
     }
 
-	@DeleteMapping("/event-products/{eventProductId}")
-	@PreAuthorize("hasAnyRole('ROLE_SELLER')")
-	public ResponseEntity<Void> deleteEventProduct(
-		@PathVariable Long eventProductId,
-		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    @DeleteMapping("/event-products/{eventProductId}")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER')")
+    public ResponseEntity<Void> deleteEventProduct(
+        @PathVariable Long eventProductId,
+        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         eventService.deleteEventProduct(eventProductId, customUserDetails.getUser());
 

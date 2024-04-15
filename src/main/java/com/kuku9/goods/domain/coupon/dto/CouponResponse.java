@@ -13,6 +13,7 @@ public class CouponResponse {
     private LocalDate expirationDate;
     private int quantity;
     private String category;
+
     public static CouponResponse from(Coupon coupon) {
         return new CouponResponse(
             coupon.getId(),

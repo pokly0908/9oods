@@ -7,12 +7,12 @@ import lombok.Getter;
 @Getter
 public class IssueEvent {
 
-	private Coupon coupon;
-	private User user;
+    private final Coupon coupon;
+    private final User user;
 
-	public IssueEvent(Coupon coupon, User user) {
-		this.coupon = coupon;
-		this.user = user;
-	}
+    public IssueEvent(Coupon coupon, User user) {
+        this.coupon = coupon;
+        this.user = user;
+    }
 
 }

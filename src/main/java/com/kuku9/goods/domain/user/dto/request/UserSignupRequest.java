@@ -3,8 +3,10 @@ package com.kuku9.goods.domain.user.dto.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
+@Builder
 @Getter
 @AllArgsConstructor
 public class UserSignupRequest {

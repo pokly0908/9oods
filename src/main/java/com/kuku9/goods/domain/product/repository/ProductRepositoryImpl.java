@@ -50,4 +50,12 @@ public class ProductRepositoryImpl implements ProductRepository {
     public List<Product> findBySellerId(Long sellerId) {
         return productJpaRepository.findBySellerId(sellerId);
     }
+
+    @Override
+    public List<Product> findAllById(List<Long> productIds) {
+        return jpaQueryFactory
+            .selectFrom(product)
+            .where(product.id.in(productIds))
+            .fetch();
+    }
 }

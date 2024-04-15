@@ -1,6 +1,7 @@
 package com.kuku9.goods.domain.order.dto;
 
 import com.kuku9.goods.domain.order.entity.Order;
+import com.kuku9.goods.domain.order.entity.OrderStatus;
 import com.kuku9.goods.domain.product.dto.ProductResponse;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,7 +11,7 @@ import lombok.Getter;
 public class OrderResponse {
 
     private final Long orderId;
-    private final String orderStatus;
+    private final OrderStatus orderStatus;
     private final LocalDateTime orderDate;
     private final String address;
     private final List<ProductResponse> products;

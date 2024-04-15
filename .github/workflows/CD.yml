@@ -62,5 +62,5 @@ jobs:
             
             echo "새로운 Spring Boot 컨테이너를 실행합니다."
             # 새로운 Spring Boot 컨테이너 실행
-            docker run --name server-9oods -p 80:80 --net mybridge -v /home/mins99721/docker/volume/spring_data:/data -d ${{ secrets.DOCKER_REPO }}
+            docker run --name server-9oods -p 443:443 --net mybridge -v /home/mins99721/docker/volume/spring_data:/data -d ${{ secrets.DOCKER_REPO }}
 

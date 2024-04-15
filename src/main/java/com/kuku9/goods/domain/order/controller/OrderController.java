@@ -22,7 +22,7 @@ public class OrderController {
     private final OrderService productOrderService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USERS')")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USER')")
     public ResponseEntity<String> createOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody OrdersRequest productOrderRequest) {
@@ -32,7 +32,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USERS')")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USER')")
     public ResponseEntity<OrderResponse> getOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderId)
         throws AccessDeniedException {
@@ -42,7 +42,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
-    @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USERS')")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USER')")
     public ResponseEntity<OrderResponse> updateOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderId)
         throws AccessDeniedException {

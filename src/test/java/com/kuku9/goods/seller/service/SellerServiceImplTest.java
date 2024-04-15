@@ -12,6 +12,8 @@ import static org.mockito.Mockito.verify;
 import com.kuku9.goods.common.TestValue;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
+import com.kuku9.goods.domain.search.document.ProductDocument;
+import com.kuku9.goods.domain.search.repository.ProductSearchRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
@@ -34,6 +36,8 @@ public class SellerServiceImplTest extends TestValue {
     SellerRepository sellerRepository;
     @Mock
     ProductRepository productRepository;
+    @Mock
+    ProductSearchRepository productSearchRepository;
     @InjectMocks
     private SellerServiceImpl sellerServiceImpl;
 
@@ -49,9 +53,11 @@ public class SellerServiceImplTest extends TestValue {
             Seller seller = TEST_SELLER;
             User user = TEST_USER2;
             Product product = TEST_PRODUCT;
+            ProductDocument productDocument = TEST_PRODUCT_DOCUMENT;
 
             given(sellerRepository.findByUserId(anyLong())).willReturn(Optional.of(seller));
             given(productRepository.save(any())).willReturn(product);
+            given(productSearchRepository.save(any())).willReturn(productDocument);
 
             //when
             Long sellerId = sellerServiceImpl.createProduct(request, user);

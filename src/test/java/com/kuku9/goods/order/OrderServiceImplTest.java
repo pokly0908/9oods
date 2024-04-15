@@ -78,34 +78,32 @@ class OrderServiceImplTest {
 	@DisplayName("createOrder_Success")
 	public void createOrder_Success() {
 		// Given
-//		RLock mockLock = mock(RLock.class);
-//		given(redissonClient.getLock(anyString())).willReturn(mockLock);
-//		given(productRepository.findById(anyLong())).willReturn(Optional.of(testProduct));
-//		given(orderRepository.save(any())).willReturn(new Order(testUser, testOrdersRequest.getAddress()));
-//		given(issuedCouponRepository.findById(any())).willReturn(Optional.of(TEST_ISSUED_COUPON));
+		RLock mockLock = mock(RLock.class);
+		given(redissonClient.getLock(anyString())).willReturn(mockLock);
+		given(productRepository.findAllById(anyList())).willReturn(Collections.singletonList(testProduct));
+		given(orderRepository.save(any())).willReturn(new Order(testUser, testOrdersRequest.getAddress()));
+		given(issuedCouponRepository.findById(any())).willReturn(Optional.of(TEST_ISSUED_COUPON));
 
-//		// When
-//		Order createdOrder = orderService.createOrder(testUser, testOrdersRequest);
-//
-//		// Then
-//		assertNotNull(createdOrder);
-//		assertThat(createdOrder.getUser()).isEqualTo(testUser);
-//		assertThat(createdOrder.getAddress()).isEqualTo(testOrdersRequest.getAddress());
+		// When
+		Order createdOrder = orderService.createOrder(testUser, testOrdersRequest);
+
+		// Then
+		assertNotNull(createdOrder);
+		assertThat(createdOrder.getUser()).isEqualTo(testUser);
+		assertThat(createdOrder.getAddress()).isEqualTo(testOrdersRequest.getAddress());
 	}
 	@Test
 	@DisplayName("createOrder_Failure")
 	public void createOrder_Failure() {
 		// Given
-//		RLock mockLock = mock(RLock.class);
-//		given(redissonClient.getLock(anyString())).willReturn(mockLock);
-////		given(productRepository.findById(anyLong())).willReturn(Optional.of(testProduct));
-//		given(orderRepository.save(any())).willThrow(IllegalArgumentException.class);
-//		given(issuedCouponRepository.findById(any())).willReturn(Optional.of(TEST_ISSUED_COUPON));
-//
-//		// When and Then
-//		assertThrows(IllegalArgumentException.class, () -> {
-//			orderService.createOrder(testUser, testOrdersRequest);
-//		});
+		RLock mockLock = mock(RLock.class);
+		given(redissonClient.getLock(anyString())).willReturn(mockLock);
+		given(productRepository.findAllById(anyList())).willReturn(Collections.emptyList()); // 존재하지 않는 상품 리스트를 반환
+
+		// When and Then
+		assertThrows(IllegalArgumentException.class, () -> {
+			orderService.createOrder(testUser, testOrdersRequest);
+		});
 	}
 
 }

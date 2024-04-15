@@ -7,6 +7,7 @@ import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponRepository;
 import com.kuku9.goods.domain.order.dto.OrderResponse;
 import com.kuku9.goods.domain.order.dto.OrdersRequest;
 import com.kuku9.goods.domain.order.entity.Order;
+import com.kuku9.goods.domain.order.entity.OrderStatus;
 import com.kuku9.goods.domain.order.repository.OrderRepository;
 import com.kuku9.goods.domain.order_product.dto.OrderProductRequest;
 import com.kuku9.goods.domain.order_product.entity.OrderProduct;
@@ -124,7 +125,7 @@ public class OrderServiceImpl implements OrderService {
 		for (OrderProduct orderProduct : orderProducts) {
 			orderProduct.getProduct().updateQuantity(-orderProduct.getQuantity());
 		}
-		order.updateStatus("결제 취소");
+		order.updateStatus(OrderStatus.Cancel);
 		return getProductOrderResponse(orderId, order);
 	}
 

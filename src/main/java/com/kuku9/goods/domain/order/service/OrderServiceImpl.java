@@ -8,6 +8,7 @@ import com.kuku9.goods.domain.order.dto.OrderResponse;
 import com.kuku9.goods.domain.order.dto.OrdersRequest;
 import com.kuku9.goods.domain.order.entity.Order;
 import com.kuku9.goods.domain.order.repository.OrderRepository;
+import com.kuku9.goods.domain.order_product.dto.OrderProductRequest;
 import com.kuku9.goods.domain.order_product.entity.OrderProduct;
 import com.kuku9.goods.domain.order_product.repository.OrderProductRepository;
 import com.kuku9.goods.domain.product.dto.ProductResponse;
@@ -18,6 +19,7 @@ import com.kuku9.goods.global.event.OrderEvent;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -43,13 +45,23 @@ public class OrderServiceImpl implements OrderService {
 		try {
 			lock.lock();
 			//상품 및 재고확인
-			List<Product> products = new ArrayList<>();
-			for (int i = 0; i < OrderRequest.getProducts().size(); i++) {
-				products.add(productRepository.findById(
-						OrderRequest.getProducts().get(i).getProductId())
-					.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")));
-				if (products.get(i).getQuantity() < OrderRequest.getProducts().get(i)
-					.getQuantity()) {
+			List<Long> productIds = OrderRequest.getProducts().stream()
+				.map(OrderProductRequest::getProductId)
+				.collect(Collectors.toList());
+
+			List<Product> products = productRepository.findAllById(productIds);
+
+			if (products.size() != productIds.size()) {
+				throw new IllegalArgumentException("존재하지 않는 상품이 포함되어 있습니다.");
+			}
+
+			for (OrderProductRequest productRequest : OrderRequest.getProducts()) {
+				Product product = products.stream()
+					.filter(p -> p.getId().equals(productRequest.getProductId()))
+					.findFirst()
+					.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+
+				if (product.getQuantity() < productRequest.getQuantity()) {
 					throw new IllegalArgumentException("재고가 부족합니다.");
 				}
 			}

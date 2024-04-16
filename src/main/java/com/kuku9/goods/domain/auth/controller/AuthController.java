@@ -25,7 +25,7 @@ public class AuthController {
         String accessToken = authService.login(request);
 
 
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, BEARER_PREFIX + accessToken)
+        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, accessToken)
             .build();
 
     }

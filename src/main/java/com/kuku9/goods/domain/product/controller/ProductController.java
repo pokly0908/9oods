@@ -35,13 +35,14 @@ public class ProductController {
 
     //셀러 별 조회
     @GetMapping("/sellers/{domainName}/products")
-    public ResponseEntity<List<ProductResponse>> getSellerProduct(
+    public ResponseEntity<Page<ProductResponse>> getSellerProduct(
         @PathVariable String domainName,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
+        Page<ProductResponse> productResponses = productService.getSellerProduct(domainName, pageable);
         return ResponseEntity.ok()
-            .body(productService.getSellerProduct(domainName, pageable).getContent());
+            .body(productResponses);
     }
 
 }

@@ -4,16 +4,14 @@ import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.domain.user.entity.UserRoleEnum;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
 /**
  * DTO for {@link com.kuku9.goods.domain.user.entity.User}
  */
-@AllArgsConstructor
 @Getter
-@NoArgsConstructor
+@Value
 public class UserResponse {
 
     String realName;

@@ -1,12 +1,13 @@
 package com.kuku9.goods.domain.order_product.dto;
 
+import lombok.Value;
+
+@Value
 public class OrderProductResponse {
 
-    private Long productId;
-    private String productName;
-    private String productDescription;
-    private String productPrice;
-    private String brandName;
-
-
+    Long productId;
+    String productName;
+    String productDescription;
+    String productPrice;
+    String brandName;
 }

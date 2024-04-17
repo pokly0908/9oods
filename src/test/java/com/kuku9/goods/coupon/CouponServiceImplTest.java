@@ -56,19 +56,13 @@ public class CouponServiceImplTest extends TestValue {
 	@InjectMocks
 	private CouponServiceImpl couponService;
 
-	private <T> void setDto(T dto, LocalDate expirationDate, int quantity, String category) {
-		ReflectionTestUtils.setField(dto, "expirationDate", expirationDate);
-		ReflectionTestUtils.setField(dto, "quantity", quantity);
-		ReflectionTestUtils.setField(dto, "category", category);
-	}
-
 	@Test
 	@DisplayName("쿠폰 등록 성공")
 	void 쿠폰_등록_성공() {
 		// given
-		CouponRequest couponRequest = new CouponRequest();
-		setDto(couponRequest, TEST_COUPON_EXPIRATIONDATE, TEST_COUPON_QUANTITY,
+		CouponRequest couponRequest = new CouponRequest(TEST_COUPON_EXPIRATIONDATE, TEST_COUPON_QUANTITY,
 			TEST_COUPON_CATEGORY);
+
 		Coupon coupon = TEST_COUPON;
 		given(couponRepository.save(any())).willReturn(coupon);
 

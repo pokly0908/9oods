@@ -17,4 +17,5 @@ public class CouponRequest {
 
     @NotNull(message = "쿠폰 카테고리를 등록해주세요. 회원가입용 쿠폰이면 su, 일반 쿠폰이면 ds 를 입력해주세요.")
     String category;
+
 }

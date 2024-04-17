@@ -14,7 +14,6 @@ import com.kuku9.goods.domain.event.entity.Event;
 import com.kuku9.goods.domain.event.repository.EventQuery;
 import com.kuku9.goods.domain.event.repository.EventRepository;
 import com.kuku9.goods.domain.event.service.EventServiceImpl;
-import com.kuku9.goods.domain.event_product.dto.EventProductRequest;
 import com.kuku9.goods.domain.event_product.entity.EventProduct;
 import com.kuku9.goods.domain.event_product.repository.EventProductRepository;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
@@ -22,7 +21,6 @@ import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.exception.InvalidAdminEventException;
 import com.kuku9.goods.global.exception.NotFoundException;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,14 +46,6 @@ public class EventServiceImplTest extends TestValue {
 	@InjectMocks
 	private EventServiceImpl eventService;
 
-	private <T> void setEventRequestDto(T dto, String title, String content, LocalDateTime openAt,
-		List<EventProductRequest> eventProducts, Long couponId) {
-		ReflectionTestUtils.setField(dto, "title", title);
-		ReflectionTestUtils.setField(dto, "content", content);
-		ReflectionTestUtils.setField(dto, "openAt", openAt);
-		ReflectionTestUtils.setField(dto, "eventProducts", eventProducts);
-		ReflectionTestUtils.setField(dto, "couponId", couponId);
-	}
 
 	private <T> void setEventUpdateDTO(T dto, String title, String content, LocalDateTime openAt) {
 		ReflectionTestUtils.setField(dto, "title", title);
@@ -69,14 +59,12 @@ public class EventServiceImplTest extends TestValue {
 		// given
 		User user = TEST_USER1;
 		Coupon coupon = TEST_COUPON;
-		EventRequest eventRequest = new EventRequest();
-		setEventRequestDto(eventRequest,
-			TEST_EVENT_TITLE,
+		EventRequest eventRequest = new EventRequest(TEST_EVENT_TITLE,
 			TEST_EVENT_CONTENT,
 			TEST_EVENT_OPEN,
 			TEST_EVENT_EVENTPRODUCTS,
-			TEST_COUPON_ID
-		);
+			TEST_COUPON_ID);
+
 		Event event = TEST_EVENT;
 		given(eventRepository.save(any())).willReturn(event);
 		given(productRepository.findById(any())).willReturn(Optional.of(TEST_PRODUCT));
@@ -95,14 +83,12 @@ public class EventServiceImplTest extends TestValue {
 		// given
 		User user = TEST_USER1;
 		Coupon coupon = TEST_COUPON;
-		EventRequest eventRequest = new EventRequest();
-		setEventRequestDto(eventRequest,
-			TEST_EVENT_TITLE,
+		EventRequest eventRequest = new EventRequest(TEST_EVENT_TITLE,
 			TEST_EVENT_CONTENT,
 			TEST_EVENT_OPEN,
 			TEST_EVENT_EVENTPRODUCTS,
-			TEST_COUPON_ID
-		);
+			TEST_COUPON_ID);
+
 		Event event = TEST_EVENT;
 		given(eventRepository.save(any())).willReturn(event);
 		given(productRepository.findById(any())).willReturn(Optional.of(TEST_PRODUCT));
@@ -119,8 +105,9 @@ public class EventServiceImplTest extends TestValue {
 		// given
 		Event event = TEST_EVENT;
 		User user = TEST_USER1;
-		EventUpdateRequest eventUpdateRequest = new EventUpdateRequest();
-		setEventUpdateDTO(eventUpdateRequest, "수정", "수정", LocalDateTime.now());
+		EventUpdateRequest eventUpdateRequest = new EventUpdateRequest("수정", "수정",
+			LocalDateTime.now());
+
 		given(eventRepository.findById(any())).willReturn(Optional.of(event));
 
 		// when
@@ -137,8 +124,9 @@ public class EventServiceImplTest extends TestValue {
 		// given
 		Event event = TEST_EVENT;
 		User user = TEST_USER2;
-		EventUpdateRequest eventUpdateRequest = new EventUpdateRequest();
-		setEventUpdateDTO(eventUpdateRequest, "수정", "수정", LocalDateTime.now());
+		EventUpdateRequest eventUpdateRequest = new EventUpdateRequest("수정", "수정",
+			LocalDateTime.now());
+
 		given(eventRepository.findById(any())).willReturn(Optional.of(event));
 
 		// when-then
@@ -146,6 +134,7 @@ public class EventServiceImplTest extends TestValue {
 			eventService.updateEvent(event.getId(), eventUpdateRequest, user);
 		});
 	}
+
 	@Test
 	@DisplayName("이벤트 삭제 성공")
 	void 이벤트_삭제_성공() {
@@ -157,6 +146,7 @@ public class EventServiceImplTest extends TestValue {
 		// when-then
 		eventService.deleteEvent(event.getId(), user);
 	}
+
 	@Test
 	@DisplayName("이벤트 삭제 실패")
 	void 이벤트_삭제_실패() {
@@ -170,6 +160,7 @@ public class EventServiceImplTest extends TestValue {
 			eventService.deleteEvent(event.getId(), user);
 		});
 	}
+
 	@Test
 	@DisplayName("이벤트 상품 삭제 성공")
 	void 이벤트_상품_삭제_성공() {
@@ -181,6 +172,7 @@ public class EventServiceImplTest extends TestValue {
 		// when-then
 		eventService.deleteEventProduct(eventProduct.getId(), user);
 	}
+
 	@Test
 	@DisplayName("이벤트 상품 삭제 실패")
 	void 이벤트_상품_삭제_실패() {

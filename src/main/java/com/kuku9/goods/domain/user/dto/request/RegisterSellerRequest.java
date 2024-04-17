@@ -4,28 +4,28 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Value;
 
 @Getter
-@AllArgsConstructor
+@Value
 public class RegisterSellerRequest {
 
     @NotNull(message = "브랜드 명칭을 꼭 입력해주세요.")
-    private String brandName;
+    String brandName;
 
     @Pattern(regexp = "^[a-z0-9]{3,12}", message = "도메인 이름은 소문자로 3자이상 12자 이하로 입력해주세요.")
-    private String domainName;
+    String domainName;
 
     @NotNull(message = "브랜드 소개글을 200자 이하로 적어주세요.")
     @Size(min = 10, max = 200)
-    private String introduce;
+    String introduce;
 
     @Email(message = "판매자 연락용 이메일을 남겨주세요.")
-    private String email;
+    String email;
 
     @Pattern(regexp = "^[0-9]", message = "-없이 판매자 연락용 전화번호를 남겨주세요.")
-    private String phoneNumber;
+    String phoneNumber;
 
 
 }

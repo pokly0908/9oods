@@ -2,17 +2,17 @@ package com.kuku9.goods.domain.product.dto;
 
 import com.kuku9.goods.domain.product.entity.Product;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
 @Getter
-@RequiredArgsConstructor
+@Value
 public class ProductResponse {
 
-    private Long productId;
-    private String productName;
-    private String productDescription;
-    private int productPrice;
-    private String brandName;
+    Long productId;
+    String productName;
+    String productDescription;
+    int productPrice;
+    String brandName;
 
     public ProductResponse(Product product) {
         this.productId = product.getId();

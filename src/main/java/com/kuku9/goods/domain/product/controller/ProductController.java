@@ -4,6 +4,7 @@ import com.kuku9.goods.domain.product.dto.ProductResponse;
 import com.kuku9.goods.domain.product.service.ProductService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,12 @@ public class ProductController {
 
     //전체 조회
     @GetMapping("/products")
-    public ResponseEntity<List<ProductResponse>> getAllProduct(
+    public ResponseEntity<Page<ProductResponse>> getAllProduct(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok().body(productService.getAllProduct(pageable).getContent());
+        Page<ProductResponse> productResponses = productService.getAllProduct(pageable);
+        return ResponseEntity.ok().body(productResponses);
     }
 
     //셀러 별 조회

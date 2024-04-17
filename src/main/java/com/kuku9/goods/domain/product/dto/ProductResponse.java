@@ -12,6 +12,7 @@ public class ProductResponse {
     private String productName;
     private String productDescription;
     private int productPrice;
+    private String domainName;
     private String brandName;
 
     public ProductResponse(Product product) {
@@ -19,6 +20,7 @@ public class ProductResponse {
         this.productName = product.getName();
         this.productDescription = product.getDescription();
         this.productPrice = product.getPrice();
+        this.domainName = product.getSeller().getDomainName();
         this.brandName = product.getSeller().getBrandName();
     }
 }

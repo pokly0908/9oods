@@ -7,7 +7,6 @@ import com.kuku9.goods.domain.event.service.EventService;
 import com.kuku9.goods.global.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

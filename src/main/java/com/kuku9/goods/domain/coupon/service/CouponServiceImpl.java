@@ -1,7 +1,6 @@
 package com.kuku9.goods.domain.coupon.service;
 
-import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_COUPON;
-import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND;
+import static com.kuku9.goods.global.exception.ExceptionStatus.*;
 
 import com.kuku9.goods.domain.coupon.dto.CouponRequest;
 import com.kuku9.goods.domain.coupon.dto.CouponResponse;
@@ -69,17 +68,17 @@ public class CouponServiceImpl implements CouponService {
 		boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
 			couponId, user.getId());
 		if (isDuplicatedIssuance) {
-			throw new InvalidCouponException(INVALID_COUPON);
+			throw new InvalidCouponException(DUPLICATED_COUPON);
 		}
 
 		LocalDateTime openAt = eventQuery.getOpenDate(couponId);
 		if (now.isBefore(openAt)) {
-			throw new InvalidCouponException(INVALID_COUPON);
+			throw new InvalidCouponException(BEFORE_EVENT_OPEN);
 		}
 
 		Coupon coupon = findCoupon(couponId);
 		if(coupon.getQuantity() <= 0) {
-			throw new InvalidCouponException(INVALID_COUPON);
+			throw new InvalidCouponException(OUT_OF_STOCK_COUPON);
 		}
 		coupon.decrease();
 		couponRepository.save(coupon);

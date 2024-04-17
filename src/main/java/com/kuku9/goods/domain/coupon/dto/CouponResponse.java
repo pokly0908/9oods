@@ -4,15 +4,16 @@ import com.kuku9.goods.domain.coupon.entity.Coupon;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Value;
 
 @Getter
-@AllArgsConstructor
+@Value
 public class CouponResponse {
 
-    private Long couponId;
-    private LocalDate expirationDate;
-    private int quantity;
-    private String category;
+    Long couponId;
+    LocalDate expirationDate;
+    int quantity;
+    String category;
     public static CouponResponse from(Coupon coupon) {
         return new CouponResponse(
             coupon.getId(),

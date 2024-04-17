@@ -3,9 +3,11 @@ package com.kuku9.goods.domain.event.dto;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
+@Value
 public class EventUpdateRequest {
 
     @NotNull(message = "이벤트를 등록하시려면 제목을 입력하세요.")

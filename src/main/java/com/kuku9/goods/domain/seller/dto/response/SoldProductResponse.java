@@ -1,18 +1,18 @@
 package com.kuku9.goods.domain.seller.dto.response;
 
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Value;
 
 @Getter
-@AllArgsConstructor
+@Value
 public class SoldProductResponse {
 
-    private final String productName;
-    private final int productPrice;
-    private final int productQuantity;
-    private final int orderProductQuantity;
-    private final int productTotalPrice;
-    private final LocalDateTime orderTime;
+    String productName;
+    int productPrice;
+    int productQuantity;
+    int orderProductQuantity;
+    int productTotalPrice;
+    LocalDateTime orderTime;
 
 }

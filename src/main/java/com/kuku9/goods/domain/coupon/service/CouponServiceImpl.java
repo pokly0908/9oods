@@ -1,7 +1,6 @@
 package com.kuku9.goods.domain.coupon.service;
 
-import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_COUPON;
-import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND;
+import static com.kuku9.goods.global.exception.ExceptionStatus.*;
 
 import com.kuku9.goods.domain.coupon.dto.CouponRequest;
 import com.kuku9.goods.domain.coupon.dto.CouponResponse;
@@ -59,31 +58,30 @@ public class CouponServiceImpl implements CouponService {
             .orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
-    @DistributedLock(
-        lockName = "dsCouponLock",
-        key = "#couponId",
-        waitTime = 40,
-        leaseTime = 60)
-    public void issueCouponFromEvent(
-        Long couponId, User user,
-        LocalDateTime now) {
-        boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
-            couponId, user.getId());
-        if (isDuplicatedIssuance) {
-            throw new InvalidCouponException(INVALID_COUPON);
-        }
+	@DistributedLock(
+		lockName = "dsCouponLock",
+		key = "#couponId",
+		waitTime = 40,
+		leaseTime = 60)
+	public void issueCouponFromEvent(Long couponId, User user,
+		LocalDateTime now) {
+		boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
+			couponId, user.getId());
+		if (isDuplicatedIssuance) {
+			throw new InvalidCouponException(DUPLICATED_COUPON);
+		}
 
-        LocalDateTime openAt = eventQuery.getOpenDate(couponId);
-        if (now.isBefore(openAt)) {
-            throw new InvalidCouponException(INVALID_COUPON);
-        }
+		LocalDateTime openAt = eventQuery.getOpenDate(couponId);
+		if (now.isBefore(openAt)) {
+			throw new InvalidCouponException(BEFORE_EVENT_OPEN);
+		}
 
-        Coupon coupon = findCoupon(couponId);
-        if (coupon.getQuantity() <= 0) {
-            throw new InvalidCouponException(INVALID_COUPON);
-        }
-        coupon.decrease();
-        couponRepository.save(coupon);
+		Coupon coupon = findCoupon(couponId);
+		if(coupon.getQuantity() <= 0) {
+			throw new InvalidCouponException(OUT_OF_STOCK_COUPON);
+		}
+		coupon.decrease();
+		couponRepository.save(coupon);
 
         publisher.publishEvent(new IssueEvent(coupon, user));
         log.info("쿠폰 재고: {}", coupon.getQuantity());

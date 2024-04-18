@@ -3,6 +3,7 @@ package com.kuku9.goods.domain.auth.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kuku9.goods.domain.auth.config.KakaoProperties;
 import com.kuku9.goods.domain.auth.dto.KakaoUserInfo;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.domain.user.repository.UserRepository;
@@ -10,7 +11,6 @@ import com.kuku9.goods.global.security.jwt.JwtUtil;
 import java.net.URI;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -30,23 +30,8 @@ public class KakaoService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final KakaoProperties kakaoProperties;
 
-    @Value("${kakao.client.id}")
-    private String KAKAO_CLIENT_ID;
-    @Value("${kakao.client.secret}")
-    private String KAKAO_CLIENT_SECRET;
-    @Value("${kakao.redirect.url}")
-    private String KAKAO_REDIRECT_URL;
-
-    private final static String KAKAO_AUTH_URL = "https://kauth.kakao.com";
-    private final static String KAKAO_API_URL = "https://kapi.kakao.com";
-
-    public String getKakaoLogin() {
-        return KAKAO_AUTH_URL + "/oauth/authorize"
-            + "?client_id=" + KAKAO_CLIENT_ID
-            + "&redirect_uri=" + KAKAO_REDIRECT_URL
-            + "&response_type=code";
-    }
 
     @Transactional
     public String login(String code) throws JsonProcessingException {
@@ -58,17 +43,16 @@ public class KakaoService {
 
 
     public String getKakaoAccessToken(String code) throws JsonProcessingException {
-
-        URI uri = UriComponentsBuilder.fromUriString(KAKAO_AUTH_URL + "/token").encode().build()
+        URI uri = UriComponentsBuilder.fromUriString(kakaoProperties.getAuthUrl() + "/token").encode().build()
             .toUri();
 
         // Http Response Body 객체 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", KAKAO_CLIENT_ID);
-        body.add("redirect_uri", KAKAO_REDIRECT_URL);
+        body.add("client_id", kakaoProperties.getClientId());
+        body.add("redirect_uri", kakaoProperties.getRedirectUrl());
         body.add("code", code);
-        body.add("client_secret", KAKAO_CLIENT_SECRET);
+        body.add("client_secret", kakaoProperties.getClientSecret());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -87,7 +71,7 @@ public class KakaoService {
 
     private KakaoUserInfo getkakaoUserInfo(String kakaoAccessToken) throws JsonProcessingException {
 
-        URI uri = UriComponentsBuilder.fromUriString(KAKAO_API_URL).path("/v2/user/me").encode()
+        URI uri = UriComponentsBuilder.fromUriString(kakaoProperties.getApiUrl()).path("/v2/user/me").encode()
             .build().toUri();
 
         HttpHeaders headers = new HttpHeaders();

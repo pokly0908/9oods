@@ -10,9 +10,15 @@ import lombok.Value;
 @Value
 public class EventProductResponse {
 
-	Long productId;
+	String productName;
+	String productDescription;
+	int productPrice;
+	String brandName;
 
 	public EventProductResponse(EventProduct eventProduct) {
-		this.productId = eventProduct.getProduct().getId();
+		this.productName = eventProduct.getProduct().getName();
+		this.productDescription = eventProduct.getProduct().getDescription();
+		this.productPrice = eventProduct.getProduct().getPrice();
+		this.brandName = eventProduct.getProduct().getSeller().getBrandName();
 	}
 }

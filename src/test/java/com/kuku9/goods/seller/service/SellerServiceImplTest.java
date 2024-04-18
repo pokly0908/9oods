@@ -12,8 +12,9 @@ import static org.mockito.Mockito.verify;
 import com.kuku9.goods.common.TestValue;
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
+import com.kuku9.goods.domain.search.document.ProductDocument;
+import com.kuku9.goods.domain.search.repository.ProductSearchRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
-import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.seller.service.SellerServiceImpl;
@@ -35,6 +36,8 @@ public class SellerServiceImplTest extends TestValue {
     SellerRepository sellerRepository;
     @Mock
     ProductRepository productRepository;
+    @Mock
+    ProductSearchRepository productSearchRepository;
     @InjectMocks
     private SellerServiceImpl sellerServiceImpl;
 
@@ -48,11 +51,13 @@ public class SellerServiceImplTest extends TestValue {
             // 입력으로 상품에 대한 정보 입력받기 위해 Request 생성
             ProductRegistRequest request = TEST_PRODUCT_REGIST_REQUEST;
             Seller seller = TEST_SELLER;
-            User user = TEST_USER1;
+            User user = TEST_USER2;
             Product product = TEST_PRODUCT;
+            ProductDocument productDocument = TEST_PRODUCT_DOCUMENT;
 
             given(sellerRepository.findByUserId(anyLong())).willReturn(Optional.of(seller));
             given(productRepository.save(any())).willReturn(product);
+            given(productSearchRepository.save(any())).willReturn(productDocument);
 
             //when
             Long sellerId = sellerServiceImpl.createProduct(request, user);
@@ -68,7 +73,6 @@ public class SellerServiceImplTest extends TestValue {
             // given
             ProductRegistRequest request = TEST_PRODUCT_REGIST_REQUEST;
             User user = TEST_USER1;
-            // todo :: 권한이 없는 user로 시도해도 성공하는 이유...?
 
             given(sellerRepository.findByUserId(anyLong())).willThrow(
                 InvalidSellerEventException.class);
@@ -117,6 +121,16 @@ public class SellerServiceImplTest extends TestValue {
             assertThrows(InvalidSellerEventException.class, () -> {
                 sellerServiceImpl.createProduct(request, user);
             });
+        }
+    }
+
+    @Nested
+    class productQuantityUpdate {
+
+        @Test
+        @DisplayName("상품 수량 수정 - 셀러권한")
+        void productQuantityUpdate() {
+
         }
     }
 

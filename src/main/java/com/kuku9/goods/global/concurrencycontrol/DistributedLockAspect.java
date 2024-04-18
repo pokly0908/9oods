@@ -17,40 +17,40 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DistributedLockAspect {
 
-	private static final String REDISSON_KEY_PREFIX = "LOCK::";
+    private static final String REDISSON_KEY_PREFIX = "LOCK::";
 
-	private final RedissonClient redissonClient;
-	private final TransactionAspect transactionAspect;
+    private final RedissonClient redissonClient;
+    private final TransactionAspect transactionAspect;
 
-	@Around("@annotation(com.kuku9.goods.global.concurrencycontrol.DistributedLock)")
-	public Object lock(final ProceedingJoinPoint joinPoint)
-		throws Throwable {
-		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-		Method method = signature.getMethod();
-		DistributedLock distributedLock = method.getAnnotation(DistributedLock.class);
+    @Around("@annotation(com.kuku9.goods.global.concurrencycontrol.DistributedLock)")
+    public Object lock(final ProceedingJoinPoint joinPoint)
+        throws Throwable {
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+        DistributedLock distributedLock = method.getAnnotation(DistributedLock.class);
 
-		String key =
-			REDISSON_KEY_PREFIX + distributedLock.lockName() + CustomSpringELParser.getDynamicValue(
-				signature.getParameterNames(), joinPoint.getArgs(), distributedLock.key());
-		RLock rLock = redissonClient.getLock(key);  // (1)
+        String key =
+            REDISSON_KEY_PREFIX + distributedLock.lockName() + CustomSpringELParser.getDynamicValue(
+                signature.getParameterNames(), joinPoint.getArgs(), distributedLock.key());
+        RLock rLock = redissonClient.getLock(key);  // (1)
 
-		try {
-			boolean available = rLock.tryLock(distributedLock.waitTime(),
-				distributedLock.leaseTime(), distributedLock.timeUnit());  // (2)
-			if (!available) {
-				throw new IllegalArgumentException("Unable to acquire lock: " + key);
-			}
-			log.info("Lock success");
-			return transactionAspect.proceed(joinPoint);  // (3)
-		} catch (InterruptedException e) {
-			throw new InterruptedException();
-		} finally {
-			try {
-				rLock.unlock();   // (4)
-				log.info("Lock released successfully");
-			} catch (IllegalMonitorStateException e) {
-				log.error("Error while releasing lock", e);
-			}
-		}
-	}
+        try {
+            boolean available = rLock.tryLock(distributedLock.waitTime(),
+                distributedLock.leaseTime(), distributedLock.timeUnit());  // (2)
+            if (!available) {
+                throw new IllegalArgumentException("Unable to acquire lock: " + key);
+            }
+            log.info("Lock success");
+            return transactionAspect.proceed(joinPoint);  // (3)
+        } catch (InterruptedException e) {
+            throw new InterruptedException();
+        } finally {
+            try {
+                rLock.unlock();   // (4)
+                log.info("Lock released successfully");
+            } catch (IllegalMonitorStateException e) {
+                log.error("Error while releasing lock", e);
+            }
+        }
+    }
 }

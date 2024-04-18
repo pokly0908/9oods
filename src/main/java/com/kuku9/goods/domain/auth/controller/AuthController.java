@@ -1,7 +1,5 @@
 package com.kuku9.goods.domain.auth.controller;
 
-import static com.kuku9.goods.global.security.jwt.JwtUtil.BEARER_PREFIX;
-
 import com.kuku9.goods.domain.auth.dto.LoginRequest;
 import com.kuku9.goods.domain.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +21,6 @@ public class AuthController {
     public ResponseEntity<Void> login(
         @RequestBody LoginRequest request) {
         String accessToken = authService.login(request);
-
 
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, accessToken)
             .build();

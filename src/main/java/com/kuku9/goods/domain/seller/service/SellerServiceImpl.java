@@ -5,6 +5,9 @@ import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_SELLER_EV
 
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
+import com.kuku9.goods.domain.search.document.ProductDocument;
+import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
+import com.kuku9.goods.domain.search.repository.ProductSearchRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
@@ -35,6 +38,7 @@ public class SellerServiceImpl implements SellerService {
     private final SellerRepository sellerRepository;
     private final ProductRepository productRepository;
     private final SellerQuery sellerQuery;
+    private final ProductSearchRepository productSearchRepository;
 
     @Override
     @Transactional
@@ -43,7 +47,14 @@ public class SellerServiceImpl implements SellerService {
 
         Product product = new Product(requestDto, seller);
 
+        ProductDocument productDocument = new ProductDocument(
+            seller.getId(),
+            requestDto.getProductName(), requestDto.getProductDescription(),
+            requestDto.getProductPrice(), requestDto.getProductQuantity());
+
         Product saveProduct = productRepository.save(product);
+
+        productSearchRepository.save(productDocument);
 
         return saveProduct.getSeller().getId();
     }
@@ -64,7 +75,9 @@ public class SellerServiceImpl implements SellerService {
     @Override
     @Transactional
     public Long updateProductQuantity(Long productId, ProductQuantityRequest request, User user) {
-        Product product = findProduct(productId, findSeller(user));
+        Seller seller = findSeller(user);
+
+        Product product = findProduct(productId, seller);
 
         product.updateQuantitySeller(request);
 
@@ -76,7 +89,9 @@ public class SellerServiceImpl implements SellerService {
     @CacheEvict(value = "productCache", key = "#productId")
     public Long updateProduct(
         Long productId, ProductUpdateRequest requestDto, User user) {
-        Product product = findProduct(productId, findSeller(user));
+        Seller seller = findSeller(user);
+
+        Product product = findProduct(productId, seller);
 
         product.updateProduct(requestDto);
 
@@ -87,21 +102,27 @@ public class SellerServiceImpl implements SellerService {
     @Transactional(readOnly = true)
     public Page<SoldProductResponse> getSoldProduct(
         User user, Pageable pageable, LocalDate startDate, LocalDate endDate) {
-        return sellerQuery.getSoldProduct(findSeller(user), pageable, startDate, endDate);
+        Seller seller = findSeller(user);
+
+        return sellerQuery.getSoldProduct(seller, pageable, startDate, endDate);
     }
 
     @Override
     @Transactional(readOnly = true)
     public SoldProductSumPriceResponse getSoldProductSumPrice(
         User user, LocalDate startDate, LocalDate endDate) {
-        return sellerQuery.getSoldProductSumPrice(findSeller(user), startDate, endDate);
+        Seller seller = findSeller(user);
+
+        return sellerQuery.getSoldProductSumPrice(seller, startDate, endDate);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<SoldProductQuantityResponse> getSoldProductQuantityTopTen(
         User user, LocalDate startDate, LocalDate endDate) {
-        return sellerQuery.getSoldProductQuantityTopTen(findSeller(user), startDate, endDate);
+        Seller seller = findSeller(user);
+
+        return sellerQuery.getSoldProductQuantityTopTen(seller, startDate, endDate);
     }
 
     private Seller findSeller(User user) {
@@ -142,6 +163,16 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public Boolean checkPhoneNumberExist(String phoneNumber) {
         return sellerRepository.existsByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public List<ProductSearchResponse> searchProductName(String keyword) {
+        return sellerQuery.searchProductName(keyword);
+    }
+
+    @Override
+    public List<ProductSearchResponse> searchProductIntroduce(String keyowrd) {
+        return sellerQuery.searchProductIntroduce(keyowrd);
     }
 
 }

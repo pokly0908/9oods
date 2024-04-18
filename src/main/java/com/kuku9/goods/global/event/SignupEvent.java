@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class SignupEvent {
 
-	private User user;
+    private final User user;
 
-	public SignupEvent(User user) {
-		this.user = user;
-	}
+    public SignupEvent(User user) {
+        this.user = user;
+    }
 }

@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EventProductResponse {
 
-	private Long productId;
+    private Long productId;
 
-	public EventProductResponse(EventProduct eventProduct) {
-		this.productId = eventProduct.getProduct().getId();
-	}
+    public EventProductResponse(EventProduct eventProduct) {
+        this.productId = eventProduct.getProduct().getId();
+    }
 }

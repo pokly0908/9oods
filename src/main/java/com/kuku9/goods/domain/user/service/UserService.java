@@ -39,7 +39,7 @@ public interface UserService {
     /**
      * 유저 정보 조회
      *
-     * @param user   유저
+     * @param user 유저
      * @return user 정보
      */
     UserResponse getUserInfo(User user) throws AccessDeniedException;

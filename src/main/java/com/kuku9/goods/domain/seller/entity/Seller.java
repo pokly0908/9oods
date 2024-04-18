@@ -64,5 +64,4 @@ public class Seller extends BaseEntity {
         return new Seller(request, user);
     }
 
-
 }

@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface CouponQuery {
 
-	List<Coupon> findByCategory(String su);
+    List<Coupon> findByCategory(String su);
 }

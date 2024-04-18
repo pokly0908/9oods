@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class OrderEvent {
 
-	private Long issuedCouponId;
+    private final Long issuedCouponId;
 
-	public OrderEvent(Long issuedCouponId) {
-		this.issuedCouponId = issuedCouponId;
-	}
+    public OrderEvent(Long issuedCouponId) {
+        this.issuedCouponId = issuedCouponId;
+    }
 
 }

@@ -42,7 +42,7 @@ public interface CouponService {
     /**
      * 쿠폰 발급 - 회원가입하면 발급
      *
-     * @param user     유저
+     * @param user 유저
      */
     void issueCoupon(User user);
 

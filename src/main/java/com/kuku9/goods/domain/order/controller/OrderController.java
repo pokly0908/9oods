@@ -9,6 +9,7 @@ import java.net.URI;
 import java.nio.file.AccessDeniedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ public class OrderController {
     private final OrderService productOrderService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USER')")
     public ResponseEntity<String> createOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody OrdersRequest productOrderRequest) {
@@ -29,6 +31,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USER')")
     public ResponseEntity<OrderResponse> getOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderId)
         throws AccessDeniedException {
@@ -38,6 +41,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USER')")
     public ResponseEntity<OrderResponse> updateOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderId)
         throws AccessDeniedException {
@@ -47,6 +51,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{orderId}")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER')")
     public ResponseEntity<Void> deleteOrder(
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @PathVariable Long orderId) throws AccessDeniedException {

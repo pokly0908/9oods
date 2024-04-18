@@ -22,7 +22,7 @@ public class Order extends BaseEntity {
     private User user;
 
     @Column
-    private String status;
+    private OrderStatus status;
 
     @Column
     private String address;
@@ -32,11 +32,11 @@ public class Order extends BaseEntity {
 
     public Order(User user, String address) {
         this.user = user;
-        this.status = "결제완료";
+        this.status = OrderStatus.Complete;
         this.address = address;
     }
 
-    public void updateStatus(String status) {
+    public void updateStatus(OrderStatus status) {
         this.status = status;
     }
 

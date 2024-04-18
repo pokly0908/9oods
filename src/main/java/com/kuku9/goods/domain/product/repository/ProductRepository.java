@@ -19,4 +19,6 @@ public interface ProductRepository {
     List<Product> findBySellerId(Long sellerId);
 
     Page<Product> findBySellerId_DomainName(String domainName, Pageable pageable);
+
+    List<Product> findAllById(List<Long> productIds);
 }

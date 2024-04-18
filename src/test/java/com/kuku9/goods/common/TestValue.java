@@ -36,7 +36,8 @@ public class TestValue {
         TEST_REALNAME1,
         TEST_PASSWORD1,
         TEST_ROLE1,
-        TEST_TYPE1
+        TEST_TYPE1,
+        null
     );
     public final static Long TEST_USER_ID2 = 2L;
     public final static String TEST_USERNAME2 = "이메일2@이메일2.com";
@@ -50,7 +51,8 @@ public class TestValue {
         TEST_REALNAME2,
         TEST_PASSWORD2,
         TEST_ROLE2,
-        TEST_TYPE2
+        TEST_TYPE2,
+        null
     );
     public final static Long TEST_SELLER_ID1 = 1L;
     public final static String TEST_SELLER_BRANDNAME1 = "brand1";

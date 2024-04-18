@@ -28,6 +28,7 @@ public class RedisCacheConfig {
             .cacheDefaults(defaultCacheConfig())
             .build();
     }
+
     /**
      * Key 직렬화 설정
      */

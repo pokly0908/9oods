@@ -29,8 +29,9 @@ public class DistributedLockAspect {
 		Method method = signature.getMethod();
 		DistributedLock distributedLock = method.getAnnotation(DistributedLock.class);
 
-		String key = REDISSON_KEY_PREFIX + CustomSpringELParser.getDynamicValue(
-			signature.getParameterNames(), joinPoint.getArgs(), distributedLock.key());
+		String key =
+			REDISSON_KEY_PREFIX + distributedLock.lockName() + CustomSpringELParser.getDynamicValue(
+				signature.getParameterNames(), joinPoint.getArgs(), distributedLock.key());
 		RLock rLock = redissonClient.getLock(key);  // (1)
 
 		try {
@@ -39,7 +40,7 @@ public class DistributedLockAspect {
 			if (!available) {
 				throw new IllegalArgumentException("Unable to acquire lock: " + key);
 			}
-			log.info("Lock acquired successfully");
+			log.info("Lock success");
 			return transactionAspect.proceed(joinPoint);  // (3)
 		} catch (InterruptedException e) {
 			throw new InterruptedException();

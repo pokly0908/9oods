@@ -18,7 +18,8 @@ public class ProductController {
 
     // 낱개조회
     @GetMapping("/sellers/{domainName}/products/{productId}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId, @PathVariable String domainName) {
+    public ResponseEntity<ProductResponse> getProduct(
+        @PathVariable Long productId, @PathVariable String domainName) {
         return ResponseEntity.ok().body(productService.getProduct(productId, domainName));
     }
 

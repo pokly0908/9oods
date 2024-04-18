@@ -1,5 +1,6 @@
 package com.kuku9.goods.domain.seller.service;
 
+import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
 import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
@@ -47,7 +48,7 @@ public interface SellerService {
 
     /**
      * @param user      로그인 유저
-     * @param pageable 조회 시 부하를 감소하기 위한 페이지
+     * @param pageable  조회 시 부하를 감소하기 위한 페이지
      * @param startDate 조회할 시작 날짜
      * @param endDate   조회할 마지막 날짜
      * @return 판매된 상푸 정보
@@ -120,5 +121,10 @@ public interface SellerService {
      * @return true, false
      */
     Boolean checkPhoneNumberExist(String phoneNumber);
+
+    List<ProductSearchResponse> searchProductName(String keyword);
+
+    List<ProductSearchResponse> searchProductIntroduce(String keyowrd);
+
 
 }

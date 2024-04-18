@@ -1,5 +1,6 @@
 package com.kuku9.goods.domain.seller.controller;
 
+import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
 import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
@@ -120,6 +121,20 @@ public class SellerController {
             userDetails.getUser(), startDate, endDate);
 
         return ResponseEntity.ok(responses);
+    }
+
+    // 상품 이름 검색
+    @GetMapping("/product-name")
+    public List<ProductSearchResponse> searchProductName(
+        @RequestParam String keyword) {
+        return sellerService.searchProductName(keyword);
+    }
+
+    // 상품 설명 검색
+    @GetMapping("introduce")
+    public List<ProductSearchResponse> searchProductIntroduce(
+        @RequestParam String keyowrd) {
+        return sellerService.searchProductIntroduce(keyowrd);
     }
 
 }

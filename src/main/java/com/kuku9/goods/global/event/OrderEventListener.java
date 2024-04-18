@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OrderEventListener {
 
-	private final CouponService couponService;
+    private final CouponService couponService;
 
-	@Async
-	@EventListener
-	public void useCoupon(OrderEvent orderEvent) throws InterruptedException {
-		Thread.sleep(1000);
-		couponService.useCoupon(orderEvent.getIssuedCouponId());
-	}
+    @Async
+    @EventListener
+    public void useCoupon(OrderEvent orderEvent) throws InterruptedException {
+        Thread.sleep(1000);
+        couponService.useCoupon(orderEvent.getIssuedCouponId());
+    }
 
 }

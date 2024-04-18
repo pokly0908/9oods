@@ -9,7 +9,6 @@ import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.coupon.repository.CouponQuery;
 import com.kuku9.goods.domain.coupon.repository.CouponRepository;
 import com.kuku9.goods.domain.event.repository.EventQuery;
-import com.kuku9.goods.domain.issued_coupon.entity.IssuedCoupon;
 import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponQuery;
 import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponRepository;
 import com.kuku9.goods.domain.user.entity.User;
@@ -19,13 +18,8 @@ import com.kuku9.goods.global.exception.InvalidCouponException;
 import com.kuku9.goods.global.exception.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,11 +33,8 @@ public class CouponServiceImpl implements CouponService {
 	private final CouponRepository couponRepository;
 	private final EventQuery eventQuery;
 	private final IssuedCouponRepository issuedCouponRepository;
-	private final RedissonClient redissonClient;
 	private final ApplicationEventPublisher publisher;
 	private final CouponQuery couponQuery;
-	private static final String LOCK_KEY = "couponLock";
-	private static final Logger logger = LoggerFactory.getLogger(CouponServiceImpl.class);
 
 	@Transactional
 	public Long createCoupon(CouponRequest request) {
@@ -68,7 +59,11 @@ public class CouponServiceImpl implements CouponService {
 			.orElseThrow(() -> new NotFoundException(NOT_FOUND));
 	}
 
-	@DistributedLock(key = "#dscouponLock", waitTime = 10, leaseTime = 60)
+	@DistributedLock(
+		lockName = "dsCouponLock",
+		key = "#couponId",
+		waitTime = 40,
+		leaseTime = 60)
 	public void issueCouponFromEvent(Long couponId, User user,
 		LocalDateTime now) {
 		boolean isDuplicatedIssuance = issuedCouponRepository.existsByCouponIdAndUserId(
@@ -93,7 +88,11 @@ public class CouponServiceImpl implements CouponService {
 		log.info("쿠폰 재고: {}", coupon.getQuantity());
 	}
 
-	@DistributedLock(key = "#sucouponLock", waitTime = 10, leaseTime = 60)
+	@DistributedLock(
+		lockName = "lock",
+		key = "#suCoupon",
+		waitTime = 40,
+		leaseTime = 60)
 	public void issueCoupon(User user) {
 		List<Coupon> suCouponIds = couponQuery.findByCategory("su");
 		for (Coupon coupon : suCouponIds) {

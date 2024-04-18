@@ -11,12 +11,12 @@ public class EventProductResponse {
 	String productName;
 	String productDescription;
 	int productPrice;
-	String brandName;
+	String domainName;
 
 	public EventProductResponse(EventProduct eventProduct) {
 		this.productName = eventProduct.getProduct().getName();
 		this.productDescription = eventProduct.getProduct().getDescription();
 		this.productPrice = eventProduct.getProduct().getPrice();
-		this.brandName = eventProduct.getProduct().getSeller().getBrandName();
+		this.domainName = eventProduct.getProduct().getSeller().getDomainName();
 	}
 }

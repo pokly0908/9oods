@@ -2,11 +2,15 @@ package com.kuku9.goods.domain.user.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Value;
 
+@Builder
 @Getter
 @Value
+@AllArgsConstructor
 public class UserSignupRequest {
 
     @Pattern(regexp = "[가-힣]+")

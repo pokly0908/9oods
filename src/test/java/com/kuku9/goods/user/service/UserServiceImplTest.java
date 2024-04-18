@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import com.kuku9.goods.domain.search.document.SellerDocument;
+import com.kuku9.goods.domain.search.repository.SellerSearchRepository;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.service.SellerServiceImpl;
 import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
@@ -43,6 +45,8 @@ public class UserServiceImplTest {
 
     @Mock
     private SellerServiceImpl sellerService;
+    @Mock
+    private SellerSearchRepository sellerSearchRepository;
 
     @Test
     @DisplayName("회원가입 - 성공적인 회원가입")
@@ -154,6 +158,11 @@ public class UserServiceImplTest {
             "encodedOriginPassword",
             UserRoleEnum.USER
         );
+        SellerDocument sellerDocument = new SellerDocument(
+            user.getId(),
+            request.getBrandName(),
+            request.getIntroduce()
+        );
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(sellerService.checkSellerExistsByUserId(user.getId())).thenReturn(false);
         when(sellerService.checkBrandNameExist(request.getBrandName())).thenReturn(false);
@@ -162,6 +171,7 @@ public class UserServiceImplTest {
         when(sellerService.checkPhoneNumberExist(request.getPhoneNumber())).thenReturn(false);
         Seller savedSeller = new Seller(request, user);
         when(sellerService.save(any(Seller.class))).thenReturn(savedSeller);
+        when(sellerSearchRepository.save(any())).thenReturn(sellerDocument);
 
         // When
         Seller registeredSeller = userService.registerSeller(request, user);

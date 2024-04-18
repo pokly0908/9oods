@@ -2,11 +2,13 @@ package com.kuku9.goods.domain.user.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
 
 @Getter
 @Value
+@AllArgsConstructor
 public class ModifyPasswordRequest {
 
     @NotNull(message = "현재비밀번호를 입력해주세요.")

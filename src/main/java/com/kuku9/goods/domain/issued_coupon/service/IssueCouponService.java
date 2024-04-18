@@ -5,13 +5,13 @@ import com.kuku9.goods.domain.user.entity.User;
 
 public interface IssueCouponService {
 
-	/**
-	 * 쿠폰 발급
-	 *
-	 * @param coupon 쿠폰
-	 * @param user   유저
-	 */
+    /**
+     * 쿠폰 발급
+     *
+     * @param coupon 쿠폰
+     * @param user   유저
+     */
 
-	void issueCoupon(Coupon coupon, User user);
+    void issueCoupon(Coupon coupon, User user);
 
 }

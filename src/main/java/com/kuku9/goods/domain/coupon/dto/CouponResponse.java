@@ -2,7 +2,6 @@ package com.kuku9.goods.domain.coupon.dto;
 
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import java.time.LocalDate;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
 

@@ -1,9 +1,7 @@
 package com.kuku9.goods.domain.event_product.dto;
 
 import com.kuku9.goods.domain.event_product.entity.EventProduct;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 
 @Getter

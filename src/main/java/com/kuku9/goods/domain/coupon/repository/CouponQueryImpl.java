@@ -9,15 +9,15 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class CouponQueryImpl implements CouponQuery{
+public class CouponQueryImpl implements CouponQuery {
 
-	private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
 
-	public List<Coupon> findByCategory(String su) {
-		QCoupon qCoupon = QCoupon.coupon;
+    public List<Coupon> findByCategory(String su) {
+        QCoupon qCoupon = QCoupon.coupon;
 
-		return jpaQueryFactory.selectFrom(qCoupon)
-			.where(qCoupon.category.eq(su))
-			.fetch();
-	}
+        return jpaQueryFactory.selectFrom(qCoupon)
+            .where(qCoupon.category.eq(su))
+            .fetch();
+    }
 }

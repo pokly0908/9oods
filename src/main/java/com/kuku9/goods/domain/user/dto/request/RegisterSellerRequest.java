@@ -4,11 +4,15 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Value;
 
+@Builder
 @Getter
 @Value
+@AllArgsConstructor
 public class RegisterSellerRequest {
 
     @NotNull(message = "브랜드 명칭을 꼭 입력해주세요.")

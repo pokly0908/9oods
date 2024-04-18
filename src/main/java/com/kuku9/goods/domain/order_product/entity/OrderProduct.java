@@ -5,9 +5,11 @@ import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Getter
 @Entity
 @NoArgsConstructor

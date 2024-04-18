@@ -33,25 +33,25 @@ import org.springframework.test.util.ReflectionTestUtils;
 @ExtendWith(MockitoExtension.class)
 public class EventServiceImplTest extends TestValue {
 
-	@Mock
-	private EventRepository eventRepository;
-	@Mock
-	private EventProductRepository eventProductRepository;
-	@Mock
-	private ProductRepository productRepository;
-	@Mock
-	private CouponRepository couponRepository;
-	@Mock
-	private EventQuery eventQuery;
-	@InjectMocks
-	private EventServiceImpl eventService;
+    @Mock
+    private EventRepository eventRepository;
+    @Mock
+    private EventProductRepository eventProductRepository;
+    @Mock
+    private ProductRepository productRepository;
+    @Mock
+    private CouponRepository couponRepository;
+    @Mock
+    private EventQuery eventQuery;
+    @InjectMocks
+    private EventServiceImpl eventService;
 
 
-	private <T> void setEventUpdateDTO(T dto, String title, String content, LocalDateTime openAt) {
-		ReflectionTestUtils.setField(dto, "title", title);
-		ReflectionTestUtils.setField(dto, "content", content);
-		ReflectionTestUtils.setField(dto, "openAt", openAt);
-	}
+    private <T> void setEventUpdateDTO(T dto, String title, String content, LocalDateTime openAt) {
+        ReflectionTestUtils.setField(dto, "title", title);
+        ReflectionTestUtils.setField(dto, "content", content);
+        ReflectionTestUtils.setField(dto, "openAt", openAt);
+    }
 
 	@Test
 	@DisplayName("이벤트 등록 성공")
@@ -70,12 +70,12 @@ public class EventServiceImplTest extends TestValue {
 		given(productRepository.findById(any())).willReturn(Optional.of(TEST_PRODUCT));
 		given(couponRepository.findById(any())).willReturn(Optional.of(coupon));
 
-		// when
-		Long eventId = eventService.createEvent(eventRequest, user);
+        // when
+        Long eventId = eventService.createEvent(eventRequest, user);
 
-		// then
-		assertEquals(TEST_EVENT_ID, eventId);
-	}
+        // then
+        assertEquals(TEST_EVENT_ID, eventId);
+    }
 
 	@Test
 	@DisplayName("이벤트 등록 실패")
@@ -93,11 +93,11 @@ public class EventServiceImplTest extends TestValue {
 		given(eventRepository.save(any())).willReturn(event);
 		given(productRepository.findById(any())).willReturn(Optional.of(TEST_PRODUCT));
 
-		// when-then
-		assertThrows(NotFoundException.class, () -> {
-			eventService.createEvent(eventRequest, user);
-		});
-	}
+        // when-then
+        assertThrows(NotFoundException.class, () -> {
+            eventService.createEvent(eventRequest, user);
+        });
+    }
 
 	@Test
 	@DisplayName("이벤트 수정 성공")
@@ -110,13 +110,13 @@ public class EventServiceImplTest extends TestValue {
 
 		given(eventRepository.findById(any())).willReturn(Optional.of(event));
 
-		// when
-		eventService.updateEvent(event.getId(), eventUpdateRequest, user);
+        // when
+        eventService.updateEvent(event.getId(), eventUpdateRequest, user);
 
-		// then
-		assertEquals("수정", event.getTitle());
-		assertEquals("수정", event.getContent());
-	}
+        // then
+        assertEquals("수정", event.getTitle());
+        assertEquals("수정", event.getContent());
+    }
 
 	@Test
 	@DisplayName("이벤트 수정 실패")
@@ -181,9 +181,9 @@ public class EventServiceImplTest extends TestValue {
 		User user = TEST_USER1;
 		given(eventProductRepository.findById(any())).willReturn(Optional.empty());
 
-		// when-then
-		assertThrows(IllegalArgumentException.class, () -> {
-			eventService.deleteEventProduct(eventProduct.getId(), user);
-		});
-	}
+        // when-then
+        assertThrows(IllegalArgumentException.class, () -> {
+            eventService.deleteEventProduct(eventProduct.getId(), user);
+        });
+    }
 }

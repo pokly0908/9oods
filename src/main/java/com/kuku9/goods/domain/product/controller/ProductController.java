@@ -2,7 +2,6 @@ package com.kuku9.goods.domain.product.controller;
 
 import com.kuku9.goods.domain.product.dto.ProductResponse;
 import com.kuku9.goods.domain.product.service.ProductService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,7 +40,8 @@ public class ProductController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductResponse> productResponses = productService.getSellerProduct(domainName, pageable);
+        Page<ProductResponse> productResponses = productService.getSellerProduct(domainName,
+            pageable);
         return ResponseEntity.ok()
             .body(productResponses);
     }

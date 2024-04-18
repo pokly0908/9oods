@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SellerSearchRepository extends ElasticsearchRepository<SellerDocument, Long> {
 
-    List<SellerDocument> findAllByBrandName(String keyword);
-
-    List<SellerDocument> findAllByIntroduce(String keyword);
+//    List<SellerDocument> findAllByBrandName(String keyword);
+//
+//    List<SellerDocument> findAllByIntroduce(String keyword);
 
     List<SellerDocument> findAllByBrandNameOrIntroduce(String keyword);
 }

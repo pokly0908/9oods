@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
-import org.springframework.security.core.parameters.P;
 
 @Getter
 @Value

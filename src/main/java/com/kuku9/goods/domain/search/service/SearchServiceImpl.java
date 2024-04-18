@@ -16,17 +16,17 @@ public class SearchServiceImpl implements SearchService {
     private final ProductSearchRepository productSearchRepository;
     private final SellerSearchRepository sellerSearchRepository;
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<ProductDocument> searchProductName(String keyword) {
-        return productSearchRepository.findAllByProductName(keyword);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<ProductDocument> searchProductIntroduce(String keyword) {
-        return productSearchRepository.findAllByIntroduce(keyword);
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public List<ProductDocument> searchProductName(String keyword) {
+//        return productSearchRepository.findAllByProductName(keyword);
+//    }
+//
+//    @Override
+//    @Transactional(readOnly = true)
+//    public List<ProductDocument> searchProductIntroduce(String keyword) {
+//        return productSearchRepository.findAllByIntroduce(keyword);
+//    }
 
     @Override
     @Transactional(readOnly = true)
@@ -34,17 +34,17 @@ public class SearchServiceImpl implements SearchService {
         return productSearchRepository.findAllByProductNameOrIntroduce(keyword);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<SellerDocument> searchBrandName(String keyword) {
-        return sellerSearchRepository.findAllByBrandName(keyword);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<SellerDocument> searchBrandIntroduce(String keyword) {
-        return sellerSearchRepository.findAllByIntroduce(keyword);
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public List<SellerDocument> searchBrandName(String keyword) {
+//        return sellerSearchRepository.findAllByBrandName(keyword);
+//    }
+//
+//    @Override
+//    @Transactional(readOnly = true)
+//    public List<SellerDocument> searchBrandIntroduce(String keyword) {
+//        return sellerSearchRepository.findAllByIntroduce(keyword);
+//    }
 
     @Override
     @Transactional(readOnly = true)

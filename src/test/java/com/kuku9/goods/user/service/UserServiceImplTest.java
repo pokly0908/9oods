@@ -163,7 +163,7 @@ public class UserServiceImplTest {
             request.getBrandName(),
             request.getIntroduce()
         );
-            when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(sellerService.checkSellerExistsByUserId(user.getId())).thenReturn(false);
         when(sellerService.checkBrandNameExist(request.getBrandName())).thenReturn(false);
         when(sellerService.checkDomainNameExist(request.getDomainName())).thenReturn(false);

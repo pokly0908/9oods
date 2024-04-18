@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ExceptionStatus {
 
-    DUPLICATED_USERNAME(HttpStatus.BAD_REQUEST.value(), "해당 이메일로 가입한 유저가 존재합니다."),
+    DUPLICATED_EMAIL(HttpStatus.BAD_REQUEST.value(), "해당 이메일로 가입한 유저가 존재합니다."),
     NO_SUCH_USER(HttpStatus.BAD_REQUEST.value(), "해당하는 유저 이름의 유저를 찾을 수 없습니다."),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST.value(), "비밀번호가 일치 하지 않습니다."),
     SAME_PASSWORD_NOW_AND_NEW(HttpStatus.BAD_REQUEST.value(), "현재 비밀번호와 같은 비밀번호로 변경할 수 없습니다."),

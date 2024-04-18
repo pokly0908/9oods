@@ -23,10 +23,10 @@ public interface UserService {
     /**
      * 유저이름에 해당하는 유저 가져오기
      *
-     * @param username 유저아이디, 유저이메일
+     * @param email 유저아이디, 유저이메일
      * @return User 유저
      */
-    User findByUsername(String username);
+    User findByEmail(String email);
 
     /**
      * 비밀번호 변경

@@ -35,6 +35,7 @@ public class User extends BaseEntity {
     private String realName;
 
 
+    @Column(nullable = false)
     @Comment("비밀번호")
     private String password;
 
@@ -49,6 +50,9 @@ public class User extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private UserRegisterTypeEnum registerType = UserRegisterTypeEnum.LOCAL;
 
+    @Comment(" 카카오 아이디")
+    private Long kakaoId;
+
 
     public User(
         UserSignupRequest request,
@@ -60,6 +64,14 @@ public class User extends BaseEntity {
 
     }
 
+    public User(String email, String encodedPassword, String nickname, Long kakaoId) {
+        this.email =email;
+        this.password = encodedPassword;
+        this.realName = nickname;
+        this.registerType = UserRegisterTypeEnum.KAKAO;
+        this.kakaoId = kakaoId;
+    }
+
     public static User from(
         UserSignupRequest request,
         String encodedPassword
@@ -68,11 +80,27 @@ public class User extends BaseEntity {
         return new User(request, encodedPassword);
     }
 
+    public static User fromKakao(
+        String email,
+        String encodedPassword,
+        String nickname,
+        Long kakaoId
+    ) {
+
+        return new User(email, encodedPassword, nickname, kakaoId);
+    }
+
     public void modifyPassword(String encodedNewPassword) {
         this.password = encodedNewPassword;
     }
 
     public void updateRole(UserRoleEnum userRoleEnum) {
         this.role = userRoleEnum;
+    }
+
+    public User kakaoIdUpdate(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        this.registerType = UserRegisterTypeEnum.KAKAO;
+        return this;
     }
 }

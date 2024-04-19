@@ -8,6 +8,7 @@ import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.domain.seller.dto.response.SellerCheckResponse;
 import com.kuku9.goods.domain.user.entity.User;
 import java.time.LocalDate;
 import java.util.List;
@@ -126,5 +127,12 @@ public interface SellerService {
 
     List<ProductSearchResponse> searchProductIntroduce(String keyowrd);
 
+    /**
+     * 셀러인지 체크 - sellerId 반환
+     *
+     * @param user 유저
+     * @return sellerId
+     */
+    SellerCheckResponse checkSeller(User user);
 
 }

@@ -8,6 +8,7 @@ import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.QSeller;
 import com.kuku9.goods.domain.seller.entity.Seller;
+import com.kuku9.goods.domain.user.entity.QUser;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
@@ -131,6 +132,16 @@ public class SellerQueryImpl implements SellerQuery {
             .from(qProduct)
             .where(qProduct.name.like("%" + keyowrd + "%"))
             .fetch();
+    }
+
+    @Override
+    public Long checkSeller(Long userId) {
+        QSeller qSeller = QSeller.seller;
+        return jpaQueryFactory
+            .select(qSeller.id)
+            .from(qSeller)
+            .where(qSeller.user.id.eq(userId))
+            .fetchOne();
     }
 
 }

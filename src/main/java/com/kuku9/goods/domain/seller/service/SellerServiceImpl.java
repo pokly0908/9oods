@@ -17,6 +17,7 @@ import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerQuery;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
+import com.kuku9.goods.domain.seller.dto.response.SellerCheckResponse;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.exception.InvalidProductEventException;
 import com.kuku9.goods.global.exception.InvalidSellerEventException;
@@ -173,6 +174,15 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public List<ProductSearchResponse> searchProductIntroduce(String keyowrd) {
         return sellerQuery.searchProductIntroduce(keyowrd);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SellerCheckResponse checkSeller(User user) {
+
+        Long sellerId = sellerQuery.checkSeller(user.getId());
+
+        return new SellerCheckResponse(sellerId);
     }
 
 }

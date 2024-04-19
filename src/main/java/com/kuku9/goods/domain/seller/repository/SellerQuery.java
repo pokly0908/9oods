@@ -44,4 +44,6 @@ public interface SellerQuery {
 
     List<ProductSearchResponse> searchProductIntroduce(String keyowrd);
 
+    Long checkSeller(Long userId);
+
 }

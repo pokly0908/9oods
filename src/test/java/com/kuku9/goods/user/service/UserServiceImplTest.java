@@ -12,6 +12,7 @@ import com.kuku9.goods.domain.user.dto.request.ModifyPasswordRequest;
 import com.kuku9.goods.domain.user.dto.request.RegisterSellerRequest;
 import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
 import com.kuku9.goods.domain.user.entity.User;
+import com.kuku9.goods.domain.user.entity.UserRegisterTypeEnum;
 import com.kuku9.goods.domain.user.entity.UserRoleEnum;
 import com.kuku9.goods.domain.user.repository.UserRepository;
 import com.kuku9.goods.domain.user.service.UserServiceImpl;
@@ -80,7 +81,7 @@ public class UserServiceImplTest {
             "cheolsu44@naver.com",
             originalPassword
         );
-        when(userRepository.existsByUsername(request.getUsername())).thenReturn(true);
+        when(userRepository.existsByEmail(request.getEmail())).thenReturn(true);
 
         // When/Then
         assertThrows(DuplicatedException.class, () -> userService.signup(request));
@@ -99,13 +100,14 @@ public class UserServiceImplTest {
             "cheolsu44@naver.com",
             "김철수",
             encodedOriginPassword,
-            UserRoleEnum.USER
+            UserRoleEnum.USER,
+            UserRegisterTypeEnum.LOCAL
         );
         // userRepository.save(user);
         ModifyPasswordRequest request = new ModifyPasswordRequest(
             originPassword,
             newPassword);
-        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(originPassword, user.getPassword())).thenReturn(true);
 
         //when
@@ -127,12 +129,13 @@ public class UserServiceImplTest {
             "cheolsu44@naver.com",
             "김철수",
             encodedOriginPassword,
-            UserRoleEnum.USER
+            UserRoleEnum.USER,
+            UserRegisterTypeEnum.LOCAL
         );
         ModifyPasswordRequest request = new ModifyPasswordRequest(
             "aAa12345@!!", // 잘못된 이전 비밀번호
             newPassword);
-        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(request.getPrePassword(), user.getPassword())).thenReturn(
             false); // 이전 비밀번호 검증 실패
 
@@ -156,7 +159,8 @@ public class UserServiceImplTest {
             "cheolsu441@naver.com",
             "김만식",
             "encodedOriginPassword",
-            UserRoleEnum.USER
+            UserRoleEnum.USER,
+            UserRegisterTypeEnum.LOCAL
         );
         SellerDocument sellerDocument = new SellerDocument(
             user.getId(),

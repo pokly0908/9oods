@@ -20,6 +20,7 @@ import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.entity.User;
+import com.kuku9.goods.domain.user.entity.UserRegisterTypeEnum;
 import com.kuku9.goods.domain.user.entity.UserRoleEnum;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,24 +36,29 @@ public class TestValue {
     public final static String TEST_REALNAME1 = "이름";
     public final static String TEST_PASSWORD1 = "!password1";
     public final static UserRoleEnum TEST_ROLE1 = UserRoleEnum.SELLER;
+
+    public final static UserRegisterTypeEnum TEST_TYPE1 = UserRegisterTypeEnum.LOCAL;
     public final static User TEST_USER1 = new User(
         TEST_USER_ID1,
         TEST_USERNAME1,
         TEST_REALNAME1,
         TEST_PASSWORD1,
-        TEST_ROLE1
+        TEST_ROLE1,
+        TEST_TYPE1
     );
     public final static Long TEST_USER_ID2 = 2L;
     public final static String TEST_USERNAME2 = "이메일2@이메일2.com";
     public final static String TEST_REALNAME2 = "이름이름";
     public final static String TEST_PASSWORD2 = "!password2";
     public final static UserRoleEnum TEST_ROLE2 = UserRoleEnum.USER;
+    public final static UserRegisterTypeEnum TEST_TYPE2 = UserRegisterTypeEnum.LOCAL;
     public final static User TEST_USER2 = new User(
         TEST_USER_ID2,
         TEST_USERNAME2,
         TEST_REALNAME2,
         TEST_PASSWORD2,
-        TEST_ROLE2
+        TEST_ROLE2,
+        TEST_TYPE2
     );
     public final static Long TEST_SELLER_ID1 = 1L;
     public final static String TEST_SELLER_BRANDNAME1 = "brand1";

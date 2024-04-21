@@ -28,13 +28,13 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     @Comment("사용자가 로그인할때 쓸 id명, 이메일")
     @Email
-    private String username;
+    private String email;
 
     @Column(nullable = false)
     @Comment("사용자 실명")
     private String realName;
 
-    @Column(nullable = false)
+
     @Comment("비밀번호")
     private String password;
 
@@ -44,12 +44,17 @@ public class User extends BaseEntity {
     @Comment("유저 권한")
     private UserRoleEnum role = UserRoleEnum.USER;
 
+    @Column(nullable = false)
+    @Comment("유저 생성 타입")
+    @Enumerated(value = EnumType.STRING)
+    private UserRegisterTypeEnum registerType = UserRegisterTypeEnum.LOCAL;
+
 
     public User(
         UserSignupRequest request,
         String encodedPassword
     ) {
-        this.username = request.getUsername();
+        this.email = request.getEmail();
         this.realName = request.getRealName();
         this.password = encodedPassword;
 

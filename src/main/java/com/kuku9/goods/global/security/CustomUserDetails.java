@@ -13,15 +13,9 @@ public class CustomUserDetails implements UserDetails {
 
     private final User user;
 
-    private final String username;
-
-    private final String password;
-
-    public CustomUserDetails(User user, String username, String password) {
+    public CustomUserDetails(User user) {
         this.user = user;
 
-        this.username = username;
-        this.password = password;
     }
 
     @Override
@@ -43,12 +37,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return user.getEmail();
     }
 
     @Override

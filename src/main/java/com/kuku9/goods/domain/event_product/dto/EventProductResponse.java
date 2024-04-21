@@ -2,15 +2,21 @@ package com.kuku9.goods.domain.event_product.dto;
 
 import com.kuku9.goods.domain.event_product.entity.EventProduct;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
 @Getter
-@NoArgsConstructor
+@Value
 public class EventProductResponse {
 
-    private Long productId;
+    String productName;
+    String productDescription;
+    int productPrice;
+    String domainName;
 
     public EventProductResponse(EventProduct eventProduct) {
-        this.productId = eventProduct.getProduct().getId();
+        this.productName = eventProduct.getProduct().getName();
+        this.productDescription = eventProduct.getProduct().getDescription();
+        this.productPrice = eventProduct.getProduct().getPrice();
+        this.domainName = eventProduct.getProduct().getSeller().getDomainName();
     }
 }

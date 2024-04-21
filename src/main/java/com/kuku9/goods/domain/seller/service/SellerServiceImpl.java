@@ -11,6 +11,7 @@ import com.kuku9.goods.domain.search.repository.ProductSearchRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SellerCheckResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -173,6 +174,15 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public List<ProductSearchResponse> searchProductIntroduce(String keyowrd) {
         return sellerQuery.searchProductIntroduce(keyowrd);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SellerCheckResponse checkSeller(User user) {
+
+        Long sellerId = sellerQuery.checkSeller(user.getId());
+
+        return new SellerCheckResponse(sellerId);
     }
 
 }

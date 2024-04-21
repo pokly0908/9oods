@@ -4,6 +4,7 @@ import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
 import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SellerCheckResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -135,6 +136,16 @@ public class SellerController {
     public List<ProductSearchResponse> searchProductIntroduce(
         @RequestParam String keyowrd) {
         return sellerService.searchProductIntroduce(keyowrd);
+    }
+
+    @GetMapping("/seller-check")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public ResponseEntity<SellerCheckResponse> checkSeller(
+        @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        SellerCheckResponse response = sellerService.checkSeller(userDetails.getUser());
+
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void signup(UserSignupRequest request) {
-        checkIfUsernameAlreadyExists(request.getUsername());
+        checkIfEmailAlreadyExists(request.getEmail());
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
         User user = User.from(request, encodedPassword);
@@ -49,8 +49,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(
             () -> new NoSuchElementException(String.valueOf(NO_SUCH_USER))
         );
     }
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void modifyPassword(ModifyPasswordRequest request, User user) {
-        User findUser = findByUsername(user.getUsername());
+        User findUser = findByEmail(user.getEmail());
 
         if (!passwordEncoder.matches(request.getPrePassword(), findUser.getPassword())) {
             throw new InvalidPasswordException(INVALID_PASSWORD);
@@ -126,9 +126,9 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    private void checkIfUsernameAlreadyExists(String username) {
-        if (userRepository.existsByUsername(username)) {
-            throw new DuplicatedException(DUPLICATED_USERNAME);
+    private void checkIfEmailAlreadyExists(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new DuplicatedException(DUPLICATED_EMAIL);
         }
     }
 

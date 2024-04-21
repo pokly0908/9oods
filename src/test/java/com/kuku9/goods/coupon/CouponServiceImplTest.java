@@ -17,7 +17,6 @@ import com.kuku9.goods.domain.issued_coupon.repository.IssuedCouponRepository;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.exception.InvalidCouponException;
 import com.kuku9.goods.global.exception.NotFoundException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +29,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 public class CouponServiceImplTest extends TestValue {
@@ -52,21 +50,15 @@ public class CouponServiceImplTest extends TestValue {
     @InjectMocks
     private CouponServiceImpl couponService;
 
-    private <T> void setDto(T dto, LocalDate expirationDate, int quantity, String category) {
-        ReflectionTestUtils.setField(dto, "expirationDate", expirationDate);
-        ReflectionTestUtils.setField(dto, "quantity", quantity);
-        ReflectionTestUtils.setField(dto, "category", category);
-    }
+	@Test
+	@DisplayName("쿠폰 등록 성공")
+	void 쿠폰_등록_성공() {
+		// given
+		CouponRequest couponRequest = new CouponRequest(TEST_COUPON_EXPIRATIONDATE, TEST_COUPON_QUANTITY,
+			TEST_COUPON_CATEGORY);
 
-    @Test
-    @DisplayName("쿠폰 등록 성공")
-    void 쿠폰_등록_성공() {
-        // given
-        CouponRequest couponRequest = new CouponRequest();
-        setDto(couponRequest, TEST_COUPON_EXPIRATIONDATE, TEST_COUPON_QUANTITY,
-            TEST_COUPON_CATEGORY);
-        Coupon coupon = TEST_COUPON;
-        given(couponRepository.save(any())).willReturn(coupon);
+		Coupon coupon = TEST_COUPON;
+		given(couponRepository.save(any())).willReturn(coupon);
 
         //when
         Long couponId = couponService.createCoupon(couponRequest);

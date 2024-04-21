@@ -6,15 +6,17 @@ import com.kuku9.goods.domain.product.dto.ProductResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
+import lombok.Value;
 
 @Getter
+@Value
 public class OrderResponse {
 
-    private final Long orderId;
-    private final OrderStatus orderStatus;
-    private final LocalDateTime orderDate;
-    private final String address;
-    private final List<ProductResponse> products;
+    Long orderId;
+    OrderStatus orderStatus;
+    LocalDateTime orderDate;
+    String address;
+    List<ProductResponse> products;
 
     public OrderResponse(Order order, List<ProductResponse> products) {
         this.orderId = order.getId();

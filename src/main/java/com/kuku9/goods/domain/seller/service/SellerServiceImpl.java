@@ -48,12 +48,12 @@ public class SellerServiceImpl implements SellerService {
 
         Product product = new Product(requestDto, seller);
 
+        Product saveProduct = productRepository.save(product);
+
         ProductDocument productDocument = new ProductDocument(
-            seller.getId(),
+            seller.getId(), saveProduct.getId(),
             requestDto.getProductName(), requestDto.getProductDescription(),
             requestDto.getProductPrice(), requestDto.getProductQuantity());
-
-        Product saveProduct = productRepository.save(product);
 
         productSearchRepository.save(productDocument);
 
@@ -90,11 +90,49 @@ public class SellerServiceImpl implements SellerService {
     @CacheEvict(value = "productCache", key = "#productId")
     public Long updateProduct(
         Long productId, ProductUpdateRequest requestDto, User user) {
+        String productName, productDescription;
+        int price, quantity;
+
         Seller seller = findSeller(user);
 
         Product product = findProduct(productId, seller);
 
-        product.updateProduct(requestDto);
+        productSearchRepository.deleteByProductId(product.getId());
+
+        if (requestDto.getName().isEmpty()) {
+            productName = product.getName();
+        } else {
+            productName = requestDto.getName();
+        }
+        if (requestDto.getDescription().isEmpty()) {
+            productDescription = product.getDescription();
+        } else {
+            productDescription = requestDto.getDescription();
+        }
+        if (requestDto.getPrice() <= 0) {
+            price = product.getPrice();
+        } else {
+            price = requestDto.getPrice();
+        }
+        if (requestDto.getQuantity() <= 0) {
+            quantity = product.getQuantity();
+        } else {
+            quantity = requestDto.getQuantity();
+        }
+
+        product.updateProduct(
+            productName, productDescription,
+            price, quantity
+        );
+
+
+        ProductDocument productDocument = new ProductDocument(
+            seller.getId(), productId,
+            productName, productDescription,
+            price, quantity
+        );
+
+        productSearchRepository.save(productDocument);
 
         return product.getSeller().getId();
     }
@@ -183,6 +221,20 @@ public class SellerServiceImpl implements SellerService {
         Long sellerId = sellerQuery.checkSeller(user.getId());
 
         return new SellerCheckResponse(sellerId);
+    }
+
+    @Override
+    @Transactional
+    public Long deleteProduct(Long productId, User user) {
+        Seller seller = findSeller(user);
+
+        Product product = findProduct(productId, seller);
+
+        productRepository.deleteById(product.getId());
+
+        productSearchRepository.deleteByProductId(product.getId());
+
+        return product.getSeller().getId();
     }
 
 }

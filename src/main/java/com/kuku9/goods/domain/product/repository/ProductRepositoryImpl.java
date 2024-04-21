@@ -58,4 +58,9 @@ public class ProductRepositoryImpl implements ProductRepository {
             .where(product.id.in(productIds))
             .fetch();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        productJpaRepository.deleteById(id);
+    }
 }

@@ -60,16 +60,13 @@ public class Product extends BaseEntity {
         }
     }
 
-    public void updateProduct(ProductUpdateRequest requestDto) {
-        if (!requestDto.getName().isEmpty()) {
-            this.name = requestDto.getName();
-        }
-        if (!requestDto.getDescription().isEmpty()) {
-            this.description = requestDto.getDescription();
-        }
-        if (requestDto.getPrice() > 0) {
-            this.price = requestDto.getPrice();
-        }
+    public void updateProduct(
+        String productName, String productDescrition,
+        int price, int quantity) {
+        this.name = productName;
+        this.description = productDescrition;
+        this.price = price;
+        this.quantity = quantity;
     }
 
     public void updateQuantity(int quantity) {

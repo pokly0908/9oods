@@ -148,4 +148,15 @@ public class SellerController {
         return ResponseEntity.ok(response);
     }
 
+    // 상품 삭제
+    @DeleteMapping("/products")
+    public ResponseEntity<Void> deleteProduct(
+        @PathVariable Long productId,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        Long sellerId = sellerService.deleteProduct(productId, userDetails.getUser());
+
+        return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
+    }
+
 }

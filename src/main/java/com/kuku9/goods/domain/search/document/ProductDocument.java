@@ -18,18 +18,20 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 public class ProductDocument {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    private String id;
     private Long sellerId;
+    private Long productId;
     private String productName;
     private String introduce;
     private int price;
     private int quantity;
 
     public ProductDocument(
-        Long id,
+        Long id, Long productId,
         String productName, String productDescription,
         int productPrice, int productQuantity) {
         this.sellerId = id;
+        this.productId = productId;
         this.productName = productName;
         this.introduce = productDescription;
         this.price = productPrice;

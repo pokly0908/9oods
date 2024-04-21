@@ -13,4 +13,5 @@ public class ProductUpdateRequest {
     String name;
     String description;
     int price;
+    int quantity;
 }

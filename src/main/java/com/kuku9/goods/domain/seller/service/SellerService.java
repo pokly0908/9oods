@@ -135,4 +135,12 @@ public interface SellerService {
      */
     SellerCheckResponse checkSeller(User user);
 
+    /**
+     *
+     * @param productId 조회할 상품 고유 식별자
+     * @param user 로그인 유저
+     * @return 셀러 ID
+     */
+    Long deleteProduct(Long productId, User user);
+
 }

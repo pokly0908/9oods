@@ -15,4 +15,6 @@ public interface ProductSearchRepository extends ElasticsearchRepository<Product
 
     List<ProductDocument> findAllByProductNameOrIntroduce(String keyword);
 
+    void deleteByProductId(Long productId);
+
 }

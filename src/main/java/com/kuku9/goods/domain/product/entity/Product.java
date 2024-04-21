@@ -67,9 +67,9 @@ public class Product extends BaseEntity {
         if (!requestDto.getDescription().isEmpty()) {
             this.description = requestDto.getDescription();
         }
-//        if (!requestDto.getPrice().isEmpty()) {
-//            this.price = requestDto.getPrice();
-//        }
+        if (requestDto.getPrice() > 0) {
+            this.price = requestDto.getPrice();
+        }
     }
 
     public void updateQuantity(int quantity) {

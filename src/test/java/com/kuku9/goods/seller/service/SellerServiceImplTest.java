@@ -155,7 +155,7 @@ public class SellerServiceImplTest extends TestValue {
     }
 
     @Nested
-    class ProductUpdate {
+    class ProductUpdateTest {
 
         @Test
         @DisplayName("상품 정보 수정 성공 - 셀러권한")
@@ -203,7 +203,7 @@ public class SellerServiceImplTest extends TestValue {
     }
 
     @Nested
-    class getSoldProduct {
+    class getSoldProductTest {
 
         @Test
         @DisplayName("판매된 상품 조회 성공 - 셀러권한")
@@ -254,7 +254,7 @@ public class SellerServiceImplTest extends TestValue {
     }
 
     @Nested
-    class getSoldProductSumPrice {
+    class getSoldProductSumPriceTest {
 
         @Test
         @DisplayName("판매된 상품 총 판매액 조회 성공 - 셀러권한")
@@ -292,7 +292,7 @@ public class SellerServiceImplTest extends TestValue {
     }
 
     @Nested
-    class getSoldProductQuantityTopTen {
+    class getSoldProductQuantityTopTenTest {
 
         @Test
         @DisplayName("가장 많이 판매된 상품 상위 10개 조회 성공 - 셀러권한")
@@ -336,6 +336,28 @@ public class SellerServiceImplTest extends TestValue {
                     startDate,
                     endDate);
             });
+        }
+    }
+
+    @Nested
+    class searchBrandTest {
+
+    }
+
+    @Nested
+    class saveSellerTest {
+
+        @Test
+        @DisplayName("셀러 등록 성공")
+        void saveSellerSuccess() {
+            // given
+            given(sellerRepository.save(any())).willReturn(seller);
+
+            // when
+            Seller saveSeller = sellerServiceImpl.save(seller);
+
+            // then
+            assertThat(saveSeller).isNotNull();
         }
     }
 }

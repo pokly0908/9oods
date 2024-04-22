@@ -1,7 +1,6 @@
 package com.kuku9.goods.domain.seller.controller;
 
 import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
-import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
 import com.kuku9.goods.domain.seller.dto.response.SellerCheckResponse;
@@ -10,6 +9,7 @@ import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.service.SellerService;
 import com.kuku9.goods.global.security.CustomUserDetails;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,19 +28,19 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/sellers")
 public class SellerController {
-    // todo :: 나중에 request 부분 @Valid 추가하기
 
     private final SellerService sellerService;
 
     // 상품 등록 기능
     @PostMapping("/products")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<String> createProduct(
-        @RequestBody ProductRegistRequest requestDto,
+    public ResponseEntity<Void> createProduct(
+        @RequestBody @Valid ProductRegistRequest requestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long sellerId = sellerService.createProduct(requestDto, userDetails.getUser());
+        String domainName = sellerService.createProduct(requestDto, userDetails.getUser());
 
-        return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
+        return ResponseEntity.created(
+            URI.create("/api/v1/seller/" + domainName + "/products")).build();
     }
 
     // 상품 판매 여부 기능
@@ -49,22 +49,10 @@ public class SellerController {
     public ResponseEntity<Void> updateProductStatus(
         @PathVariable Long productId,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long sellerId = sellerService.updateProductStatus(productId, userDetails.getUser());
+        String domainName = sellerService.updateProductStatus(productId, userDetails.getUser());
 
-        return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
-    }
-
-    // 상품 재고 수정 기능
-    @PatchMapping("/products/{productId}/quantity")
-    @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<Void> updateProductQuantity(
-        @PathVariable Long productId,
-        @RequestBody ProductQuantityRequest request,
-        @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long sellerId = sellerService.updateProductQuantity(
-            productId, request, userDetails.getUser());
-
-        return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
+        return ResponseEntity.created(
+            URI.create("/api/v1/seller/" + domainName + "/products")).build();
     }
 
     // 상품 정보 수정 기능
@@ -74,9 +62,25 @@ public class SellerController {
         @PathVariable Long productId,
         @RequestBody ProductUpdateRequest requestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long sellerId = sellerService.updateProduct(productId, requestDto, userDetails.getUser());
+        String domainName =
+            sellerService.updateProduct(productId, requestDto, userDetails.getUser());
 
-        return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
+        return ResponseEntity.created(
+            URI.create("/api/v1/seller/" + domainName + "/products")).build();
+    }
+
+
+    // 상품 삭제
+    @DeleteMapping("/products/{productId}")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public ResponseEntity<Void> deleteProduct(
+        @PathVariable Long productId,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        String domainName = sellerService.deleteProduct(productId, userDetails.getUser());
+
+        return ResponseEntity.created(
+            URI.create("/api/v1/seller/" + domainName + "/products")).build();
     }
 
     // 셀러의 판매된 상품 정보 원하는 날짜 선택 조회 기능
@@ -89,7 +93,8 @@ public class SellerController {
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Pageable pageable = PageRequest.of(
+            page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
 
         Page<SoldProductResponse> responseDto = sellerService.getSoldProduct(
             userDetails.getUser(), pageable, startDate, endDate);
@@ -132,7 +137,7 @@ public class SellerController {
     }
 
     // 상품 설명 검색
-    @GetMapping("introduce")
+    @GetMapping("/introduce")
     public List<ProductSearchResponse> searchProductIntroduce(
         @RequestParam String keyowrd) {
         return sellerService.searchProductIntroduce(keyowrd);
@@ -146,17 +151,6 @@ public class SellerController {
         SellerCheckResponse response = sellerService.checkSeller(userDetails.getUser());
 
         return ResponseEntity.ok(response);
-    }
-
-    // 상품 삭제
-    @DeleteMapping("/products")
-    public ResponseEntity<Void> deleteProduct(
-        @PathVariable Long productId,
-        @AuthenticationPrincipal CustomUserDetails userDetails) {
-
-        Long sellerId = sellerService.deleteProduct(productId, userDetails.getUser());
-
-        return ResponseEntity.created(URI.create("/api/v1/products/seller/" + sellerId)).build();
     }
 
 }

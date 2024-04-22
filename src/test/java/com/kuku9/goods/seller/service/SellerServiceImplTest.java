@@ -1,7 +1,6 @@
 package com.kuku9.goods.seller.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.ZONED_DATE_TIME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -15,7 +14,6 @@ import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.search.document.ProductDocument;
 import com.kuku9.goods.domain.search.repository.ProductSearchRepository;
-import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
@@ -60,7 +58,6 @@ public class SellerServiceImplTest extends TestValue {
     private Product product;
     private ProductDocument productDocument;
     private ProductRegistRequest productRegistRequest;
-    private ProductQuantityRequest productQuantityRequest;
     private ProductUpdateRequest productUpdateRequest;
     private Pageable pageable;
     private LocalDate startDate;
@@ -77,7 +74,6 @@ public class SellerServiceImplTest extends TestValue {
         product = TEST_PRODUCT;
         productDocument = TEST_PRODUCT_DOCUMENT;
         productRegistRequest = TEST_PRODUCT_REGIST_REQUEST;
-        productQuantityRequest = TEST_PRODUCT_QUANTITY_REQUEST;
         productUpdateRequest = TEST_PRODUCT_UPDATE_REQUEST;
         pageable = TEST_PAGEABLE;
         startDate = TEST_START_DATE;
@@ -101,13 +97,13 @@ public class SellerServiceImplTest extends TestValue {
             given(productSearchRepository.save(any())).willReturn(productDocument);
 
             //when
-            Long sellerId = sellerServiceImpl.createProduct(productRegistRequest, user1);
+            String domainName = sellerServiceImpl.createProduct(productRegistRequest, user1);
 
             //then
             verify(productRepository, times(1)).save(any(Product.class));
             verify(productSearchRepository, times(1))
                 .save(any(ProductDocument.class));
-            assertThat(sellerId).isEqualTo(product.getSeller().getId());
+            assertThat(domainName).isEqualTo(product.getSeller().getDomainName());
         }
 
         @Test
@@ -138,10 +134,10 @@ public class SellerServiceImplTest extends TestValue {
             product.updateOrderStatus(product.getStatus());
 
             // when
-            Long sellerId = sellerServiceImpl.updateProductStatus(product.getId(), user1);
+            String domainName = sellerServiceImpl.updateProductStatus(product.getId(), user1);
 
             //then
-            assertEquals(sellerId, product.getSeller().getId());
+            assertEquals(domainName, product.getSeller().getDomainName());
         }
 
         @Test
@@ -159,47 +155,6 @@ public class SellerServiceImplTest extends TestValue {
     }
 
     @Nested
-    class productQuantityUpdate {
-
-        @Test
-        @DisplayName("상품 수량 수정 성공 - 셀러권한")
-        void productQuantityUpdateSuccess() {
-            // given
-            given(sellerRepository.findByUserId(anyLong())).willReturn(Optional.of(seller));
-            given(productRepository.findByIdAndSellerId(anyLong(), anyLong()))
-                .willReturn(Optional.of(product));
-
-            product.updateQuantitySeller(productQuantityRequest);
-
-            // when
-            Long SellerId = sellerServiceImpl.updateProductQuantity(
-                product.getId(),
-                productQuantityRequest,
-                user1);
-
-            // then
-            assertEquals(SellerId, product.getSeller().getId());
-            assertEquals(product.getQuantity(), productQuantityRequest.getQuantity());
-        }
-
-        @Test
-        @DisplayName("상품 수량 수정 실패 - 일반유저")
-        void productQuantityUpdateUnsuccess() {
-            // given
-            given(sellerRepository.findByUserId(anyLong()))
-                .willThrow(InvalidSellerEventException.class);
-
-            // when & then
-            assertThrows(InvalidSellerEventException.class, () -> {
-                sellerServiceImpl.updateProductQuantity(
-                    product.getId(),
-                    productQuantityRequest,
-                    user2);
-            });
-        }
-    }
-
-    @Nested
     class ProductUpdate {
 
         @Test
@@ -210,16 +165,21 @@ public class SellerServiceImplTest extends TestValue {
             given(productRepository.findByIdAndSellerId(product.getId(), seller.getId()))
                 .willReturn(Optional.of(product));
 
-            product.updateProduct(productUpdateRequest);
+            product.updateProduct(
+                productUpdateRequest.getName(),
+                productUpdateRequest.getDescription(),
+                productUpdateRequest.getPrice(),
+                productUpdateRequest.getQuantity()
+            );
 
             // when
-            Long sellerId = sellerServiceImpl.updateProduct(
+            String domainName = sellerServiceImpl.updateProduct(
                 product.getId(),
                 productUpdateRequest,
                 user1);
 
             // then
-            assertEquals(sellerId, product.getSeller().getId());
+            assertEquals(domainName, product.getSeller().getDomainName());
             assertEquals(productUpdateRequest.getName(), product.getName());
             assertEquals(productUpdateRequest.getDescription(), product.getDescription());
             assertEquals(productUpdateRequest.getPrice(), product.getPrice());

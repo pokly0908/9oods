@@ -25,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -138,6 +140,12 @@ public class OrderServiceImpl implements OrderService {
 			throw new AccessDeniedException(String.valueOf(NOT_EQUAL_USER_ID));
 		}
 		orderRepository.delete(order);
+	}
+
+	@Override
+	public Page<OrderResponse> getAllOrder(User user, Pageable pageable) {
+		return orderRepository.findAllByUser(user, pageable)
+			.map(order -> getProductOrderResponse(order.getId(), order));
 	}
 
 	private OrderResponse getProductOrderResponse(Long orderId, Order order) {

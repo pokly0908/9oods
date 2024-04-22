@@ -13,13 +13,19 @@ import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.search.document.ProductDocument;
 import com.kuku9.goods.domain.search.document.SellerDocument;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
+import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.domain.user.entity.UserRegisterTypeEnum;
 import com.kuku9.goods.domain.user.entity.UserRoleEnum;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import org.springframework.data.domain.*;
 
 public class TestValue {
 
@@ -67,21 +73,7 @@ public class TestValue {
         TEST_SELLER_PHONENEMBER1,
         TEST_USER1
     );
-    public final static Long TEST_SELLER_ID2 = 2L;
-    public final static String TEST_SELLER_BRANDNAME2 = "brand2";
-    public final static String TEST_SELLER_DOMAINNAME2 = "domain2";
-    public final static String TEST_SELLER_INTRODUCE2 = "introduce2";
-    public final static String TEST_SELLER_EMAIL2 = "이메일2@이메일2.com";
-    public final static String TEST_SELLER_PHONENEMBER2 = "00000002";
-    public final static Seller TEST_SELLER2 = new Seller(
-        TEST_SELLER_ID2,
-        TEST_SELLER_BRANDNAME2,
-        TEST_SELLER_DOMAINNAME2,
-        TEST_SELLER_INTRODUCE2,
-        TEST_SELLER_EMAIL2,
-        TEST_SELLER_PHONENEMBER2,
-        TEST_USER2
-    );
+
     public final static Long TEST_PRODUCT_ID1 = 1L;
     public final static String TEST_PRODUCT_NAME = "상품1";
     public final static String TEST_PRODUCT_DESCRIPTION = "상품 설명1";
@@ -103,7 +95,6 @@ public class TestValue {
     public final static int TEST_REQUEST_PRODUCT_QUANTITY = TEST_PRODUCT_QUANTITY;
     public final static ProductRegistRequest TEST_PRODUCT_REGIST_REQUEST =
         new ProductRegistRequest(
-            TEST_SELLER_ID,
             TEST_REQUEST_PRODUCT_NAME,
             TEST_REQUEST_PRODUCT_DESCRIPTION,
             TEST_REQUEST_PRODUCT_PRICE,
@@ -190,6 +181,7 @@ public class TestValue {
     public final static int TEST_DOCUMENT_PRODUCT_QUANTITY = TEST_REQUEST_PRODUCT_QUANTITY;
     public final static ProductDocument TEST_PRODUCT_DOCUMENT = new ProductDocument(
         TEST_DOCUMENT_SELLER_ID,
+        TEST_PRODUCT_ID1,
         TEST_DOCUMENT_PRODUCT_NAME,
         TEST_DOCUMENT_PRODUCT_DESCRIPTION,
         TEST_DOCUMENT_PRODUCT_PRICE,
@@ -205,5 +197,86 @@ public class TestValue {
         TEST_DOCUMENT_INTRODUCE
     );
 
+    public final static String TEST_PRODUCT_UPDATE_NAME = "수정된 상품 이름";
+    public final static String TEST_PRODUCT_UPDATE_DESCRIPTION = "수정된 상품 설명";
+    public final static int TEST_PRODUCT_UPDATE_PRICE = 1234;
+    public final static int TEST_PRODUCT_UPDATE_QUANTITY = 1234;
+    public final static ProductUpdateRequest TEST_PRODUCT_UPDATE_REQUEST =
+        new ProductUpdateRequest(
+            TEST_PRODUCT_UPDATE_NAME,
+            TEST_PRODUCT_UPDATE_DESCRIPTION,
+            TEST_PRODUCT_UPDATE_PRICE,
+            TEST_PRODUCT_UPDATE_QUANTITY
+        );
+
+    public final static int page = 0;
+    public final static int size = 20;
+    public final static Pageable TEST_PAGEABLE = PageRequest.of(
+        page,
+        size,
+        Sort.by(Sort.Direction.DESC, "name")
+    );
+    public final static LocalDate TEST_START_DATE = LocalDate.parse("2024-01-01");
+    public final static LocalDate TEST_END_DATE = LocalDate.parse("2024-12-30");
+
+    public final static String TEST_PRODUCT_NAME2 = "상품2";
+    public final static int TEST_PRODUCT_PRICE2 = 200000;
+    public final static int TEST_PRODUCT_QUANTITY2 = 2000;
+
+    public final static String TEST_PRODUCT_NAME3 = "상품3";
+    public final static int TEST_PRODUCT_PRICE3 = 300000;
+    public final static int TEST_PRODUCT_QUANTITY3 = 3000;
+
+    public final static List<SoldProductResponse> soldProductList = Arrays.asList(
+        new SoldProductResponse(
+            TEST_PRODUCT_NAME,
+            TEST_PRODUCT_PRICE,
+            TEST_PRODUCT_QUANTITY,
+            10,
+            10000000,
+            LocalDateTime.now()
+        ),
+        new SoldProductResponse(
+            TEST_PRODUCT_NAME2,
+            TEST_PRODUCT_PRICE2,
+            TEST_PRODUCT_QUANTITY2,
+            20,
+            20000000,
+            LocalDateTime.now()
+        ),
+        new SoldProductResponse(
+            TEST_PRODUCT_NAME3,
+            TEST_PRODUCT_PRICE3,
+            TEST_PRODUCT_QUANTITY3,
+            30,
+            30000000,
+            LocalDateTime.now()
+        )
+    );
+    public final static Page<SoldProductResponse> TEST_SOLD_PRODUCT_LIST =
+        new PageImpl<>(soldProductList);
+
+    public final static int TEST_TOTAL_PRICE =
+        TEST_PRODUCT_PRICE + TEST_PRODUCT_PRICE2 + TEST_PRODUCT_PRICE3;
+    public final static SoldProductSumPriceResponse TEST_SOLD_PRODUCT_SUM_PRICE_RESPONSE =
+        new SoldProductSumPriceResponse(
+            TEST_SELLER_BRANDNAME1,
+            TEST_TOTAL_PRICE
+        );
+
+    public final static List<SoldProductQuantityResponse> TEST_SOLD_PRODUCT_QUANTITY_RESPONSE =
+        Arrays.asList(
+            new SoldProductQuantityResponse(
+                TEST_PRODUCT_NAME,
+                TEST_PRODUCT_QUANTITY
+            ),
+            new SoldProductQuantityResponse(
+                TEST_PRODUCT_NAME2,
+                TEST_PRODUCT_QUANTITY2
+            ),
+            new SoldProductQuantityResponse(
+                TEST_PRODUCT_NAME3,
+                TEST_PRODUCT_QUANTITY3
+            ));
 }
 

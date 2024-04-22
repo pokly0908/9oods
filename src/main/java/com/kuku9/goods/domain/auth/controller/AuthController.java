@@ -2,7 +2,6 @@ package com.kuku9.goods.domain.auth.controller;
 
 import com.kuku9.goods.domain.auth.dto.LoginRequest;
 import com.kuku9.goods.domain.auth.service.AuthService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

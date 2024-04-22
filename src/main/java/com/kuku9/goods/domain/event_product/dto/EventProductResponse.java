@@ -8,15 +8,15 @@ import lombok.Value;
 @Value
 public class EventProductResponse {
 
-	String productName;
-	String productDescription;
-	int productPrice;
-	String domainName;
+    String productName;
+    String productDescription;
+    int productPrice;
+    String domainName;
 
-	public EventProductResponse(EventProduct eventProduct) {
-		this.productName = eventProduct.getProduct().getName();
-		this.productDescription = eventProduct.getProduct().getDescription();
-		this.productPrice = eventProduct.getProduct().getPrice();
-		this.domainName = eventProduct.getProduct().getSeller().getDomainName();
-	}
+    public EventProductResponse(EventProduct eventProduct) {
+        this.productName = eventProduct.getProduct().getName();
+        this.productDescription = eventProduct.getProduct().getDescription();
+        this.productPrice = eventProduct.getProduct().getPrice();
+        this.domainName = eventProduct.getProduct().getSeller().getDomainName();
+    }
 }

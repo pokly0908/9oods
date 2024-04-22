@@ -7,9 +7,9 @@ import lombok.Value;
 @Value
 public class SellerCheckResponse {
 
-	Long sellerId;
+    Long sellerId;
 
-	public SellerCheckResponse(Long sellerId) {
-		this.sellerId = sellerId;
-	}
+    public SellerCheckResponse(Long sellerId) {
+        this.sellerId = sellerId;
+    }
 }

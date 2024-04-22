@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Range;
 
 public interface ProductRepository {
 
@@ -22,4 +21,6 @@ public interface ProductRepository {
     Page<Product> findBySellerId_DomainName(String domainName, Pageable pageable);
 
     List<Product> findAllById(List<Long> productIds);
+
+    void deleteById(Long id);
 }

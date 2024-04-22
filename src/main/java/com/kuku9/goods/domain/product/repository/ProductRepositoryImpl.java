@@ -41,10 +41,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         return productJpaRepository.findAll(pageable);
     }
 
-	@Override
-	public Page<Product> findBySellerId_DomainName(String domainName, Pageable pageable) {
+    @Override
+    public Page<Product> findBySellerId_DomainName(String domainName, Pageable pageable) {
         return productJpaRepository.findBySellerId_DomainName(domainName, pageable);
-	}
+    }
 
     @Override
     public List<Product> findBySellerId(Long sellerId) {
@@ -57,5 +57,10 @@ public class ProductRepositoryImpl implements ProductRepository {
             .selectFrom(product)
             .where(product.id.in(productIds))
             .fetch();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        productJpaRepository.deleteById(id);
     }
 }

@@ -2,6 +2,7 @@ package com.kuku9.goods.domain.seller.repository;
 
 import com.kuku9.goods.domain.order_product.entity.QOrderProduct;
 import com.kuku9.goods.domain.product.entity.QProduct;
+import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -60,7 +61,6 @@ public class SellerQueryImpl implements SellerQuery {
             .fetchCount();
 
         return new PageImpl<>(responseList, pageable, totalCount);
-
     }
 
     @Override
@@ -102,6 +102,45 @@ public class SellerQueryImpl implements SellerQuery {
             .orderBy(qOrderProduct.quantity.desc())
             .limit(10)
             .fetch();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductSearchResponse> searchProductName(String keyword) {
+        QProduct qProduct = QProduct.product;
+        return jpaQueryFactory
+            .select(Projections.constructor(ProductSearchResponse.class,
+                qProduct.name,
+                qProduct.description,
+                qProduct.price))
+            .from(qProduct)
+            .where(qProduct.name.like("%" + keyword + "%"))
+            .fetch();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductSearchResponse> searchProductIntroduce(String keyowrd) {
+        QProduct qProduct = QProduct.product;
+        return jpaQueryFactory
+            .select(Projections.constructor(ProductSearchResponse.class,
+                qProduct.name,
+                qProduct.description,
+                qProduct.price,
+                qProduct.quantity))
+            .from(qProduct)
+            .where(qProduct.name.like("%" + keyowrd + "%"))
+            .fetch();
+    }
+
+    @Override
+    public Long checkSeller(Long userId) {
+        QSeller qSeller = QSeller.seller;
+        return jpaQueryFactory
+            .select(qSeller.id)
+            .from(qSeller)
+            .where(qSeller.user.id.eq(userId))
+            .fetchOne();
     }
 
 }

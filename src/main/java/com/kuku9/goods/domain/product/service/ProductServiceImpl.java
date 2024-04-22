@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProduct(Long productId, String domainName) {
         Product product = productRepository.findById(productId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
-        if(!product.getSeller().getDomainName().equals(domainName)) {
+        if (!product.getSeller().getDomainName().equals(domainName)) {
             throw new IllegalArgumentException("잘못된 정보입니다.");
         }
         return new ProductResponse(product);
@@ -33,6 +33,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductResponse> getSellerProduct(String domainName, Pageable pageable) {
-        return productRepository.findBySellerId_DomainName(domainName, pageable).map(ProductResponse::new);
+        return productRepository.findBySellerId_DomainName(domainName, pageable)
+            .map(ProductResponse::new);
     }
 }

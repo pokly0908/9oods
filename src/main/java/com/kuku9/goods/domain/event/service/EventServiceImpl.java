@@ -37,110 +37,110 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
-	private final EventRepository eventRepository;
-	private final EventQuery eventQuery;
-	private final EventProductRepository eventProductRepository;
-	private final ProductRepository productRepository;
-	private final CouponRepository couponRepository;
+    private final EventRepository eventRepository;
+    private final EventQuery eventQuery;
+    private final EventProductRepository eventProductRepository;
+    private final ProductRepository productRepository;
+    private final CouponRepository couponRepository;
 
-	@Transactional
-	public Long createEvent(EventRequest eventRequest, User user) {
+    @Transactional
+    public Long createEvent(EventRequest eventRequest, User user) {
 
-		Event event = new Event(eventRequest, user);
-		Event savedEvent = eventRepository.save(event);
+        Event event = new Event(eventRequest, user);
+        Event savedEvent = eventRepository.save(event);
 
-		if (eventRequest.getEventProducts() != null) {
-			eventRequest.getEventProducts().stream()
-				.map(EventProductRequest::getProductId)
-				.map(productId -> productRepository.findById(productId)
-					.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
-				.map(product -> new EventProduct(savedEvent, product))
-				.forEach(eventProductRepository::save);
+        if (eventRequest.getEventProducts() != null) {
+            eventRequest.getEventProducts().stream()
+                .map(EventProductRequest::getProductId)
+                .map(productId -> productRepository.findById(productId)
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
+                .map(product -> new EventProduct(savedEvent, product))
+                .forEach(eventProductRepository::save);
 
-		}
+        }
 
-		if (eventRequest.getCouponId() != null) {
-			Coupon coupon = findCoupon(eventRequest.getCouponId());
+        if (eventRequest.getCouponId() != null) {
+            Coupon coupon = findCoupon(eventRequest.getCouponId());
 
-			savedEvent.addCoupon(coupon);
-		}
+            savedEvent.addCoupon(coupon);
+        }
 
-		return savedEvent.getId();
-	}
+        return savedEvent.getId();
+    }
 
-	@Transactional
-	@CacheEvict(value = "eventCache", key = "#eventId")
-	public Long updateEvent(Long eventId, EventUpdateRequest eventRequest, User user) {
+    @Transactional
+    @CacheEvict(value = "eventCache", key = "#eventId")
+    public Long updateEvent(Long eventId, EventUpdateRequest eventRequest, User user) {
 
-		Event event = findEvent(eventId);
+        Event event = findEvent(eventId);
 
-		if (!event.getUser().getId().equals(user.getId())) {
-			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
-		}
+        if (!event.getUser().getId().equals(user.getId())) {
+            throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
+        }
 
-		event.update(eventRequest);
+        event.update(eventRequest);
 
-		return event.getId();
-	}
+        return event.getId();
+    }
 
 
-	@Cacheable(value = "eventCache", key = "#eventId", unless = "#result == null")
-	public EventResponse getEvent(Long eventId) {
+    @Cacheable(value = "eventCache", key = "#eventId", unless = "#result == null")
+    public EventResponse getEvent(Long eventId) {
 
-		Event event = findEvent(eventId);
-		List<EventProduct> eventProducts = eventQuery.getEventProducts(List.of(event.getId()));
-		List<EventProductResponse> eventProductResponses = eventProducts.stream()
-			.map(EventProductResponse::new)
-			.toList();
-		return EventResponse.from(event, eventProductResponses);
-	}
+        Event event = findEvent(eventId);
+        List<EventProduct> eventProducts = eventQuery.getEventProducts(List.of(event.getId()));
+        List<EventProductResponse> eventProductResponses = eventProducts.stream()
+            .map(EventProductResponse::new)
+            .toList();
+        return EventResponse.from(event, eventProductResponses);
+    }
 
-	@Transactional(readOnly = true)
-	public Page<EventResponse> getAllEvents(Pageable pageable) {
-		Page<Event> events = eventRepository.findAll(pageable);
-		List<Long> eventIds = events.stream().map(Event::getId).toList();
-		List<EventProduct> eventProducts = eventQuery.getEventProducts(eventIds);
+    @Transactional(readOnly = true)
+    public Page<EventResponse> getAllEvents(Pageable pageable) {
+        Page<Event> events = eventRepository.findAll(pageable);
+        List<Long> eventIds = events.stream().map(Event::getId).toList();
+        List<EventProduct> eventProducts = eventQuery.getEventProducts(eventIds);
 
-		Map<Long, List<EventProductResponse>> eventProductMap = eventProducts.stream()
-			.collect(Collectors.groupingBy(eventProduct -> eventProduct.getEvent().getId(),
-				Collectors.mapping(EventProductResponse::new,
-					Collectors.toList())));
+        Map<Long, List<EventProductResponse>> eventProductMap = eventProducts.stream()
+            .collect(Collectors.groupingBy(eventProduct -> eventProduct.getEvent().getId(),
+                Collectors.mapping(EventProductResponse::new,
+                    Collectors.toList())));
 
-		List<EventResponse> eventResponses = events.stream().map(event -> EventResponse.from(event,
-			eventProductMap.getOrDefault(event.getId(), List.of()))).toList();
-		return new PageImpl<>(eventResponses, pageable, events.getTotalElements());
-	}
+        List<EventResponse> eventResponses = events.stream().map(event -> EventResponse.from(event,
+            eventProductMap.getOrDefault(event.getId(), List.of()))).toList();
+        return new PageImpl<>(eventResponses, pageable, events.getTotalElements());
+    }
 
-	@Transactional
-	public void deleteEvent(Long eventId, User user) {
+    @Transactional
+    public void deleteEvent(Long eventId, User user) {
 
-		Event event = findEvent(eventId);
+        Event event = findEvent(eventId);
 
-		if (!event.getUser().getId().equals(user.getId())) {
-			throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
-		}
+        if (!event.getUser().getId().equals(user.getId())) {
+            throw new InvalidAdminEventException(INVALID_ADMIN_EVENT);
+        }
 
-		eventQuery.deleteEventProduct(eventId);
-		eventRepository.delete(event);
+        eventQuery.deleteEventProduct(eventId);
+        eventRepository.delete(event);
 
-	}
+    }
 
-	@Transactional
-	public void deleteEventProduct(Long eventProductId, User user) {
+    @Transactional
+    public void deleteEventProduct(Long eventProductId, User user) {
 
-		EventProduct eventProduct = eventProductRepository.findById(eventProductId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));
+        EventProduct eventProduct = eventProductRepository.findById(eventProductId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 이벤트 상품은 존재하지 않습니다."));
 
-		eventProductRepository.delete(eventProduct);
-	}
+        eventProductRepository.delete(eventProduct);
+    }
 
-	private Event findEvent(Long eventId) {
-		return eventRepository.findById(eventId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND));
-	}
+    private Event findEvent(Long eventId) {
+        return eventRepository.findById(eventId)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND));
+    }
 
-	private Coupon findCoupon(Long couponId) {
-		return couponRepository.findById(couponId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND));
-	}
+    private Coupon findCoupon(Long couponId) {
+        return couponRepository.findById(couponId)
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND));
+    }
 }

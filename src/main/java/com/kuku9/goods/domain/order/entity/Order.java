@@ -43,6 +43,7 @@ public class Order extends BaseEntity {
     public void addTotalPrice(int totalPrice) {
         this.totalPrice += totalPrice;
     }
+
     public void discount(int discount) {
         this.totalPrice -= discount;
     }

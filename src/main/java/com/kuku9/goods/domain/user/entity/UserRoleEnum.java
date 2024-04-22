@@ -3,9 +3,8 @@ package com.kuku9.goods.domain.user.entity;
 public enum UserRoleEnum {
     USER(Authority.USER),
 
-    SELLER(Authority.SELLER),
+    SELLER(Authority.SELLER);
 
-    ADMIN(Authority.ADMIN);
 
     private final String authority;
 
@@ -23,6 +22,6 @@ public enum UserRoleEnum {
 
         public static final String SELLER = "ROLE_SELLER";
 
-        public static final String ADMIN = "ROLE_ADMIN";
+
     }
 }

@@ -23,9 +23,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public String login(LoginRequest request) {
-        User user = userService.findByUsername(request.getUsername());
+        User user = userService.findByEmail(request.getEmail());
         validateLoginPassword(request, user);
-        return jwtUtil.createAccessToken(user.getUsername(), user.getRole());
+        return jwtUtil.createAccessToken(user.getEmail(), user.getRole());
     }
 
     private void validateLoginPassword(LoginRequest request, User user) {

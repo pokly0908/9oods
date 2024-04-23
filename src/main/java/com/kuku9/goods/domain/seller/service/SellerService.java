@@ -1,9 +1,9 @@
 package com.kuku9.goods.domain.seller.service;
 
 import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
-import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SellerCheckResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -21,21 +21,14 @@ public interface SellerService {
      * @param user       로그인 유저
      * @return DB에 저장될 상품
      */
-    Long createProduct(ProductRegistRequest requestDto, User user);
+    String createProduct(ProductRegistRequest requestDto, User user);
 
     /**
      * @param productId 상품 고유 식별자
      * @param user      로그인 유저
      * @return 셀러 고유 식별자
      */
-    Long updateProductStatus(Long productId, User user);
-
-    /**
-     * @param productId 상품 고유 식별자
-     * @param user      로그인 유저
-     * @return 셀러 고유 식별자
-     */
-    Long updateProductQuantity(Long productId, ProductQuantityRequest request, User user);
+    String updateProductStatus(Long productId, User user);
 
     /**
      * @param productId  상품 고유 식별자
@@ -43,8 +36,16 @@ public interface SellerService {
      * @param user       로그인 유저
      * @return 셀러 고유 식별자
      */
-    Long updateProduct(
+    String updateProduct(
         Long productId, ProductUpdateRequest requestDto, User user);
+
+    /**
+     *
+     * @param productId 조회할 상품 고유 식별자
+     * @param user 로그인 유저
+     * @return
+     */
+    String deleteProduct(Long productId, User user);
 
     /**
      * @param user      로그인 유저
@@ -126,5 +127,12 @@ public interface SellerService {
 
     List<ProductSearchResponse> searchProductIntroduce(String keyowrd);
 
+    /**
+     * 셀러인지 체크 - sellerId 반환
+     *
+     * @param user 유저
+     * @return sellerId
+     */
+    SellerCheckResponse checkSeller(User user);
 
 }

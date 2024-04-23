@@ -5,6 +5,8 @@ import com.kuku9.goods.domain.order.dto.OrdersRequest;
 import com.kuku9.goods.domain.order.entity.Order;
 import com.kuku9.goods.domain.user.entity.User;
 import java.nio.file.AccessDeniedException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
 
@@ -43,4 +45,12 @@ public interface OrderService {
      * @param orderId 주문 아이디
      */
     void deleteOrder(User user, Long orderId) throws AccessDeniedException;
+
+    /**
+     * 주문 삭제
+     *
+     * @param user    유저
+     * @param pageable 페이징 정보
+     */
+    Page<OrderResponse> getAllOrder(User user, Pageable pageable);
 }

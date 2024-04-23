@@ -8,9 +8,9 @@ import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.search.document.ProductDocument;
 import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
 import com.kuku9.goods.domain.search.repository.ProductSearchRepository;
-import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SellerCheckResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -42,60 +42,105 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     @Transactional
-    public Long createProduct(ProductRegistRequest requestDto, User user) {
+    public String createProduct(ProductRegistRequest requestDto, User user) {
         Seller seller = findSeller(user);
 
         Product product = new Product(requestDto, seller);
 
+        Product saveProduct = productRepository.save(product);
+
         ProductDocument productDocument = new ProductDocument(
-            seller.getId(),
+            seller.getId(), saveProduct.getId(),
             requestDto.getProductName(), requestDto.getProductDescription(),
             requestDto.getProductPrice(), requestDto.getProductQuantity());
 
-        Product saveProduct = productRepository.save(product);
-
         productSearchRepository.save(productDocument);
 
-        return saveProduct.getSeller().getId();
+        return saveProduct.getSeller().getDomainName();
     }
 
     @Override
     @Transactional
     @CacheEvict(value = "productCache", key = "#productId")
-    public Long updateProductStatus(Long productId, User user) {
+    public String updateProductStatus(Long productId, User user) {
         Seller seller = findSeller(user);
 
         Product product = findProduct(productId, seller);
 
         product.updateOrderStatus(product.getStatus());
 
-        return product.getSeller().getId();
-    }
-
-    @Override
-    @Transactional
-    public Long updateProductQuantity(Long productId, ProductQuantityRequest request, User user) {
-        Seller seller = findSeller(user);
-
-        Product product = findProduct(productId, seller);
-
-        product.updateQuantitySeller(request);
-
-        return product.getSeller().getId();
+        return product.getSeller().getDomainName();
     }
 
     @Override
     @Transactional
     @CacheEvict(value = "productCache", key = "#productId")
-    public Long updateProduct(
+    public String updateProduct(
         Long productId, ProductUpdateRequest requestDto, User user) {
+        String productName, productDescription;
+        int price, quantity;
+
         Seller seller = findSeller(user);
 
         Product product = findProduct(productId, seller);
 
-        product.updateProduct(requestDto);
+        if (requestDto != null) {
 
-        return product.getSeller().getId();
+            productSearchRepository.deleteByProductId(product.getId());
+
+            if (requestDto.getName().isEmpty()) {
+                productName = product.getName();
+            } else {
+                productName = requestDto.getName();
+            }
+            if (requestDto.getDescription().isEmpty()) {
+                productDescription = product.getDescription();
+            } else {
+                productDescription = requestDto.getDescription();
+            }
+            if (requestDto.getPrice() <= 0) {
+                price = product.getPrice();
+            } else {
+                price = requestDto.getPrice();
+            }
+            if (requestDto.getQuantity() <= 0) {
+                quantity = product.getQuantity();
+            } else {
+                quantity = requestDto.getQuantity();
+            }
+        } else {
+            return product.getSeller().getDomainName();
+        }
+
+        product.updateProduct(
+            productName, productDescription,
+            price, quantity
+        );
+
+
+        ProductDocument productDocument = new ProductDocument(
+            seller.getId(), productId,
+            productName, productDescription,
+            price, quantity
+        );
+
+        productSearchRepository.save(productDocument);
+
+        return product.getSeller().getDomainName();
+    }
+
+    @Override
+    @Transactional
+    public String deleteProduct(Long productId, User user) {
+        Seller seller = findSeller(user);
+
+        Product product = findProduct(productId, seller);
+
+        productRepository.deleteById(product.getId());
+
+        productSearchRepository.deleteByProductId(product.getId());
+
+        return product.getSeller().getDomainName();
     }
 
     @Override
@@ -173,6 +218,15 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public List<ProductSearchResponse> searchProductIntroduce(String keyowrd) {
         return sellerQuery.searchProductIntroduce(keyowrd);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SellerCheckResponse checkSeller(User user) {
+
+        Long sellerId = sellerQuery.checkSeller(user.getId());
+
+        return new SellerCheckResponse(sellerId);
     }
 
 }

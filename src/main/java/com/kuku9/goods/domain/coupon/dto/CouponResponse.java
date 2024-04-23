@@ -9,11 +9,13 @@ import lombok.Value;
 @Value
 public class CouponResponse {
 
+    Long couponId;
     LocalDate expirationDate;
     int quantity;
 
     public static CouponResponse from(Coupon coupon) {
         return new CouponResponse(
+            coupon.getId(),
             coupon.getExpirationDate(),
             coupon.getQuantity()
         );

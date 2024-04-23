@@ -1,5 +1,7 @@
 package com.kuku9.goods.domain.search.document;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -18,7 +20,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 public class SellerDocument {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    private String id;
     private Long userId;
     private String brandName;
     private String introduce;

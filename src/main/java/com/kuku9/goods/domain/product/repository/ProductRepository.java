@@ -21,4 +21,6 @@ public interface ProductRepository {
     Page<Product> findBySellerId_DomainName(String domainName, Pageable pageable);
 
     List<Product> findAllById(List<Long> productIds);
+
+    void deleteById(Long id);
 }

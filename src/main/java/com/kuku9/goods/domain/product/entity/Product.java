@@ -1,8 +1,6 @@
 package com.kuku9.goods.domain.product.entity;
 
-import com.kuku9.goods.domain.seller.dto.request.ProductQuantityRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
-import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -60,23 +58,16 @@ public class Product extends BaseEntity {
         }
     }
 
-    public void updateProduct(ProductUpdateRequest requestDto) {
-        if (!requestDto.getName().isEmpty()) {
-            this.name = requestDto.getName();
-        }
-        if (!requestDto.getDescription().isEmpty()) {
-            this.description = requestDto.getDescription();
-        }
-//        if (!requestDto.getPrice().isEmpty()) {
-//            this.price = requestDto.getPrice();
-//        }
+    public void updateProduct(
+        String productName, String productDescription,
+        int price, int quantity) {
+        this.name = productName;
+        this.description = productDescription;
+        this.price = price;
+        this.quantity = quantity;
     }
 
     public void updateQuantity(int quantity) {
         this.quantity -= quantity;
-    }
-
-    public void updateQuantitySeller(ProductQuantityRequest request) {
-        this.quantity = request.getQuantity();
     }
 }

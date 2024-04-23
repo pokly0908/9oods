@@ -133,4 +133,14 @@ public class SellerQueryImpl implements SellerQuery {
             .fetch();
     }
 
+    @Override
+    public Long checkSeller(Long userId) {
+        QSeller qSeller = QSeller.seller;
+        return jpaQueryFactory
+            .select(qSeller.id)
+            .from(qSeller)
+            .where(qSeller.user.id.eq(userId))
+            .fetchOne();
+    }
+
 }

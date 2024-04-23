@@ -38,7 +38,6 @@ public class AuthController {
     public ResponseEntity<Void> kakaologin(@RequestParam("code") final String code) throws JsonProcessingException {
         log.info("카카오 로그인 서비스 동작.");
         String accessToken = kakaoService.login(code);
-        System.out.println(accessToken);
 
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, accessToken)
             .build();

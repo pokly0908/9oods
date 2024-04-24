@@ -101,7 +101,8 @@ public class UserServiceImplTest {
             "김철수",
             encodedOriginPassword,
             UserRoleEnum.USER,
-            UserRegisterTypeEnum.LOCAL
+            UserRegisterTypeEnum.LOCAL,
+            null
         );
         // userRepository.save(user);
         ModifyPasswordRequest request = new ModifyPasswordRequest(
@@ -130,7 +131,8 @@ public class UserServiceImplTest {
             "김철수",
             encodedOriginPassword,
             UserRoleEnum.USER,
-            UserRegisterTypeEnum.LOCAL
+            UserRegisterTypeEnum.LOCAL,
+            null
         );
         ModifyPasswordRequest request = new ModifyPasswordRequest(
             "aAa12345@!!", // 잘못된 이전 비밀번호
@@ -160,7 +162,8 @@ public class UserServiceImplTest {
             "김만식",
             "encodedOriginPassword",
             UserRoleEnum.USER,
-            UserRegisterTypeEnum.LOCAL
+            UserRegisterTypeEnum.LOCAL,
+            null
         );
         SellerDocument sellerDocument = new SellerDocument(
             user.getId(),

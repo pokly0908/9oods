@@ -25,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -139,6 +141,11 @@ public class OrderServiceImpl implements OrderService {
         }
         orderRepository.delete(order);
     }
+  	@Override
+	  public Page<OrderResponse> getAllOrder(User user, Pageable pageable) {
+		return orderRepository.findAllByUser(user, pageable)
+			.map(order -> getProductOrderResponse(order.getId(), order));
+	  }
 
     private OrderResponse getProductOrderResponse(Long orderId, Order order) {
         List<OrderProduct> orderProducts = orderProductRepository.findAllByOrderId(orderId);
@@ -146,8 +153,7 @@ public class OrderServiceImpl implements OrderService {
         for (OrderProduct orderProduct : orderProducts) {
             products.add(new ProductResponse(orderProduct.getProduct()));
         }
-        return new OrderResponse(order, products);
+        return OrderResponse.from(order,products);
     }
-
 
 }

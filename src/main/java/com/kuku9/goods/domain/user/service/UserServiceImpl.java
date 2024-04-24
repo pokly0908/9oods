@@ -19,6 +19,7 @@ import com.kuku9.goods.global.exception.InvalidPasswordException;
 import java.nio.file.AccessDeniedException;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
@@ -26,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j(topic = "유저서비스")
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -45,6 +47,7 @@ public class UserServiceImpl implements UserService {
 
         User user = User.from(request, encodedPassword);
         User savedUser = userRepository.save(user);
+        log.info("회원가입" + savedUser.getId());
         publisher.publishEvent(new SignupEvent(savedUser));
     }
 
@@ -77,6 +80,7 @@ public class UserServiceImpl implements UserService {
     public UserResponse getUserInfo(User user) throws AccessDeniedException {
         User findUser = findById(user.getId());
 
+        log.info("정보 조회" + findUser.getId());
         return UserResponse.from(findUser);
     }
 
@@ -110,6 +114,7 @@ public class UserServiceImpl implements UserService {
         findUser.updateRole(UserRoleEnum.SELLER);
         Seller seller = Seller.from(request, user);
 
+        log.info("셀러등록" + seller.getId());
         SellerDocument sellerDocument = new SellerDocument(
             findUser.getId(), request.getBrandName(), request.getIntroduce()
         );

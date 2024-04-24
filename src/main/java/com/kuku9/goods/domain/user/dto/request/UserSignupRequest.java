@@ -13,10 +13,10 @@ import lombok.Value;
 @AllArgsConstructor
 public class UserSignupRequest {
 
-    @Pattern(regexp = "[가-힣]+")
+    @Pattern(regexp = "[가-힣]+", message = "실명은 한글만 입력할 수 있습니다.")
     String realName;
 
-    @Email
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", message = "이메일 형식에 맞게 입력해주세요.")
     String email;
 
     @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*()-_+=]{8,15}$",

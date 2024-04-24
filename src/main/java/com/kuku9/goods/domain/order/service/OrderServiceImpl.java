@@ -153,7 +153,7 @@ public class OrderServiceImpl implements OrderService {
         for (OrderProduct orderProduct : orderProducts) {
             products.add(new ProductResponse(orderProduct.getProduct()));
         }
-        return new OrderResponse(order, products);
+        return OrderResponse.from(order,products);
     }
 
 }

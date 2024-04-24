@@ -15,17 +15,30 @@ import lombok.Value;
 @NoArgsConstructor(force = true)
 public class OrderResponse {
 
+
     Long orderId;
     OrderStatus orderStatus;
     String orderDate;
     String address;
     List<ProductResponse> products;
 
-    public OrderResponse(Order order, List<ProductResponse> products) {
-        this.orderId = order.getId();
-        this.orderStatus = order.getStatus();
-        this.orderDate = order.getCreatedAt().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL));
-        this.address = order.getAddress();
+    public OrderResponse(Long orderId, OrderStatus orderStatus, String orderDate, String address,
+        List<ProductResponse> products) {
+        this.orderId = orderId;
+        this.orderStatus = orderStatus;
+        this.orderDate = orderDate;
+        this.address = address;
         this.products = products;
+    }
+
+
+
+    public static OrderResponse from(Order order,List<ProductResponse> products) {
+        return new OrderResponse(
+            order.getId(),
+            order.getStatus(),
+            order.getAddress(),
+            order.getCreatedAt().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)),
+            products);
     }
 }

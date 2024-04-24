@@ -29,6 +29,8 @@ public class AllEventResponse {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     LocalDateTime openAt;
 
+    Long couponId;
+
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     LocalDate expiration;
@@ -43,6 +45,7 @@ public class AllEventResponse {
             eventResponse.getTitle(),
             eventResponse.getContent(),
             eventResponse.getOpenAt(),
+            eventResponse.getCouponId(),
             eventResponse.getExpirationDate(),
             eventResponse.getQuantity(),
             eventProducts

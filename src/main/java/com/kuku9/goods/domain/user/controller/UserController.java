@@ -67,7 +67,7 @@ public class UserController {
     @PostMapping("/seller-application")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> registerSeller(
-        @RequestBody RegisterSellerRequest request,
+        @Valid @RequestBody RegisterSellerRequest request,
         @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Seller seller = userService.registerSeller(request, userDetails.getUser());

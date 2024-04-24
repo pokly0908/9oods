@@ -14,19 +14,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
-
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@Value
+@NoArgsConstructor(force = true)
 public class UserResponse {
 
-   private String realName;
+    String realName;
 
-   private UserRoleEnum role;
+    UserRoleEnum role;
 
-   private  String createdAt;
+    String createdAt;
 
-
+    public UserResponse(String realName, UserRoleEnum role, String createdAt) {
+        this.realName = realName;
+        this.role = role;
+        this.createdAt = createdAt;
+    }
 
     public static UserResponse from(User findUser) {
         return new UserResponse(findUser.getRealName(), findUser.getRole(),

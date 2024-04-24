@@ -1,7 +1,7 @@
 package com.kuku9.goods.domain.event.controller;
 
 import com.kuku9.goods.domain.event.dto.EventRequest;
-import com.kuku9.goods.domain.event.dto.EventResponse;
+import com.kuku9.goods.domain.event.dto.AllEventResponse;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
 import com.kuku9.goods.domain.event.service.EventService;
 import com.kuku9.goods.global.security.CustomUserDetails;
@@ -51,19 +51,19 @@ public class EventController {
     }
 
     @GetMapping("/{eventId}")
-    public ResponseEntity<EventResponse> getEvent(@PathVariable Long eventId) {
+    public ResponseEntity<AllEventResponse> getEvent(@PathVariable Long eventId) {
 
-        EventResponse eventResponse = eventService.getEvent(eventId);
+        AllEventResponse allEventResponse = eventService.getEvent(eventId);
 
-        return ResponseEntity.ok().body(eventResponse);
+        return ResponseEntity.ok().body(allEventResponse);
     }
 
     @GetMapping
-    public ResponseEntity<Page<EventResponse>> getAllEvents(
+    public ResponseEntity<Page<AllEventResponse>> getAllEvents(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "createdAt"));
-        Page<EventResponse> eventResponses = eventService.getAllEvents(pageable);
+        Page<AllEventResponse> eventResponses = eventService.getAllEvents(pageable);
 
         return ResponseEntity.ok().body(eventResponses);
     }

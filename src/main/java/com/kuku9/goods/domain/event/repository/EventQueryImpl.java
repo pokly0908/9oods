@@ -67,6 +67,7 @@ public class EventQueryImpl implements EventQuery {
                 qEvent.title,
                 qEvent.content,
                 qEvent.openAt,
+                qCoupon.id.as("couponId"),
                 qCoupon.expirationDate,
                 qCoupon.quantity))
             .from(qEvent)
@@ -84,6 +85,7 @@ public class EventQueryImpl implements EventQuery {
                 qEvent.title,
                 qEvent.content,
                 qEvent.openAt,
+                qCoupon.id.as("couponId"),
                 qCoupon.expirationDate,
                 qCoupon.quantity))
             .from(qEvent)

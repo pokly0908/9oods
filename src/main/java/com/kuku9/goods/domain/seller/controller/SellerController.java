@@ -142,15 +142,4 @@ public class SellerController {
         @RequestParam String keyowrd) {
         return sellerService.searchProductIntroduce(keyowrd);
     }
-
-    @GetMapping("/seller-check")
-    @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<SellerCheckResponse> checkSeller(
-        @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
-        SellerCheckResponse response = sellerService.checkSeller(userDetails.getUser());
-
-        return ResponseEntity.ok(response);
-    }
-
 }

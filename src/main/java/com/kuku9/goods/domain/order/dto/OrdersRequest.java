@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Value;
 
-@Getter
+
 @Value
 public class OrdersRequest {
 

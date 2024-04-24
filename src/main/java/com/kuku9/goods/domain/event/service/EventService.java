@@ -1,7 +1,7 @@
 package com.kuku9.goods.domain.event.service;
 
 import com.kuku9.goods.domain.event.dto.EventRequest;
-import com.kuku9.goods.domain.event.dto.EventResponse;
+import com.kuku9.goods.domain.event.dto.AllEventResponse;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
 import com.kuku9.goods.domain.user.entity.User;
 import org.springframework.data.domain.Page;
@@ -33,7 +33,7 @@ public interface EventService {
      * @param eventId 이벤트 Id
      * @return EventResponse
      */
-    EventResponse getEvent(Long eventId);
+    AllEventResponse getEvent(Long eventId);
 
     /**
      * 이벤트 전체 조회
@@ -41,7 +41,7 @@ public interface EventService {
      * @param pageable 페이지
      * @return Page<EventResponse>
      */
-    Page<EventResponse> getAllEvents(Pageable pageable);
+    Page<AllEventResponse> getAllEvents(Pageable pageable);
 
     /**
      * 이벤트 삭제

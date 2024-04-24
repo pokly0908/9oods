@@ -46,7 +46,6 @@ public class UserController {
     public ResponseEntity<UserResponse> getUserInfo(
         @AuthenticationPrincipal CustomUserDetails userDetails
     ) throws AccessDeniedException {
-        log.info("회원 정보 조회 시작");
         UserResponse userResponse = userService.getUserInfo(userDetails.getUser());
 
         return ResponseEntity.ok(userResponse);

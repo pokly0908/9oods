@@ -3,6 +3,7 @@ package com.kuku9.goods.domain.search.controller;
 import com.kuku9.goods.domain.search.document.ProductDocument;
 import com.kuku9.goods.domain.search.document.SellerDocument;
 import com.kuku9.goods.domain.search.service.SearchService;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ public class SearchController {
 //    }
 
     // 일반적인 검색 조건 product name, introduct
+    @Operation(summary = "상품 검색")
     @GetMapping("/products")
     public List<ProductDocument> searchProduct(@RequestParam String keyword) {
         return searchService.searchProduct(keyword);
@@ -47,6 +49,7 @@ public class SearchController {
 //    }
 
     // 일반적인 검색 조건 brand name, introduct
+    @Operation(summary = "셀러 검색")
     @GetMapping("/brands")
     public List<SellerDocument> searchSeller(@RequestParam String keyword) {
         return searchService.searchbrand(keyword);

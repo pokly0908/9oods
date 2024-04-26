@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kuku9.goods.domain.auth.dto.LoginRequest;
 import com.kuku9.goods.domain.auth.service.AuthService;
 import com.kuku9.goods.domain.auth.service.KakaoService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
@@ -20,8 +21,7 @@ public class AuthController {
     private final AuthService authService;
     private final KakaoService kakaoService;
 
-
-
+    @Operation(summary = "로그인")
     @PostMapping("/login")
     public ResponseEntity<Void> login(
         @RequestBody LoginRequest request) {

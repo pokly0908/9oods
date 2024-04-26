@@ -2,6 +2,7 @@ package com.kuku9.goods.domain.product.controller;
 
 import com.kuku9.goods.domain.product.dto.ProductResponse;
 import com.kuku9.goods.domain.product.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,14 +17,14 @@ public class ProductController {
 
     private final ProductService productService;
 
-    // 낱개조회
+    @Operation(summary = "상품 단건 조회")
     @GetMapping("/sellers/{domainName}/products/{productId}")
     public ResponseEntity<ProductResponse> getProduct(
         @PathVariable Long productId, @PathVariable String domainName) {
         return ResponseEntity.ok().body(productService.getProduct(productId, domainName));
     }
 
-    //전체 조회
+    @Operation(summary = "상품 전체 조회")
     @GetMapping("/products")
     public ResponseEntity<Page<ProductResponse>> getAllProduct(
         @RequestParam(defaultValue = "0") int page,
@@ -33,7 +34,7 @@ public class ProductController {
         return ResponseEntity.ok().body(productResponses);
     }
 
-    //셀러 별 조회
+    @Operation(summary = "상품 셀러별 조회")
     @GetMapping("/sellers/{domainName}/products")
     public ResponseEntity<Page<ProductResponse>> getSellerProduct(
         @PathVariable String domainName,

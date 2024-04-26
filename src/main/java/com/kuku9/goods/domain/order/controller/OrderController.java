@@ -5,6 +5,7 @@ import com.kuku9.goods.domain.order.dto.OrdersRequest;
 import com.kuku9.goods.domain.order.entity.Order;
 import com.kuku9.goods.domain.order.service.OrderService;
 import com.kuku9.goods.global.security.CustomUserDetails;
+import io.swagger.v3.oas.annotations.Operation;
 import java.net.URI;
 import java.nio.file.AccessDeniedException;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class OrderController {
 
     private final OrderService productOrderService;
 
+    @Operation(summary = "주문 생성")
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USER')")
     public ResponseEntity<String> createOrder(
@@ -33,6 +35,7 @@ public class OrderController {
         return ResponseEntity.created(URI.create("/api/v1/orders/" + order.getId())).build();
     }
 
+    @Operation(summary = "주문 단건 조회")
     @GetMapping("/{orderId}")
     @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USER')")
     public ResponseEntity<OrderResponse> getOrder(
@@ -43,6 +46,7 @@ public class OrderController {
         return ResponseEntity.ok(productOrder);
     }
 
+    @Operation(summary = "주문 전체 조회")
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USER')")
     public ResponseEntity<Page<OrderResponse>> getAllOrder(
@@ -55,6 +59,7 @@ public class OrderController {
         return ResponseEntity.ok(productOrders);
     }
 
+    @Operation(summary = "주문 수정")
     @PutMapping("/{orderId}")
     @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_USER')")
     public ResponseEntity<OrderResponse> updateOrder(
@@ -65,6 +70,7 @@ public class OrderController {
         return ResponseEntity.ok(productOrder);
     }
 
+    @Operation(summary = "주문 삭제")
     @DeleteMapping("/{orderId}")
     @PreAuthorize("hasAnyRole('ROLE_SELLER')")
     public ResponseEntity<Void> deleteOrder(

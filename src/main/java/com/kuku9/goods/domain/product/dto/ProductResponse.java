@@ -1,11 +1,11 @@
 package com.kuku9.goods.domain.product.dto;
 
 import com.kuku9.goods.domain.product.entity.Product;
-import lombok.Getter;
-import lombok.Value;
+import lombok.*;
 
 @Getter
 @Value
+@NoArgsConstructor(force = true)
 public class ProductResponse {
 
     Long productId;

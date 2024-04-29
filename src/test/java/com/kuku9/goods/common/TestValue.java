@@ -10,17 +10,20 @@ import com.kuku9.goods.domain.order.entity.Order;
 import com.kuku9.goods.domain.order_product.dto.OrderProductRequest;
 import com.kuku9.goods.domain.order_product.entity.OrderProduct;
 import com.kuku9.goods.domain.product.entity.Product;
+import com.kuku9.goods.domain.product.entity.QProduct;
 import com.kuku9.goods.domain.search.document.ProductDocument;
 import com.kuku9.goods.domain.search.document.SellerDocument;
+import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
+import com.kuku9.goods.domain.search.dto.SellerSearchResponse;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
-import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
-import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
+import com.kuku9.goods.domain.seller.dto.response.*;
+import com.kuku9.goods.domain.seller.entity.QSeller;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.domain.user.entity.UserRegisterTypeEnum;
 import com.kuku9.goods.domain.user.entity.UserRoleEnum;
+import com.querydsl.core.types.Projections;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -30,11 +33,10 @@ import org.springframework.data.domain.*;
 public class TestValue {
 
     public final static Long TEST_USER_ID1 = 1L;
-    public final static String TEST_USERNAME1 = "이메일1@이메일1.com";
+    public final static String TEST_USERNAME1 = "email@email1.com";
     public final static String TEST_REALNAME1 = "이름";
     public final static String TEST_PASSWORD1 = "!password1";
     public final static UserRoleEnum TEST_ROLE1 = UserRoleEnum.SELLER;
-
     public final static UserRegisterTypeEnum TEST_TYPE1 = UserRegisterTypeEnum.LOCAL;
     public final static User TEST_USER1 = new User(
         TEST_USER_ID1,
@@ -45,8 +47,9 @@ public class TestValue {
         TEST_TYPE1,
         null
     );
+
     public final static Long TEST_USER_ID2 = 2L;
-    public final static String TEST_USERNAME2 = "이메일2@이메일2.com";
+    public final static String TEST_USERNAME2 = "email2@email2.com";
     public final static String TEST_REALNAME2 = "이름이름";
     public final static String TEST_PASSWORD2 = "!password2";
     public final static UserRoleEnum TEST_ROLE2 = UserRoleEnum.USER;
@@ -60,11 +63,12 @@ public class TestValue {
         TEST_TYPE2,
         null
     );
+
     public final static Long TEST_SELLER_ID1 = 1L;
     public final static String TEST_SELLER_BRANDNAME1 = "brand1";
     public final static String TEST_SELLER_DOMAINNAME1 = "domain1";
     public final static String TEST_SELLER_INTRODUCE1 = "introduce1";
-    public final static String TEST_SELLER_EMAIL1 = "이메일1@이메일1.com";
+    public final static String TEST_SELLER_EMAIL1 = "email@email.com";
     public final static String TEST_SELLER_PHONENEMBER1 = "00000001";
     public final static Seller TEST_SELLER = new Seller(
         TEST_SELLER_ID1,
@@ -90,7 +94,7 @@ public class TestValue {
         true,
         TEST_PRODUCT_QUANTITY
     );
-    public final static Long TEST_SELLER_ID = TEST_SELLER_ID1;
+
     public final static String TEST_REQUEST_PRODUCT_NAME = TEST_PRODUCT_NAME;
     public final static String TEST_REQUEST_PRODUCT_DESCRIPTION = TEST_PRODUCT_DESCRIPTION;
     public final static int TEST_REQUEST_PRODUCT_PRICE = TEST_PRODUCT_PRICE;
@@ -211,11 +215,11 @@ public class TestValue {
             TEST_PRODUCT_UPDATE_QUANTITY
         );
 
-    public final static int page = 0;
-    public final static int size = 20;
+    public final static int TEST_PAGE = 0;
+    public final static int TEST_SIZE = 20;
     public final static Pageable TEST_PAGEABLE = PageRequest.of(
-        page,
-        size,
+        TEST_PAGE,
+        TEST_SIZE,
         Sort.by(Sort.Direction.DESC, "name")
     );
     public final static LocalDate TEST_START_DATE = LocalDate.parse("2024-01-01");
@@ -280,5 +284,44 @@ public class TestValue {
                 TEST_PRODUCT_NAME3,
                 TEST_PRODUCT_QUANTITY3
             ));
-}
 
+    public final List<ProductSearchResponse> TEST_SEARCH_PRODUCT_RESPONSE = Arrays.asList(
+        new ProductSearchResponse(
+            "test product 1",
+            "test description 1",
+            1111
+        ),
+        new ProductSearchResponse(
+            "test product 2",
+            "test description 2",
+            2222
+        )
+    );
+
+    public final List<SellerSearchResponse> TEST_SEARCH_SELLER_RESPONSE = Arrays.asList(
+        new SellerSearchResponse(
+            "test brand 1",
+            "test introduce 1"
+        ),
+        new SellerSearchResponse(
+            "test brand 2",
+            "test introduce 2"
+        )
+    );
+
+    public final static Long TEST_UPDATE_PRODUCT_ID1 = 1L;
+    public final static String TEST_UPDATE_PRODUCT_NAME = "상품1";
+    public final static String TEST_UPDATE_PRODUCT_DESCRIPTION = "상품 설명1";
+    public final static int TEST_UPDATE_PRODUCT_PRICE = 100000;
+    public final static int TEST_UPDATE_PRODUCT_QUANTITY = 1000;
+    public final static Product TEST_UPDATE_PRODUCT = new Product(
+        TEST_UPDATE_PRODUCT_ID1,
+        TEST_SELLER,
+        TEST_UPDATE_PRODUCT_NAME,
+        TEST_UPDATE_PRODUCT_DESCRIPTION,
+        TEST_UPDATE_PRODUCT_PRICE,
+        true,
+        TEST_UPDATE_PRODUCT_QUANTITY
+    );
+
+}

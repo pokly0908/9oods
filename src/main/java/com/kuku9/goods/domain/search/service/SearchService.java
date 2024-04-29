@@ -6,16 +6,16 @@ import java.util.List;
 
 public interface SearchService {
 
-//    List<ProductDocument> searchProductName(String keyword);
+    List<ProductDocument> searchProductName(String keyword);
 //
-//    List<ProductDocument> searchProductIntroduce(String keyword);
+    List<ProductDocument> searchProductIntroduce(String keyword);
 
     List<ProductDocument> searchProduct(String keyword);
 
-//    List<SellerDocument> searchBrandName(String keyword);
+    List<SellerDocument> searchBrandName(String keyword);
 //
-//    List<SellerDocument> searchBrandIntroduce(String keyword);
+    List<SellerDocument> searchBrandIntroduce(String keyword);
 
-    List<SellerDocument> searchbrand(String keyword);
+    List<SellerDocument> searchBrand(String keyword);
 
 }

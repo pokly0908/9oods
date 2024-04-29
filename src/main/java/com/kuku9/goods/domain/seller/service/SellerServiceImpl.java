@@ -1,27 +1,26 @@
 package com.kuku9.goods.domain.seller.service;
 
-import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_PRODUCT_EVENT;
-import static com.kuku9.goods.global.exception.ExceptionStatus.INVALID_SELLER_EVENT;
+import static com.kuku9.goods.global.exception.ExceptionStatus.*;
 
 import com.kuku9.goods.domain.product.entity.Product;
 import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.search.document.ProductDocument;
 import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
+import com.kuku9.goods.domain.search.dto.SellerSearchResponse;
+import com.kuku9.goods.domain.seller.dto.response.*;
 import com.kuku9.goods.domain.search.repository.ProductSearchRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.dto.response.SellerCheckResponse;
-import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
-import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
-import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerQuery;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.exception.InvalidProductEventException;
 import com.kuku9.goods.global.exception.InvalidSellerEventException;
+import com.kuku9.goods.global.exception.NotFoundException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -149,7 +148,11 @@ public class SellerServiceImpl implements SellerService {
         User user, Pageable pageable, LocalDate startDate, LocalDate endDate) {
         Seller seller = findSeller(user);
 
-        return sellerQuery.getSoldProduct(seller, pageable, startDate, endDate);
+        Page<SoldProductResponse> soldProductResponses =
+            sellerQuery.getSoldProduct(seller, pageable, startDate, endDate);
+
+        return Optional.ofNullable(soldProductResponses)
+            .orElseThrow(() -> new NotFoundException(NULL_POINTER_GET_DATE));
     }
 
     @Override
@@ -158,7 +161,11 @@ public class SellerServiceImpl implements SellerService {
         User user, LocalDate startDate, LocalDate endDate) {
         Seller seller = findSeller(user);
 
-        return sellerQuery.getSoldProductSumPrice(seller, startDate, endDate);
+        SoldProductSumPriceResponse soldProductSumPriceResponse =
+            sellerQuery.getSoldProductSumPrice(seller, startDate, endDate);
+
+        return Optional.ofNullable(soldProductSumPriceResponse)
+            .orElseThrow(() -> new NotFoundException(NULL_POINTER_GET_DATE));
     }
 
     @Override
@@ -167,7 +174,11 @@ public class SellerServiceImpl implements SellerService {
         User user, LocalDate startDate, LocalDate endDate) {
         Seller seller = findSeller(user);
 
-        return sellerQuery.getSoldProductQuantityTopTen(seller, startDate, endDate);
+        List<SoldProductQuantityResponse> soldProductQuantityResponses =
+            sellerQuery.getSoldProductQuantityTopTen(seller, startDate, endDate);
+
+        return Optional.ofNullable(soldProductQuantityResponses)
+            .orElseThrow(() -> new NotFoundException(NULL_POINTER_GET_DATE));
     }
 
     private Seller findSeller(User user) {
@@ -211,22 +222,21 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public List<ProductSearchResponse> searchProductName(String keyword) {
-        return sellerQuery.searchProductName(keyword);
+    public List<ProductSearchResponse> searchProduct(String keyword) {
+        List<ProductSearchResponse> searchProduct = sellerQuery.searchProduct(keyword);
+        if (searchProduct.isEmpty()) {
+            throw new NotFoundException(SEARCH_RESULT_NOT_FOUND);
+        }
+        return searchProduct;
     }
 
     @Override
-    public List<ProductSearchResponse> searchProductIntroduce(String keyowrd) {
-        return sellerQuery.searchProductIntroduce(keyowrd);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public SellerCheckResponse checkSeller(User user) {
-
-        Long sellerId = sellerQuery.checkSeller(user.getId());
-
-        return new SellerCheckResponse(sellerId);
+    public List<SellerSearchResponse> searchBrand(String keyword) {
+        List<SellerSearchResponse> searchBrand = sellerQuery.searchBrand(keyword);
+        if (searchBrand.isEmpty()) {
+            throw new NotFoundException(SEARCH_RESULT_NOT_FOUND);
+        }
+        return searchBrand;
     }
 
 }

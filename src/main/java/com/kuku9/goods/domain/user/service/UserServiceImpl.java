@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
         User user = User.from(request, encodedPassword);
         User savedUser = userRepository.save(user);
-        log.info("회원가입" + savedUser.getId());
+        log.info("회원가입 유저 아이디 : " + savedUser.getId());
         publisher.publishEvent(new SignupEvent(savedUser));
     }
 
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     public UserResponse getUserInfo(User user) throws AccessDeniedException {
         User findUser = findById(user.getId());
 
-        log.info("정보 조회" + findUser.getId());
+        log.info("정보 조회 유저아이디 : " + findUser.getId());
         return UserResponse.from(findUser);
     }
 
@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
         findUser.updateRole(UserRoleEnum.SELLER);
         Seller seller = Seller.from(request, user);
 
-        log.info("셀러등록" + seller.getId());
+        log.info("셀러등록 유저 아이디 : " + seller.getUser().getId());
         SellerDocument sellerDocument = new SellerDocument(
             findUser.getId(), request.getBrandName(), request.getIntroduce()
         );

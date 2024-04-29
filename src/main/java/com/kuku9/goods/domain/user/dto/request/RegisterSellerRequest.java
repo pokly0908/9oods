@@ -1,6 +1,5 @@
 package com.kuku9.goods.domain.user.dto.request;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -15,7 +14,7 @@ import lombok.Value;
 @AllArgsConstructor
 public class RegisterSellerRequest {
 
-    @Pattern(regexp = "^[a-zA-Z0-9_]{2,50}$",
+    @Pattern(regexp = "^[a-zA-Z0-9가-힣_]{2,50}$",
         message = "올바른 브랜드 이름 형식이 아닙니다. 소문자 대문자 숫자 '_' 을 이용하여 브랜드 이름을 입력해주세요.")
     String brandName;
 

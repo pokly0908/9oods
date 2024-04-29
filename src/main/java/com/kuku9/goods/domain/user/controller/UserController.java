@@ -7,6 +7,7 @@ import com.kuku9.goods.domain.user.dto.request.UserSignupRequest;
 import com.kuku9.goods.domain.user.dto.response.UserResponse;
 import com.kuku9.goods.domain.user.service.UserService;
 import com.kuku9.goods.global.security.CustomUserDetails;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.nio.file.AccessDeniedException;
@@ -27,6 +28,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(summary = "회원가입")
     @PostMapping("/signup")
     public ResponseEntity<String> signup(
         @Valid @RequestBody UserSignupRequest request,
@@ -41,6 +43,7 @@ public class UserController {
         return ResponseEntity.created(URI.create("/api/v1/auth/login")).build();
     }
 
+    @Operation(summary = "내 정보 조회")
     @GetMapping("/me")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_SELLER')")
     public ResponseEntity<UserResponse> getUserInfo(
@@ -51,6 +54,7 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
+    @Operation(summary = "비밀번호 수정")
     @PatchMapping("/password")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_SELLER')")
     public ResponseEntity<Void> modifyPassword(
@@ -62,7 +66,7 @@ public class UserController {
         return ResponseEntity.created(URI.create("/api/v1/auth/login")).build();
     }
 
-
+    @Operation(summary = "셀러 등록")
     @PostMapping("/seller-application")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> registerSeller(

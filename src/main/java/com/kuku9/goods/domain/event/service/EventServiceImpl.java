@@ -5,6 +5,7 @@ import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND;
 
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.coupon.repository.CouponRepository;
+import com.kuku9.goods.domain.event.dto.AllEventResponse;
 import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
@@ -85,30 +86,28 @@ public class EventServiceImpl implements EventService {
 
 
     @Cacheable(value = "eventCache", key = "#eventId", unless = "#result == null")
-    public EventResponse getEvent(Long eventId) {
+    public AllEventResponse getEvent(Long eventId) {
 
-        Event event = findEvent(eventId);
-        List<EventProduct> eventProducts = eventQuery.getEventProducts(List.of(event.getId()));
-        List<EventProductResponse> eventProductResponses = eventProducts.stream()
-            .map(EventProductResponse::new)
-            .toList();
-        return EventResponse.from(event, eventProductResponses);
+        EventResponse eventResponse = eventQuery.getEvent(eventId);
+        List<EventProductResponse> eventProductResponses = eventQuery.getEventProducts(
+            List.of(eventResponse.getId()));
+
+        return AllEventResponse.from(eventResponse, eventProductResponses);
     }
 
     @Transactional(readOnly = true)
-    public Page<EventResponse> getAllEvents(Pageable pageable) {
-        Page<Event> events = eventRepository.findAll(pageable);
-        List<Long> eventIds = events.stream().map(Event::getId).toList();
-        List<EventProduct> eventProducts = eventQuery.getEventProducts(eventIds);
+    public Page<AllEventResponse> getAllEvents(Pageable pageable) {
+        List<EventResponse> events = eventQuery.getEvents();
+        List<Long> eventIds = events.stream().map(EventResponse::getId).toList();
+        List<EventProductResponse> eventProducts = eventQuery.getEventProducts(eventIds);
 
         Map<Long, List<EventProductResponse>> eventProductMap = eventProducts.stream()
-            .collect(Collectors.groupingBy(eventProduct -> eventProduct.getEvent().getId(),
-                Collectors.mapping(EventProductResponse::new,
-                    Collectors.toList())));
+            .collect(Collectors.groupingBy(EventProductResponse::getEventId));
 
-        List<EventResponse> eventResponses = events.stream().map(event -> EventResponse.from(event,
-            eventProductMap.getOrDefault(event.getId(), List.of()))).toList();
-        return new PageImpl<>(eventResponses, pageable, events.getTotalElements());
+        List<AllEventResponse> allEventResponses = events.stream()
+            .map(event -> AllEventResponse.from(event,
+                eventProductMap.getOrDefault(event.getId(), List.of()))).toList();
+        return new PageImpl<>(allEventResponses, pageable, events.size());
     }
 
     @Transactional

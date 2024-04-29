@@ -2,7 +2,9 @@ package com.kuku9.goods.domain.seller.repository;
 
 import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
 import com.kuku9.goods.domain.search.dto.SellerSearchResponse;
-import com.kuku9.goods.domain.seller.dto.response.*;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import java.time.LocalDate;
 import java.util.List;
@@ -40,14 +42,12 @@ public interface SellerQuery {
         Seller seller, LocalDate startDate, LocalDate endDate);
 
     /**
-     *
      * @param keyword 상품 검색 키워드
      * @return 검색 키워드와 일치하는 데이터 전체 조회
      */
     List<ProductSearchResponse> searchProduct(String keyword);
 
     /**
-     *
      * @param keyword 브랜드 관련 키워드
      * @return 검색 키워드와 일치하는 데이터 전체 조회
      */

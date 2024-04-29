@@ -7,10 +7,12 @@ import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.search.document.ProductDocument;
 import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
 import com.kuku9.goods.domain.search.dto.SellerSearchResponse;
-import com.kuku9.goods.domain.seller.dto.response.*;
 import com.kuku9.goods.domain.search.repository.ProductSearchRepository;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.seller.repository.SellerQuery;
 import com.kuku9.goods.domain.seller.repository.SellerRepository;
@@ -115,7 +117,6 @@ public class SellerServiceImpl implements SellerService {
             productName, productDescription,
             price, quantity
         );
-
 
         ProductDocument productDocument = new ProductDocument(
             seller.getId(), productId,

@@ -2,11 +2,14 @@ package com.kuku9.goods.domain.seller.controller;
 
 import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
 import com.kuku9.goods.domain.search.dto.SellerSearchResponse;
-import com.kuku9.goods.domain.seller.dto.response.*;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.service.SellerService;
 import com.kuku9.goods.global.security.CustomUserDetails;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
@@ -29,7 +32,7 @@ public class SellerController {
 
     private final SellerService sellerService;
 
-    // 상품 등록 기능
+    @Operation(summary = "상품 등록")
     @PostMapping("/products")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<Void> createProduct(
@@ -41,7 +44,7 @@ public class SellerController {
             URI.create("/api/v1/seller/" + domainName + "/products")).build();
     }
 
-    // 상품 판매 여부 기능
+    @Operation(summary = "상품 판매 여부 검증")
     @PatchMapping("/products/{productId}/status")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<Void> updateProductStatus(
@@ -53,7 +56,7 @@ public class SellerController {
             URI.create("/api/v1/seller/" + domainName + "/products")).build();
     }
 
-    // 상품 정보 수정 기능
+    @Operation(summary = "상품 수정")
     @PatchMapping("/products/{productId}")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<Void> updateProduct(
@@ -68,7 +71,7 @@ public class SellerController {
     }
 
 
-    // 상품 삭제
+    @Operation(summary = "상품 삭제")
     @DeleteMapping("/products/{productId}")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<Void> deleteProduct(
@@ -81,7 +84,7 @@ public class SellerController {
             URI.create("/api/v1/seller/" + domainName + "/products")).build();
     }
 
-    // 셀러의 판매된 상품 정보 원하는 날짜 선택 조회 기능
+    @Operation(summary = "판매된 상품 기간 선택 조회")
     @GetMapping("/products/sold")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<Page<SoldProductResponse>> getSoldProduct(
@@ -100,7 +103,7 @@ public class SellerController {
         return ResponseEntity.ok(responseDto);
     }
 
-    // 셀러의 판매된 상품 총 판매액 조회
+    @Operation(summary = "총 판매액 조회")
     @GetMapping("/products/sold/price")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<SoldProductSumPriceResponse> getSoldProductSumPrice(
@@ -113,7 +116,7 @@ public class SellerController {
         return ResponseEntity.ok(responseDto);
     }
 
-    // 셀러의 판매된 상품 중 탑 10
+    @Operation(summary = "셀러의 TOP 10 상품 조회")
     @GetMapping("/products/sold/topten")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<List<SoldProductQuantityResponse>> getSoldProductQuantityTopTen(
@@ -127,14 +130,14 @@ public class SellerController {
         return ResponseEntity.ok(responses);
     }
 
-    // 상품 검색
+    @Operation(summary = "상품 검색")
     @GetMapping("/products")
     public List<ProductSearchResponse> searchProduct(
         @RequestParam String keyword) {
         return sellerService.searchProduct(keyword);
     }
 
-    // 상품 설명 검색
+    @Operation(summary = "브랜드 검색")
     @GetMapping("/brands")
     public List<SellerSearchResponse> searchBrand(
         @RequestParam String keyword) {

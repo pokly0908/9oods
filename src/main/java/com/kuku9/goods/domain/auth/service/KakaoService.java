@@ -11,7 +11,6 @@ import com.kuku9.goods.global.security.jwt.JwtUtil;
 import java.net.URI;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -43,7 +42,8 @@ public class KakaoService {
     }
 
     public synchronized String getKakaoAccessToken(String code) throws JsonProcessingException {
-        URI uri = UriComponentsBuilder.fromUriString(kakaoProperties.getAuthUrl() + "/oauth/token").encode().build().toUri();
+        URI uri = UriComponentsBuilder.fromUriString(kakaoProperties.getAuthUrl() + "/oauth/token")
+            .encode().build().toUri();
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
@@ -73,11 +73,14 @@ public class KakaoService {
         if (jsonNode.has("error")) {
             String error = jsonNode.get("error").asText();
             String errorDescription = jsonNode.get("error_description").asText();
-            throw new RuntimeException("Failed to get Kakao access token. Error: " + error + ", Description: " + errorDescription);
+            throw new RuntimeException(
+                "Failed to get Kakao access token. Error: " + error + ", Description: "
+                    + errorDescription);
         }
 
         if (jsonNode.get("access_token") == null) {
-            throw new RuntimeException("Failed to get Kakao access token. Response: " + responseBody);
+            throw new RuntimeException(
+                "Failed to get Kakao access token. Response: " + responseBody);
         }
 
         return jsonNode.get("access_token").asText();
@@ -116,7 +119,8 @@ public class KakaoService {
                 String password = UUID.randomUUID().toString();
                 String encodedPassword = passwordEncoder.encode(password);
                 String email = kakaoUserInfo.getEmail();
-                kakaoUser = User.fromKakao(email, encodedPassword, kakaoUserInfo.getNickname(), kakaoId);
+                kakaoUser = User.fromKakao(email, encodedPassword, kakaoUserInfo.getNickname(),
+                    kakaoId);
             }
             userRepository.save(kakaoUser);
         }

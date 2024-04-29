@@ -49,7 +49,7 @@ public interface OrderService {
     /**
      * 주문 삭제
      *
-     * @param user    유저
+     * @param user     유저
      * @param pageable 페이징 정보
      */
     Page<OrderResponse> getAllOrder(User user, Pageable pageable);

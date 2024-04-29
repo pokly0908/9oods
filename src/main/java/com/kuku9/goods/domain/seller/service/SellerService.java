@@ -2,9 +2,11 @@ package com.kuku9.goods.domain.seller.service;
 
 import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
 import com.kuku9.goods.domain.search.dto.SellerSearchResponse;
-import com.kuku9.goods.domain.seller.dto.response.*;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
+import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
 import com.kuku9.goods.domain.seller.entity.Seller;
 import com.kuku9.goods.domain.user.entity.User;
 import java.time.LocalDate;
@@ -38,9 +40,8 @@ public interface SellerService {
         Long productId, ProductUpdateRequest requestDto, User user);
 
     /**
-     *
      * @param productId 조회할 상품 고유 식별자
-     * @param user 로그인 유저
+     * @param user      로그인 유저
      * @return
      */
     String deleteProduct(Long productId, User user);
@@ -122,14 +123,12 @@ public interface SellerService {
     Boolean checkPhoneNumberExist(String phoneNumber);
 
     /**
-     *
      * @param keyword 상품 검색 키워드
      * @return 검색 키워드와 일치하는 데이터 전체 조회
      */
     List<ProductSearchResponse> searchProduct(String keyword);
 
     /**
-     *
      * @param keyword 브랜드 관련 키워드
      * @return 검색 키워드와 일치하는 데이터 전체 조회
      */

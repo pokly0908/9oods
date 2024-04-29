@@ -141,11 +141,12 @@ public class OrderServiceImpl implements OrderService {
         }
         orderRepository.delete(order);
     }
-  	@Override
-	  public Page<OrderResponse> getAllOrder(User user, Pageable pageable) {
-		return orderRepository.findAllByUser(user, pageable)
-			.map(order -> getProductOrderResponse(order.getId(), order));
-	  }
+
+    @Override
+    public Page<OrderResponse> getAllOrder(User user, Pageable pageable) {
+        return orderRepository.findAllByUser(user, pageable)
+            .map(order -> getProductOrderResponse(order.getId(), order));
+    }
 
     private OrderResponse getProductOrderResponse(Long orderId, Order order) {
         List<OrderProduct> orderProducts = orderProductRepository.findAllByOrderId(orderId);
@@ -153,7 +154,7 @@ public class OrderServiceImpl implements OrderService {
         for (OrderProduct orderProduct : orderProducts) {
             products.add(new ProductResponse(orderProduct.getProduct()));
         }
-        return OrderResponse.from(order,products);
+        return OrderResponse.from(order, products);
     }
 
 }

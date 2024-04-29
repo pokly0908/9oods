@@ -1,17 +1,15 @@
 package com.kuku9.goods.domain.auth.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Value;
 
-@Getter
+
 @Value
 @AllArgsConstructor
 public class LoginRequest {
 
-    @Email
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", message = "이메일 형식에 맞게 입력해주세요.")
     String email;
 
     @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*()-_+=]{8,15}$",

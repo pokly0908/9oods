@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class SellerSearchResponse {
+
     private String brandName;
     private String introduce;
 }

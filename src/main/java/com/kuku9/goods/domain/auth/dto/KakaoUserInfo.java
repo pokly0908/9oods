@@ -14,6 +14,6 @@ public class KakaoUserInfo {
     String email;
 
     public static KakaoUserInfo from(Long kakaoId, String nickname, String email) {
-        return new KakaoUserInfo(kakaoId,nickname, email);
+        return new KakaoUserInfo(kakaoId, nickname, email);
     }
 }

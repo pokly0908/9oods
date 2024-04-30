@@ -22,7 +22,9 @@ public enum ExceptionStatus {
     DUPLICATED_COUPON(HttpStatus.BAD_REQUEST.value(), "이미 발급되었습니다."),
     BEFORE_EVENT_OPEN(HttpStatus.BAD_REQUEST.value(), "아직 오픈되지 않았습니다."),
     OUT_OF_STOCK_COUPON(HttpStatus.BAD_REQUEST.value(), "쿠폰이 모두 소진되었습니다."),
-    NOT_FOUND_SEARCH_KEYWORD(HttpStatus.BAD_REQUEST.value(), "검색 결과가 없습니다.");
+    NOT_FOUND_SEARCH_KEYWORD(HttpStatus.BAD_REQUEST.value(), "검색 결과가 없습니다."),
+    SEARCH_RESULT_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "일치하는 검색 결과가 없습니다."),
+    NULL_POINTER_GET_DATE(HttpStatus.BAD_REQUEST.value(), "조회하려는 데이터가 존재하지 않습니다.");
 
     private final Integer statusCode;
     private final String message;

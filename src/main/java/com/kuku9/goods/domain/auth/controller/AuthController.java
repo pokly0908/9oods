@@ -7,7 +7,6 @@ import com.kuku9.goods.domain.auth.service.KakaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +32,9 @@ public class AuthController {
     }
 
 
-
-   @GetMapping("/kakao/callback")
-    public ResponseEntity<Void> kakaologin(@RequestParam("code") final String code) throws JsonProcessingException {
+    @GetMapping("/kakao/callback")
+    public ResponseEntity<Void> kakaologin(@RequestParam("code") final String code)
+        throws JsonProcessingException {
         log.info("카카오 로그인 서비스 동작.");
         String accessToken = kakaoService.login(code);
 

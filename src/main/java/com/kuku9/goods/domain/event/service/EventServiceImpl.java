@@ -5,8 +5,8 @@ import static com.kuku9.goods.global.exception.ExceptionStatus.NOT_FOUND;
 
 import com.kuku9.goods.domain.coupon.entity.Coupon;
 import com.kuku9.goods.domain.coupon.repository.CouponRepository;
-import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.AllEventResponse;
+import com.kuku9.goods.domain.event.dto.EventRequest;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.dto.EventUpdateRequest;
 import com.kuku9.goods.domain.event.entity.Event;
@@ -20,7 +20,6 @@ import com.kuku9.goods.domain.product.repository.ProductRepository;
 import com.kuku9.goods.domain.user.entity.User;
 import com.kuku9.goods.global.exception.InvalidAdminEventException;
 import com.kuku9.goods.global.exception.NotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -90,7 +89,8 @@ public class EventServiceImpl implements EventService {
     public AllEventResponse getEvent(Long eventId) {
 
         EventResponse eventResponse = eventQuery.getEvent(eventId);
-        List<EventProductResponse> eventProductResponses = eventQuery.getEventProducts(List.of(eventResponse.getId()));
+        List<EventProductResponse> eventProductResponses = eventQuery.getEventProducts(
+            List.of(eventResponse.getId()));
 
         return AllEventResponse.from(eventResponse, eventProductResponses);
     }
@@ -104,8 +104,9 @@ public class EventServiceImpl implements EventService {
         Map<Long, List<EventProductResponse>> eventProductMap = eventProducts.stream()
             .collect(Collectors.groupingBy(EventProductResponse::getEventId));
 
-        List<AllEventResponse> allEventResponses = events.stream().map(event -> AllEventResponse.from(event,
-            eventProductMap.getOrDefault(event.getId(), List.of()))).toList();
+        List<AllEventResponse> allEventResponses = events.stream()
+            .map(event -> AllEventResponse.from(event,
+                eventProductMap.getOrDefault(event.getId(), List.of()))).toList();
         return new PageImpl<>(allEventResponses, pageable, events.size());
     }
 

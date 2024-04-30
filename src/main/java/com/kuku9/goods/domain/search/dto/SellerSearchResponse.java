@@ -5,10 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ProductSearchResponse {
+public class SellerSearchResponse {
 
-    private String productName;
+    private String brandName;
     private String introduce;
-    private int price;
-
 }

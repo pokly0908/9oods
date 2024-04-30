@@ -3,6 +3,7 @@ package com.kuku9.goods.domain.seller.repository;
 import com.kuku9.goods.domain.order_product.entity.QOrderProduct;
 import com.kuku9.goods.domain.product.entity.QProduct;
 import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
+import com.kuku9.goods.domain.search.dto.SellerSearchResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -106,7 +107,7 @@ public class SellerQueryImpl implements SellerQuery {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ProductSearchResponse> searchProductName(String keyword) {
+    public List<ProductSearchResponse> searchProduct(String keyword) {
         QProduct qProduct = QProduct.product;
         return jpaQueryFactory
             .select(Projections.constructor(ProductSearchResponse.class,
@@ -114,33 +115,23 @@ public class SellerQueryImpl implements SellerQuery {
                 qProduct.description,
                 qProduct.price))
             .from(qProduct)
-            .where(qProduct.name.like("%" + keyword + "%"))
+            .where(qProduct.name.like("%" + keyword + "%")
+                .or(qProduct.description.like("%" + keyword + "%")))
             .fetch();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<ProductSearchResponse> searchProductIntroduce(String keyowrd) {
-        QProduct qProduct = QProduct.product;
-        return jpaQueryFactory
-            .select(Projections.constructor(ProductSearchResponse.class,
-                qProduct.name,
-                qProduct.description,
-                qProduct.price,
-                qProduct.quantity))
-            .from(qProduct)
-            .where(qProduct.name.like("%" + keyowrd + "%"))
-            .fetch();
-    }
-
-    @Override
-    public Long checkSeller(Long userId) {
+    public List<SellerSearchResponse> searchBrand(String keyword) {
         QSeller qSeller = QSeller.seller;
         return jpaQueryFactory
-            .select(qSeller.id)
+            .select(Projections.constructor(SellerSearchResponse.class,
+                qSeller.brandName,
+                qSeller.introduce))
             .from(qSeller)
-            .where(qSeller.user.id.eq(userId))
-            .fetchOne();
+            .where(qSeller.brandName.like("%" + keyword + "%")
+                .or(qSeller.introduce.like("%" + keyword + "%")))
+            .fetch();
     }
 
 }

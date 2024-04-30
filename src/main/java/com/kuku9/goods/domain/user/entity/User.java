@@ -65,7 +65,7 @@ public class User extends BaseEntity {
     }
 
     public User(String email, String encodedPassword, String nickname, Long kakaoId) {
-        this.email =email;
+        this.email = email;
         this.password = encodedPassword;
         this.realName = nickname;
         this.registerType = UserRegisterTypeEnum.KAKAO;

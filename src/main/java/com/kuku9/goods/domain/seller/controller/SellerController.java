@@ -1,9 +1,9 @@
 package com.kuku9.goods.domain.seller.controller;
 
 import com.kuku9.goods.domain.search.dto.ProductSearchResponse;
+import com.kuku9.goods.domain.search.dto.SellerSearchResponse;
 import com.kuku9.goods.domain.seller.dto.request.ProductRegistRequest;
 import com.kuku9.goods.domain.seller.dto.request.ProductUpdateRequest;
-import com.kuku9.goods.domain.seller.dto.response.SellerCheckResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductQuantityResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductResponse;
 import com.kuku9.goods.domain.seller.dto.response.SoldProductSumPriceResponse;
@@ -89,8 +89,8 @@ public class SellerController {
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<Page<SoldProductResponse>> getSoldProduct(
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "5") int size,
+        @RequestParam int page,
+        @RequestParam int size,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
@@ -130,17 +130,18 @@ public class SellerController {
         return ResponseEntity.ok(responses);
     }
 
-    @Operation(summary = "상품 이름 검색")
-    @GetMapping("/product-name")
-    public List<ProductSearchResponse> searchProductName(
+    @Operation(summary = "상품 검색")
+    @GetMapping("/products")
+    public List<ProductSearchResponse> searchProduct(
         @RequestParam String keyword) {
-        return sellerService.searchProductName(keyword);
+        return sellerService.searchProduct(keyword);
     }
 
-    @Operation(summary = "상품 설명 검색")
-    @GetMapping("/introduce")
-    public List<ProductSearchResponse> searchProductIntroduce(
-        @RequestParam String keyowrd) {
-        return sellerService.searchProductIntroduce(keyowrd);
+    @Operation(summary = "브랜드 검색")
+    @GetMapping("/brands")
+    public List<SellerSearchResponse> searchBrand(
+        @RequestParam String keyword) {
+        return sellerService.searchBrand(keyword);
     }
+
 }

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.kuku9.goods.domain.coupon.dto.CouponResponse;
-import com.kuku9.goods.domain.event.entity.Event;
 import com.kuku9.goods.domain.event_product.dto.EventProductResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,7 +37,8 @@ public class AllEventResponse {
 
     List<EventProductResponse> eventProducts;
 
-    public static AllEventResponse from(EventResponse eventResponse, List<EventProductResponse> eventProducts) {
+    public static AllEventResponse from(
+        EventResponse eventResponse, List<EventProductResponse> eventProducts) {
         return new AllEventResponse(
             eventResponse.getId(),
             eventResponse.getTitle(),

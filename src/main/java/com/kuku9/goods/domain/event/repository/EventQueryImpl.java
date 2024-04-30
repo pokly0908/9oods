@@ -4,7 +4,6 @@ import com.kuku9.goods.domain.coupon.entity.QCoupon;
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event.entity.QEvent;
 import com.kuku9.goods.domain.event_product.dto.EventProductResponse;
-import com.kuku9.goods.domain.event_product.entity.EventProduct;
 import com.kuku9.goods.domain.event_product.entity.QEventProduct;
 import com.kuku9.goods.domain.product.entity.QProduct;
 import com.kuku9.goods.domain.seller.entity.QSeller;
@@ -27,11 +26,11 @@ public class EventQueryImpl implements EventQuery {
         QSeller qSeller = QSeller.seller;
 
         return jpaQueryFactory.select(Projections.constructor(EventProductResponse.class,
-            qEventProduct.event.id.as("eventId"),
-            qProduct.name.as("productName"),
-            qProduct.description.as("productDescription"),
-            qProduct.price.as("productPrice"),
-            qSeller.domainName
+                qEventProduct.event.id.as("eventId"),
+                qProduct.name.as("productName"),
+                qProduct.description.as("productDescription"),
+                qProduct.price.as("productPrice"),
+                qSeller.domainName
             ))
             .from(QEventProduct.eventProduct)
             .join(qProduct).on(qProduct.id.eq(qEventProduct.product.id))

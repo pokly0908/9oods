@@ -6,7 +6,6 @@ import com.kuku9.goods.domain.product.dto.ProductResponse;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -22,7 +21,8 @@ public class OrderResponse {
     String address;
     List<ProductResponse> products;
 
-    public OrderResponse(Long orderId, OrderStatus orderStatus, String orderDate, String address,
+    public OrderResponse(
+        Long orderId, OrderStatus orderStatus, String orderDate, String address,
         List<ProductResponse> products) {
         this.orderId = orderId;
         this.orderStatus = orderStatus;
@@ -32,8 +32,7 @@ public class OrderResponse {
     }
 
 
-
-    public static OrderResponse from(Order order,List<ProductResponse> products) {
+    public static OrderResponse from(Order order, List<ProductResponse> products) {
         return new OrderResponse(
             order.getId(),
             order.getStatus(),

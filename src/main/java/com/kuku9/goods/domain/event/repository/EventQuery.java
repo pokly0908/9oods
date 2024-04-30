@@ -2,7 +2,6 @@ package com.kuku9.goods.domain.event.repository;
 
 import com.kuku9.goods.domain.event.dto.EventResponse;
 import com.kuku9.goods.domain.event_product.dto.EventProductResponse;
-import com.kuku9.goods.domain.event_product.entity.EventProduct;
 import java.time.LocalDateTime;
 import java.util.List;
 

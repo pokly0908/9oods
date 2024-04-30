@@ -1,7 +1,6 @@
 package com.kuku9.goods.domain.search.document;
 
 import jakarta.persistence.Id;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

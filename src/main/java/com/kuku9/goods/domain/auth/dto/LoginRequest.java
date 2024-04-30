@@ -1,9 +1,7 @@
 package com.kuku9.goods.domain.auth.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Value;
 
 

@@ -2,7 +2,6 @@ package com.kuku9.goods.domain.event.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
 
@@ -10,12 +9,12 @@ import lombok.Value;
 @Value
 public class EventResponse {
 
-	Long id;
-	String title;
-	String content;
-	LocalDateTime openAt;
-	Long couponId;
-	LocalDate expirationDate;
-	int quantity;
+    Long id;
+    String title;
+    String content;
+    LocalDateTime openAt;
+    Long couponId;
+    LocalDate expirationDate;
+    int quantity;
 
 }

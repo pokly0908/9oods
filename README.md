@@ -1,4 +1,7 @@
 # 9OODS
+## 원본 GitHub URL
+https://github.com/9kuku/9oods
+
 ## Team 999
 <img width="824" alt="스크린샷 2024-04-26 오후 12 13 39" src="https://github.com/9kuku/9oods/assets/154957716/4fb68962-9066-405b-a17c-ff5b60f22964">
 
